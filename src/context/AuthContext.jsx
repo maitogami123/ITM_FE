@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-
+import Toast from "@/widgets/toast/toast-message";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -19,6 +19,10 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setAuthToken(null);
     setUser(null);
+    Toast.fire({
+      icon: "success",
+      title: "Signed out successfully",
+    });
   };
 
   return (

@@ -5,6 +5,7 @@ import { login } from "@/services/authService";
 import { AuthContext } from "@/context/AuthContext";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
+import Toast from "@/widgets/toast/toast-message";
 
 export function SignIn() {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -23,7 +24,10 @@ export function SignIn() {
       loginContext(response.data.token);
       navigate("/");
     } catch (error) {
-      console.error("Login failed", error);
+      Toast.fire({
+        icon: "error",
+        title: "Invalid credentials",
+      });
     }
   };
 
