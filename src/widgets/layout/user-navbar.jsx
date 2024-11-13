@@ -195,10 +195,16 @@ export function UserNavbar() {
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Button size="sm">Get Started</Button>
-          <Button variant="outlined" size="sm">
-            Log In
-          </Button>
+          <Link to="/sign-up">
+            <Button size="sm" fullWidth>
+              Get Started
+            </Button>
+          </Link>
+          <Link to="/sign-in">
+            <Button type="button" variant="outlined" size="sm" fullWidth>
+              Log in
+            </Button>
+          </Link>
         </div>
         <IconButton
           variant="text"
@@ -221,7 +227,7 @@ export function UserNavbar() {
             </Button>
           </Link>
           <Link to="/sign-in" className="w-full">
-            <Button variant="outlined" size="sm" fullWidth>
+            <Button type="button" variant="outlined" size="sm" fullWidth>
               Log in
             </Button>
           </Link>
