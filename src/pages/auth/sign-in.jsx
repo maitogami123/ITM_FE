@@ -21,7 +21,7 @@ export function SignIn() {
     try {
       const response = await login(data.username, data.password);
       loginContext(response.data.token);
-      navigate("/admin");
+      navigate("/");
     } catch (error) {
       console.error("Login failed", error);
     }

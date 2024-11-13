@@ -1,29 +1,44 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "@/services/authService";
-import { AuthContext } from "@/context/AuthContext";
+import { register as registerService } from "@/services/authService";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export function SignUp() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
+  const MySwal = withReactContent(Swal);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { login: loginContext } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
-      const response = await login(data.username, data.password);
-      loginContext(response.data.token);
-      navigate("/admin");
+      const response = await registerService(data.username, data.password);
+      if (response.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "You can now use your newly created account to login!",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          navigate("/sign-in");
+        });
+      } else {
+        throw new Error("Register failed");
+      }
     } catch (error) {
-      console.error("Login failed", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
@@ -146,7 +161,7 @@ export function SignUp() {
             />
             {errors.password && (
               <Typography variant="small" color="red">
-                Password is required
+                Confirm password is required
               </Typography>
             )}
           </div>
