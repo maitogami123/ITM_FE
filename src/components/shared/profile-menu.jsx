@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ProfileMenu({ user, logout }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -43,24 +44,26 @@ export default function ProfileMenu({ user, logout }) {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        <MenuItem
-          key={"my-profile"}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className={`flex items-center gap-2 rounded`}
-        >
-          {React.createElement(UserCircleIcon, {
-            className: `h-4 w-4`,
-            strokeWidth: 2,
-          })}
-          <Typography
-            as="span"
-            variant="small"
-            className="font-normal"
-            color={"inherit"}
+        <Link to={"/profile"}>
+          <MenuItem
+            key={"my-profile"}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className={`flex items-center gap-2 rounded`}
           >
-            My Profile
-          </Typography>
-        </MenuItem>
+            {React.createElement(UserCircleIcon, {
+              className: `h-4 w-4`,
+              strokeWidth: 2,
+            })}
+            <Typography
+              as="span"
+              variant="small"
+              className="font-normal"
+              color={"inherit"}
+            >
+              My Profile
+            </Typography>
+          </MenuItem>
+        </Link>
         <MenuItem
           key={"help"}
           onClick={() => setIsMenuOpen((prev) => !prev)}

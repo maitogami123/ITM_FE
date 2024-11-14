@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, useRoutes, Navigate } from "react-router-dom";
-import Guest from "@/components/guest/Guest";
-import { AuthProvider, AuthContext } from "@/context/AuthContext";
-import { Dashboard, Auth } from "@/layouts";
+import { AuthContext, AuthProvider } from "@/context/AuthContext";
+import { AuthLayout, Dashboard, UserLayout } from "@/layouts";
 import { SignIn, SignUp } from "@/pages/auth";
+import { Navigate, BrowserRouter as Router, useRoutes } from "react-router-dom";
+import LandingPage from "./components/LandingPage";
+import UserProfile from "./pages/users/user-profile";
 
 const PrivateRoute = ({ children }) => {
   return (
@@ -15,16 +16,27 @@ const PrivateRoute = ({ children }) => {
 };
 
 const routes = [
-  { path: "/auth/*", element: <Auth /> },
-  { path: "/sign-in", element: <SignIn /> },
-  { path: "/sign-up", element: <SignUp /> },
-  { path: "/*", element: <Guest /> },
+  {
+    path: "/auth/*",
+    element: <AuthLayout />,
+    children: [
+      { path: "sign-in", element: <SignIn /> },
+      { path: "sign-up", element: <SignUp /> },
+    ],
+  },
+  {
+    path: "/",
+    element: <UserLayout />,
+    children: [
+      { path: "profile", element: <UserProfile /> },
+      { path: "", element: <LandingPage /> },
+    ],
+  },
   {
     path: "/admin/*",
     element: (
       <PrivateRoute>
-        {" "}
-        <Dashboard />{" "}
+        <Dashboard />
       </PrivateRoute>
     ),
   },

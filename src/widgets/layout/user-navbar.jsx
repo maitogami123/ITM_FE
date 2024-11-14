@@ -18,7 +18,7 @@ export function UserNavbar() {
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
-          href="#"
+          href="/"
           variant="h6"
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
@@ -63,12 +63,12 @@ export function UserNavbar() {
         </div>
         {!user ? (
           <div className="hidden gap-2 lg:flex">
-            <Link to="/sign-up">
+            <Link to="/auth/sign-up">
               <Button size="sm" fullWidth>
                 Get Started
               </Button>
             </Link>
-            <Link to="/sign-in">
+            <Link to="/auth/sign-in">
               <Button type="button" variant="outlined" size="sm" fullWidth>
                 Log in
               </Button>

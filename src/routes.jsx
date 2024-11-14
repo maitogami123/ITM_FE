@@ -20,25 +20,25 @@ export const routes = [
       {
         icon: <HomeIcon {...icon} />,
         name: "dashboard",
-        path: "/home",
+        path: "/admin/home",
         element: <Home />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
-        path: "/profile",
+        path: "/admin/profile",
         element: <Profile />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "tables",
-        path: "/tables",
+        path: "/admin/tables",
         element: <Tables />,
       },
       {
         icon: <BellIcon {...icon} />,
         name: "notifactions",
-        path: "/notifactions",
+        path: "/admin/notifactions",
         element: <Notifications />,
       },
     ],
@@ -60,7 +60,7 @@ export const routes = [
         element: <SignUp />,
       },
     ],
-  }
+  },
 ];
 
 export default routes;
