@@ -39,26 +39,30 @@ function HeroSection16() {
             <Typography
               variant="h1"
               color="blue-gray"
-              className="mx-auto my-6 w-full !text-2xl  leading-snug lg:max-w-3xl lg:!text-5xl"
+              className="mx-auto my-6 w-full !text-2xl leading-snug lg:max-w-3xl lg:!text-4xl"
             >
-              Get ready to experience a new level of{" "}
-              <span className="leading-snug text-green-500 ">performance</span>{" "}
-              and{" "}
-              <span className="leading-snug text-green-500">functionality</span>
-              .
+              Đồng thuận -
+              <span className="leading-snug text-green-500 "> Tận tâm</span>-
+              <span className="leading-snug text-green-500"> Chuẩn mực </span>-
+              <span className="leading-snug text-blue-500"> Sáng tạo</span>
             </Typography>
             <Typography
               variant="lead"
-              className="mx-auto w-full text-base !text-gray-500 lg:text-lg"
+              className="mx-auto w-3/5 text-base !text-gray-500 lg:text-lg"
             >
-              The time is now for it to be okay to be great. For being a bright
-              color. For standing out.
+              Trường Đại học Cần Thơ có vai trò quan trọng trong đào tạo đa
+              ngành, đa lĩnh vực, cung cấp nguồn nhân lực cho thành phố Cần Thơ
+              cũng như vùng đồng bằng sông Cửu Long.
             </Typography>
             <div className="mt-8 grid w-full place-items-start md:justify-center">
               <div className="mb-2 flex w-full flex-col gap-4 md:flex-row">
-                <Input color="gray" label="Enter your email" size="lg" />
-                <Button color="gray" className="w-full px-4 md:w-[12rem]">
-                  get started
+                <Input
+                  color="gray"
+                  label="Nhập tên giáo viên cẩn tìm"
+                  size="lg"
+                />
+                <Button color="gray" className="w-full px-4 md:w-[10rem]">
+                  Tìm kiếm giảng viên
                 </Button>
               </div>
             </div>

@@ -3,127 +3,183 @@ import { Button, Input, Textarea, Typography } from "@material-tailwind/react";
 
 export function ContactSection14() {
   return (
-    <section className="px-8 py-8">
-      <div className="container mx-auto text-center">
-        <Typography
-          variant="h5"
-          color="blue-gray"
-          className="mb-4 !text-base lg:!text-2xl"
-        >
-          Customer Care
-        </Typography>
-        <Typography
-          variant="h1"
-          color="blue-gray"
-          className="mb-4 !text-3xl lg:!text-5xl"
-        >
-          We&apos;re Here to Help
-        </Typography>
-        <Typography className="mx-auto mb-10 max-w-3xl !text-lg font-normal !text-gray-500 lg:mb-20">
-          Whether it&apos;s a question about our services, a request for
-          technical assistance, or suggestions for improvement, our team is
-          eager to hear from you.
-        </Typography>
-        <div className="grid grid-cols-1 items-start gap-x-12 gap-y-6 lg:grid-cols-2">
-          <img
-            src="/img/FAQs-rafiki.svg"
-            alt="map"
-            className="h-full w-full lg:max-h-[510px]"
-          />
-          <form action="#" className="flex flex-col gap-4 lg:max-w-sm">
-            <div className="grid grid-cols-2 gap-4">
+    <>
+      <footer class="bg-blue-900 py-8 text-white">
+        <div class="container mx-auto grid grid-cols-1 gap-6 text-sm md:grid-cols-4">
+          <div class="space-y-2">
+            <div class="flex items-center space-x-2">
+              <img src="logo.png" alt="Logo" class="h-12" />
               <div>
-                <Typography
-                  variant="small"
-                  className="mb-2 text-left font-medium !text-gray-900"
-                >
-                  First Name
-                </Typography>
-                <Input
-                  color="gray"
-                  size="lg"
-                  placeholder="First Name"
-                  name="first-name"
-                  className="focus:border-t-gray-900"
-                  containerProps={{
-                    className: "!min-w-full",
-                  }}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                />
-              </div>
-              <div>
-                <Typography
-                  variant="small"
-                  className="mb-2 text-left font-medium !text-gray-900"
-                >
-                  Last Name
-                </Typography>
-                <Input
-                  color="gray"
-                  size="lg"
-                  placeholder="Last Name"
-                  name="last-name"
-                  className="focus:border-t-gray-900"
-                  containerProps={{
-                    className: "!min-w-full",
-                  }}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                />
+                <p class="text-lg font-bold">ĐẠI HỌC CẦN THƠ</p>
+                <p>Can Tho University</p>
               </div>
             </div>
-            <div>
-              <Typography
-                variant="small"
-                className="mb-2 text-left font-medium !text-gray-900"
-              >
-                Your Email
-              </Typography>
-              <Input
-                color="gray"
-                size="lg"
-                placeholder="name@email.com"
-                name="email"
-                className="focus:border-t-gray-900"
-                containerProps={{
-                  className: "!min-w-full",
-                }}
-                labelProps={{
-                  className: "hidden",
-                }}
-              />
+            <p>📍 Khu 2, Đ. 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. CT</p>
+            <p>📞 ĐT: +84292 3831 530; 3838 237; 3832 663</p>
+            <p>📠 Fax: +84292 3838 474</p>
+            <p>✉️ dhct@ctu.edu.vn</p>
+            <div class="mt-2 flex space-x-2">
+              <a href="#" class="hover:opacity-80">
+                <img src="facebook.png" alt="Facebook" class="h-6 w-6" />
+              </a>
+              <a href="#" class="hover:opacity-80">
+                <img src="youtube.png" alt="YouTube" class="h-6 w-6" />
+              </a>
+              <a href="#" class="hover:opacity-80">
+                <img src="instagram.png" alt="Instagram" class="h-6 w-6" />
+              </a>
+              <a href="#" class="hover:opacity-80">
+                <img src="linkedin.png" alt="LinkedIn" class="h-6 w-6" />
+              </a>
+              <a href="#" class="hover:opacity-80">
+                <img src="tiktok.png" alt="TikTok" class="h-6 w-6" />
+              </a>
             </div>
-            <div>
-              <Typography
-                variant="small"
-                className="mb-2 text-left font-medium !text-gray-900"
-              >
-                Your Message
-              </Typography>
-              <Textarea
-                rows={6}
-                color="gray"
-                placeholder="Message"
-                name="message"
-                className="focus:border-t-gray-900"
-                containerProps={{
-                  className: "!min-w-full",
-                }}
-                labelProps={{
-                  className: "hidden",
-                }}
-              />
-            </div>
-            <Button className="w-full" color="gray">
-              Send message
-            </Button>
-          </form>
+          </div>
+
+          <div>
+            <h3 class="mb-2 font-bold">DỊCH VỤ TIỆN ÍCH</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="hover:underline">
+                  📧 Thư điện tử
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📁 Hệ thống tích hợp
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  💻 Học trực tuyến
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📝 Thi trực tuyến
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🏢 Văn phòng điện tử
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📄 Văn bản
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🆘 Trợ giúp
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🅰️ Nhận diện thương hiệu
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="mb-2 font-bold">THÔNG TIN</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="hover:underline">
+                  ⭐ Thông tin phòng, chống COVID
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📅 Sự kiện
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📆 Lịch trường
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  ☎️ Các số máy đặc biệt
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🗺️ Sơ đồ trang
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🏛️ CTU 55 năm
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📊 Infographic
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📰 CTU eNewsletter
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="mb-2 font-bold">CÔNG KHAI</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="hover:underline">
+                  ⚖️ Thông tư 36
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  👥 Tuyển dụng
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🔍 Tra cứu văn bằng
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📌 Quy trình công tác
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📈 Báo cáo thường niên
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📚 Tạp chí Khoa học ĐHCT
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  📑 Đề án mở ngành
+                </a>
+              </li>
+              <li>
+                <a href="#" class="hover:underline">
+                  🤝 Phục vụ cộng đồng
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </section>
+        <div class="mt-8 text-center text-xs text-white/80">
+          © 2024 Đại học Cần Thơ | Lượt truy cập: 37079156
+        </div>
+      </footer>
+    </>
   );
 }
 

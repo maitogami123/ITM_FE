@@ -45,47 +45,47 @@ function TeamCard({ img, name, title }) {
     </Card>
   );
 }
-
+const linkImg = "../../public/img/";
 const members = [
   {
-    img: `https://www.material-tailwind.com/img/avatar1.jpg`,
-    name: "Ryan Samuel",
-    title: "Co-Founder",
+    img: `${linkImg}001174_tttinh.png`,
+    name: "PGS. TS. Trần Trung Tính",
+    title: "Hiệu trưởng",
   },
   {
-    img: `https://www.material-tailwind.com/img/avatar2.jpg`,
-    name: "Ryan Samuel",
-    title: "Co-Founder",
+    img: `${linkImg}000273_tnhai.png`,
+    name: "GS. TS. Trần Ngọc Hải",
+    title: "Phó Hiệu trưởng",
   },
   {
-    img: `https://www.material-tailwind.com/img/avatar5.jpg`,
-    name: "Nora Hazel",
-    title: "UI/UX Designer",
+    img: `${linkImg}001349_lvlam.png`,
+    name: "TS. Lê Văn Lâm",
+    title: "Phó Hiệu Trưởng",
   },
   {
-    img: `https://www.material-tailwind.com/img/avatar4.jpg`,
-    name: "Otto Gonzalez",
-    title: "Marketing Specialist",
+    img: `${linkImg}000483_nhtrung.png`,
+    name: "PGS. TS. Nguyễn Hiếu Trung",
+    title: "Phó Hiệu Trưởng",
   },
   {
-    img: `https://www.material-tailwind.com/img/avatar6.jpg`,
-    name: "Emma Roberts",
-    title: "UI Designer",
+    img: `${linkImg}000267_ntphuong.png`,
+    name: "GS.TS. Nguyễn Thanh Phương",
+    title: "Chủ tịch Hội đồng Trường",
   },
   {
-    img: `https://www.material-tailwind.com/img/avatar3.jpg`,
-    name: "William Pearce",
+    img: `${linkImg}001062_ncngon.png`,
+    name: "PGS.TS. Nguyễn Chí Ngôn",
     title: "Web Developer",
   },
   {
-    img: "https://www.material-tailwind.com/image/avatar7.svg",
-    name: "Bruce Mars",
-    title: "UI/UX Designer",
+    img: `${linkImg}00199_tqlap.png`,
+    name: "PGS.TS. Trịnh Quốc Lập",
+    title: " Trưởng Ban Đào tạo và ĐBCL Trường",
   },
   {
-    img: "https://www.material-tailwind.com/image/avatar8.svg",
-    name: "Annie Sprrat",
-    title: "Marketing Specialist",
+    img: `${linkImg}002143_lvvang.png`,
+    name: "PGS.TS. Lê Văn Vàng",
+    title: " Trưởng Ban Tổ chức, Nhân sự và Pháp chế",
   },
 ];
 
@@ -94,23 +94,25 @@ export function TeamSection12() {
     <section className="min-h-screen py-8 px-8 lg:py-28">
       <div className="container mx-auto">
         <div className="mb-16 text-center lg:mb-28">
-          <Typography variant="h6" color="blue-gray" className="text-lg">
-            Meet the Team
-          </Typography>
           <Typography
             variant="h1"
             color="blue-gray"
             className="my-2 !text-2xl lg:!text-4xl"
           >
-            Behind the Success: Our Dedicated Team
+            Đội Ngũ Cán Bộ Giảng Viên
           </Typography>
           <Typography
             variant="lead"
-            className="mx-auto w-full max-w-4xl !text-gray-500"
+            className="mx-auto w-2/3 max-w-4xl text-base !text-gray-500"
           >
-            From visionary leadership to creative talent, and technical wizards,
-            each team member plays a pivotal role in delivering the exceptional
-            service and innovative solutions.
+            Đào tạo nhân lực trình độ cao, nâng cao dân trí, bồi dưỡng nhân tài;
+            NCKH và công nghệ tạo ra tri thức, sản phẩm mới và phục vụ cộng đồng
+            đáp ứng nhu cầu phát triển kinh tế - xã hội, bảo đảm quốc phòng, an
+            ninh, hội nhập quốc tế. Đào tạo người học phát triển toàn diện về
+            đức, trí, thể, mỹ; có tri thức, kỹ năng, trách nhiệm nghề nghiệp; có
+            khả năng nắm bắt tiến bộ khoa học và công nghệ tương xứng với trình
+            độ đào tạo, khả năng tự học, sáng tạo, thích nghi với môi trường làm
+            việc; có tinh thần lập nghiệp, có ý thức phục vụ nhân dân
           </Typography>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

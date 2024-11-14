@@ -1,6 +1,7 @@
 import ProfileMenu from "@/components/shared/profile-menu";
 import { AuthContext } from "@/context/AuthContext";
 import {
+  Avatar,
   Button,
   List,
   ListItem,
@@ -22,7 +23,12 @@ export function UserNavbar() {
           variant="h6"
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
-          Material Tailwind
+          <Avatar
+            variant="circular"
+            size="lg"
+            className=""
+            src="../../../public/img/logo.png"
+          />
         </Typography>
         <div className="hidden lg:block">
           <List className="mb-6 mt-4 p-0 lg:mb-0 lg:mt-0 lg:flex-row lg:p-1">
