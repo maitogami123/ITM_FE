@@ -1,8 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import routes from "@/routes";
+import { DashboardNavbar, Footer, Sidenav } from "@/widgets/layout";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
-import { Sidenav, DashboardNavbar, Footer } from "@/widgets/layout";
-import routes from "@/routes";
+import { Outlet } from "react-router-dom";
 
 export function Dashboard() {
   return (
@@ -18,15 +18,7 @@ export function Dashboard() {
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
-        <Routes>
-          {routes.map(
-            ({ layout, pages }) =>
-              layout === "dashboard" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
-          )}
-        </Routes>
+        <Outlet />
         <div className="text-blue-gray-600">
           <Footer />
         </div>

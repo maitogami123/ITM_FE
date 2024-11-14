@@ -15,30 +15,31 @@ const icon = {
 
 export const routes = [
   {
-    layout: "dashboard",
+    title: "Admin pages",
+    layout: "admin",
     pages: [
       {
         icon: <HomeIcon {...icon} />,
         name: "dashboard",
-        path: "/admin/home",
+        path: "/home",
         element: <Home />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
-        path: "/admin/profile",
+        path: "/profile",
         element: <Profile />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "tables",
-        path: "/admin/tables",
+        path: "/tables",
         element: <Tables />,
       },
       {
         icon: <BellIcon {...icon} />,
         name: "notifactions",
-        path: "/admin/notifactions",
+        path: "/notifactions",
         element: <Notifications />,
       },
     ],

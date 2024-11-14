@@ -19,7 +19,7 @@ export function DashboardNavbar() {
       fullWidth
     >
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
-        <div className="capitalize">
+        <div className="px-4 py-2 capitalize">
           <Breadcrumbs className={`bg-transparent p-0 transition-all`}>
             <Link to={`/${layout}`}>
               <Typography
@@ -41,21 +41,6 @@ export function DashboardNavbar() {
           <Typography variant="h6" color="blue-gray">
             {page}
           </Typography>
-        </div>
-        <div className="flex items-center">
-          <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Type here" />
-          </div>
-          <IconButton
-            variant="text"
-            color="blue-gray"
-            className="grid xl:hidden"
-          >
-            <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
-          </IconButton>
-          <IconButton variant="text" color="blue-gray">
-            <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
-          </IconButton>
         </div>
       </div>
     </Navbar>
