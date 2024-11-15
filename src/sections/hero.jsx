@@ -1,5 +1,7 @@
 import { Button, Input, Typography } from "@material-tailwind/react";
-import React from "react";
+import React, { useState } from "react";
+import "./hero.css";
+import { SearchPage } from "./search";
 
 function NavItem({ children }) {
   return (
@@ -20,6 +22,25 @@ function NavItem({ children }) {
 function HeroSection16() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
+  const [results, setResults] = useState([]);
+  const [selectedResult, setSelectedResult] = useState(null);
+
+  const fetchResults = async (letter) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/search?letter=${letter}`
+      );
+      setResults(response.data);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+
+  const handleResultClick = (result) => {
+    setSelectedResult(result);
+    console.log("API Call with:", result);
+    // Make an API call or perform another action with the selected result
+  };
 
   React.useEffect(() => {
     window.addEventListener(
@@ -54,18 +75,7 @@ function HeroSection16() {
               ngành, đa lĩnh vực, cung cấp nguồn nhân lực cho thành phố Cần Thơ
               cũng như vùng đồng bằng sông Cửu Long.
             </Typography>
-            <div className="mt-8 grid w-full place-items-start md:justify-center">
-              <div className="mb-2 flex w-full flex-col gap-4 md:flex-row">
-                <Input
-                  color="gray"
-                  label="Nhập tên giáo viên cẩn tìm"
-                  size="lg"
-                />
-                <Button color="gray" className="w-full px-4 md:w-[10rem]">
-                  Tìm kiếm giảng viên
-                </Button>
-              </div>
-            </div>
+            <SearchPage></SearchPage>
           </div>
         </div>
       </header>
