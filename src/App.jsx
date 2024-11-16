@@ -4,7 +4,8 @@ import { SignIn, SignUp } from "@/pages/auth";
 import { Navigate, BrowserRouter as Router, useRoutes } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import UserProfile from "./pages/users/user-profile";
-import { Home, Notifications, Tables } from "./pages/dashboard";
+import { Home, Tables } from "./pages/dashboard";
+import PublicProfile from "./pages/users/public-profile";
 
 const PrivateRoute = ({ children }) => {
   return (
@@ -43,6 +44,7 @@ const routes = [
     path: "/*",
     element: <UserLayout />,
     children: [
+      { path: ":id", element: <PublicProfile /> },
       { path: "profile/:id", element: <UserProfile /> },
       { path: "", element: <LandingPage /> },
     ],
@@ -58,7 +60,6 @@ const routes = [
     children: [
       { path: "home", index: true, element: <Home /> },
       { path: "tables", element: <Tables /> },
-      { path: "notifactions", element: <Notifications /> },
       { path: "*", element: <Navigate to="/admin/home" replace /> },
     ],
   },

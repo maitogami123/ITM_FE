@@ -44,7 +44,7 @@ export default function ProfileMenu({ user, logout }) {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        <Link to={"/profile"}>
+        <Link to={`/profile/${user.id}`}>
           <MenuItem
             key={"my-profile"}
             onClick={() => setIsMenuOpen((prev) => !prev)}

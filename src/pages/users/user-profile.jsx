@@ -1,5 +1,6 @@
 import { projectsData } from "@/data";
 import { getStaffById } from "@/services/staffService";
+import { getUserById } from "@/services/userService";
 import { ProfileInfoCard } from "@/widgets/cards";
 import {
   Avatar,
@@ -28,8 +29,9 @@ export function UserProfile() {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const response = await getStaffById(id);
+          const response = await getUserById(id);
           if (response.status === 200) {
+            console.log(response.data);
             setUserData(response.data);
           } else {
             throw new Error("Failed to fetch user data");
@@ -65,13 +67,13 @@ export function UserProfile() {
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-                  {userData.name}
+                  {userData.staff.name}
                 </Typography>
                 <Typography
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
-                  {userData.positions[0].title}
+                  {userData.staff.positions[0].title}
                 </Typography>
               </div>
             </div>

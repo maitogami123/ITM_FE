@@ -47,7 +47,7 @@ export function SearchPage() {
       if ((response.status = 200)) {
         const data = await response.data;
         console.log("User Data:", data);
-        navigate(`/profile/${id}`, { state: { userData: data } });
+        navigate(`/${id}`, { state: { userData: data } });
       }
     } catch (error) {
       console.error("Error:", error);
