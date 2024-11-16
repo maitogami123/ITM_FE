@@ -44,6 +44,7 @@ const routes = [
     element: <UserLayout />,
     children: [
       { path: "profile", element: <UserProfile /> },
+      { path: "profile/:id", element: <UserProfile /> },
       { path: "", element: <LandingPage /> },
     ],
   },

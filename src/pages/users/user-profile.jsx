@@ -1,4 +1,5 @@
 import { projectsData } from "@/data";
+import { getStaffById } from "@/services/staffService";
 import { ProfileInfoCard } from "@/widgets/cards";
 import {
   Avatar,
@@ -11,9 +12,42 @@ import {
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 export function UserProfile() {
+  const { id } = useParams(); // Lấy id từ URL
+  const location = useLocation(); // Lấy state từ điều hướng
+  const [userData, setUserData] = useState(location.state?.userData || null); // Dữ liệu truyền từ SearchPage
+  const [loading, setLoading] = useState(!userData); // Nếu có dữ liệu ban đầu thì không cần loading
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!userData) {
+      // Nếu không có dữ liệu, gọi API để lấy dữ liệu
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const response = await getStaffById(id);
+          if (response.status === 200) {
+            setUserData(response.data);
+          } else {
+            throw new Error("Failed to fetch user data");
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [id, userData]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div className="container mx-auto">
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)] bg-cover	bg-center">
@@ -31,13 +65,13 @@ export function UserProfile() {
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-                  Richard Davis
+                  {userData.name}
                 </Typography>
                 <Typography
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
-                  CEO / Co-Founder
+                  {userData.positions[0].title}
                 </Typography>
               </div>
             </div>

@@ -1,14 +1,15 @@
 import { Button, Input } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { getAllStaffs as staffService } from "@/services/staffService";
+import { getAllStaffs, getStaffById } from "@/services/staffService";
 import debounce from "lodash.debounce";
+import { useNavigate } from "react-router-dom";
 
 export function SearchPage() {
   const [isFocused, setIsFocused] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [debouncedValue, setDebouncedValue] = useState("");
   const [tableValue, setTableValue] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handler = debounce((value) => {
       setDebouncedValue(value);
@@ -23,7 +24,7 @@ export function SearchPage() {
     const fetchData = async () => {
       if (debouncedValue) {
         try {
-          const response = await staffService(debouncedValue);
+          const response = await getAllStaffs(debouncedValue);
           if (response.status === 200) {
             setTableValue(response.data.data);
           } else {
@@ -37,6 +38,28 @@ export function SearchPage() {
     fetchData();
   }, [debouncedValue]);
 
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async (id) => {
+    setLoading(true);
+    try {
+      const response = await getStaffById(id);
+      if ((response.status = 200)) {
+        const data = await response.data;
+        console.log("User Data:", data);
+        navigate(`/profile/${id}`, { state: { userData: data } });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // // Hiển thị loading (nếu cần)
+  // <td onClick={() => !loading && handleClick(row.id)}>
+  //   {loading ? "Loading..." : row.name}
+  // </td>;
   return (
     <div className="mt-8 flex w-full flex-col items-center">
       <div className="flex w-full max-w-3xl flex-col gap-4 md:flex-row md:items-center">
@@ -63,7 +86,12 @@ export function SearchPage() {
                         className="cursor-pointer hover:bg-gray-100"
                       >
                         {/* <td className="border-b p-2">{row.id}</td> */}
-                        <td className="border-b p-2">{row.name}</td>
+                        <td
+                          className="border-b p-2"
+                          onClick={() => handleClick(row._id)}
+                        >
+                          {row.name}
+                        </td>
                       </tr>
                     ))
                   ) : (

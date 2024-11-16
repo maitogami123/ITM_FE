@@ -12,13 +12,17 @@ export const getAllStaffs = (search) => {
       Authorization: bearerToken,
     },
   });
-  // .then((response) => console.log(response)) // Assuming you're expecting the response data
-  // .catch((error) => {
-  //   console.error("Error fetching staff:", error);
-  //   throw error;
-  // });
 };
 
-// export const login = (username, password) => {
-//   return axios.post(`${API_ENDPOINTS.auth}/login`, { username, password });
-// };
+export const getStaffById = (id) => {
+  const token = localStorage.getItem("token"); // Replace with your actual method of retrieving the token
+
+  // Set the authorization header for the request
+  const bearerToken = token ? `Bearer ${token}` : "";
+  const url = `${API_ENDPOINTS.staff}/${id}`;
+  return axios.get(url, {
+    headers: {
+      Authorization: bearerToken,
+    },
+  });
+};
