@@ -56,10 +56,6 @@ export function SearchPage() {
     }
   };
 
-  // // Hiển thị loading (nếu cần)
-  // <td onClick={() => !loading && handleClick(row.id)}>
-  //   {loading ? "Loading..." : row.name}
-  // </td>;
   return (
     <div className="mt-8 flex w-full flex-col items-center">
       <div className="flex w-full max-w-3xl flex-col gap-4 md:flex-row md:items-center">
@@ -71,9 +67,19 @@ export function SearchPage() {
             label="Nhập tên giáo viên cần tìm"
             size="lg"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchValue(value);
+              if (value === "") {
+                setTableValue([]);
+              }
+            }}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+            onBlur={() =>
+              setTimeout(() => {
+                setIsFocused(false);
+              }, 200)
+            }
           />
           {isFocused && (
             <div className="absolute z-10 mt-2 max-h-64 w-full overflow-y-auto rounded border border-gray-300 bg-white shadow-lg">
