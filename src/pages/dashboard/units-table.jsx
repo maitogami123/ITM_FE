@@ -52,6 +52,8 @@ export function UnitsTable() {
   });
   let [currentPage, setCurrentPage] = useState(1);
   let [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
@@ -126,59 +128,95 @@ export function UnitsTable() {
           </div>
         ) : (
           <CardBody className="overflow-scroll px-0">
-            <table className="mt-4 w-full min-w-max table-auto text-left">
-              <thead>
-                <tr>
-                  {TABLE_HEAD.map((head) => (
-                    <th
-                      key={head}
-                      className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                    >
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal leading-none opacity-70"
+            {loading ? (
+              <div className="flex justify-center py-4">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
+              </div>
+            ) : error ? (
+              <Typography variant="h6" color="red" className="text-center">
+                {error}
+              </Typography>
+            ) : (
+              <table className="mt-4 w-full min-w-max table-auto text-left">
+                <thead>
+                  <tr>
+                    {TABLE_HEAD.map((head) => (
+                      <th
+                        key={head}
+                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                       >
-                        {head}
-                      </Typography>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map(({ _id, name, staffs }, index) => {
-                  const isLast = index === data.length - 1;
-                  const classes = isLast
-                    ? "p-4"
-                    : "p-4 border-b border-blue-gray-50";
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal leading-none opacity-70"
+                        >
+                          {head}
+                        </Typography>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map(({ _id, name, staffs }, index) => {
+                    const isLast = index === data.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
 
-                  return (
-                    //         <div className="flex items-center justify-center">
-                    //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
-                    // </div>
-                    <tr key={name}>
-                      <td className={classes}>
-                        <div className="flex items-center gap-3">
-                          <div className="flex flex-col">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {name}
-                            </Typography>
-                            {/* <Typography
+                    return (
+                      //         <div className="flex items-center justify-center">
+                      //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
+                      // </div>
+                      <tr key={name}>
+                        <td className={classes}>
+                          <div className="flex items-center gap-3">
+                            <div className="flex flex-col">
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal"
+                              >
+                                {name}
+                              </Typography>
+                              {/* <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal opacity-70"
                         >
                           {mscb}
                         </Typography> */}
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <div className="flex flex-col">
+                        </td>
+                        <td className={classes}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {staffs.length}
+                            </Typography>
+                            {/* <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal opacity-70"
+                      >
+                        {mainSpecialization}
+                      </Typography> */}
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Chip
+                              variant="ghost"
+                              size="sm"
+                              value={name ? "online" : "offline"}
+                              color={name ? "green" : "blue-gray"}
+                            />
+                          </div>
+                        </td>
+                        <td className={classes}>
                           <Typography
                             variant="small"
                             color="blue-gray"
@@ -186,52 +224,26 @@ export function UnitsTable() {
                           >
                             {staffs.length}
                           </Typography>
-                          {/* <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        {mainSpecialization}
-                      </Typography> */}
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <div className="w-max">
-                          <Chip
-                            variant="ghost"
-                            size="sm"
-                            value={name ? "online" : "offline"}
-                            color={name ? "green" : "blue-gray"}
-                          />
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
+                        </td>
+                        <td
+                          className={classes}
+                          onClick={() => {
+                            handleOpen();
+                            setIdUnit(_id);
+                          }}
                         >
-                          {staffs.length}
-                        </Typography>
-                      </td>
-                      <td
-                        className={classes}
-                        onClick={() => {
-                          handleOpen();
-                          setIdUnit(_id);
-                        }}
-                      >
-                        <Tooltip content="Edit User">
-                          <IconButton variant="text">
-                            <PencilIcon className="h-4 w-4" />
-                          </IconButton>
-                        </Tooltip>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                          <Tooltip content="Edit User">
+                            <IconButton variant="text">
+                              <PencilIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </CardBody>
         )}
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
