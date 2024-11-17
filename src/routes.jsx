@@ -6,7 +6,12 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Tables } from "@/pages/dashboard";
+import {
+  Home,
+  StaffsTable,
+  UnitsTable,
+  CompetitionsTable,
+} from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -26,9 +31,22 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
+        name: "Staff",
+        path: "/staffs",
+        element: <StaffsTable />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Unit",
+        path: "/units",
+        element: <UnitsTable />,
+      },
+
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Competitions",
+        path: "/competitions",
+        element: <CompetitionsTable />,
       },
     ],
   },

@@ -4,7 +4,12 @@ import { SignIn, SignUp } from "@/pages/auth";
 import { Navigate, BrowserRouter as Router, useRoutes } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import UserProfile from "./pages/users/user-profile";
-import { Home, Tables } from "./pages/dashboard";
+import {
+  Home,
+  StaffsTable,
+  CompetitionsTable,
+  UnitsTable,
+} from "./pages/dashboard";
 import PublicProfile from "./pages/users/public-profile";
 
 const PrivateRoute = ({ children }) => {
@@ -59,7 +64,9 @@ const routes = [
     ),
     children: [
       { path: "home", index: true, element: <Home /> },
-      { path: "tables", element: <Tables /> },
+      { path: "staffs", element: <StaffsTable /> },
+      { path: "units", element: <UnitsTable /> },
+      { path: "competitions", element: <CompetitionsTable /> },
       { path: "*", element: <Navigate to="/admin/home" replace /> },
     ],
   },

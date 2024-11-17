@@ -1,9 +1,11 @@
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://s0zhmc0g-5000.asse.devtunnels.ms/api";
 
 const API_ENDPOINTS = {
   staff: `${API_BASE_URL}/staff`,
   auth: `${API_BASE_URL}/auth`,
   user: `${API_BASE_URL}/users`,
+  unit: `${API_BASE_URL}/unit`,
+  competition: `${API_BASE_URL}/competitions`,
 };
 
 export { API_BASE_URL, API_ENDPOINTS };
