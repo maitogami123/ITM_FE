@@ -13,3 +13,8 @@ export const updateBasicInfo = (userId, description, email) => {
     email,
   });
 };
+
+export const getAllUsers = () => {
+  const url = `${API_ENDPOINTS.user}/`;
+  return interceptedAxios.get(url);
+};

@@ -11,6 +11,7 @@ import {
   UnitsTable,
 } from "./pages/dashboard";
 import PublicProfile from "./pages/users/public-profile";
+import { UsersTable } from "./pages/dashboard/users-table";
 
 const PrivateRoute = ({ children }) => {
   return (
@@ -66,6 +67,7 @@ const routes = [
       { path: "home", index: true, element: <Home /> },
       { path: "staffs", element: <StaffsTable /> },
       { path: "units", element: <UnitsTable /> },
+      { path: "users", element: <UsersTable /> },
       { path: "competitions", element: <CompetitionsTable /> },
       { path: "*", element: <Navigate to="/admin/home" replace /> },
     ],

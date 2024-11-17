@@ -76,7 +76,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
           </div>
         ) : (
-          <>
+          <div className="grid grid-cols-2 gap-4">
             {/* Name Field */}
             <div>
               <Typography
@@ -93,7 +93,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
                 name="name"
                 value={data?.mscb || ""}
                 readOnly
-                className="placeholder:opacity-100 focus:!border-t-gray-900"
+                className="border-t-gray-500 placeholder:opacity-100 focus:border-t-gray-900"
                 containerProps={{ className: "!min-w-full" }}
                 labelProps={{ className: "hidden" }}
               />
@@ -113,7 +113,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
                 name="name"
                 value={data?.name || ""}
                 readOnly
-                className="placeholder:opacity-100 focus:!border-t-gray-900"
+                className="border-t-gray-500 placeholder:opacity-100 focus:border-t-gray-900"
                 containerProps={{ className: "!min-w-full" }}
                 labelProps={{ className: "hidden" }}
               />
@@ -133,7 +133,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
                 name="name"
                 value={data?.gender || ""}
                 readOnly
-                className="placeholder:opacity-100 focus:!border-t-gray-900"
+                className="border-t-gray-500 placeholder:opacity-100 focus:border-t-gray-900"
                 containerProps={{ className: "!min-w-full" }}
                 labelProps={{ className: "hidden" }}
               />
@@ -153,12 +153,12 @@ export function AddStaffDialog({ open, handleOpen, id }) {
                 name="name"
                 value={data?.dateOfBirth || ""}
                 readOnly
-                className="placeholder:opacity-100 focus:!border-t-gray-900"
+                className="border-t-gray-500 placeholder:opacity-100 focus:border-t-gray-900"
                 containerProps={{ className: "!min-w-full" }}
                 labelProps={{ className: "hidden" }}
               />
             </div>
-            <div>
+            <div className="col-span-2">
               <Typography
                 variant="small"
                 color="blue-gray"
@@ -168,7 +168,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
               </Typography>
 
               {/* Table */}
-              <table className="mt-4 w-full min-w-max table-auto text-left">
+              <table className=" mt-4 w-full min-w-max table-auto text-left">
                 <thead>
                   <tr>
                     {TABLE_HEAD.map((head) => (
@@ -222,7 +222,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
                 </tbody>
               </table>
             </div>
-            <div>
+            <div className="col-span-2">
               <Typography
                 variant="small"
                 color="blue-gray"
@@ -302,7 +302,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
                 </tbody>
               </table>
             </div>
-          </>
+          </div>
         )}
       </DialogBody>
 
