@@ -1,6 +1,8 @@
+import UserProfileForm from "@/components/user/user-form";
 import { projectsData } from "@/data";
 import { getStaffById } from "@/services/staffService";
 import { getUserById } from "@/services/userService";
+import JoinNow from "@/widgets/campain/join-now";
 import { ProfileInfoCard } from "@/widgets/cards";
 import {
   Avatar,
@@ -10,6 +12,8 @@ import {
   CardFooter,
   CardHeader,
   Input,
+  Spinner,
+  Textarea,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
@@ -47,7 +51,13 @@ export function UserProfile() {
     }
   }, [id, userData]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+        {" "}
+        <Spinner />{" "}
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -57,151 +67,51 @@ export function UserProfile() {
       </div>
       <Card className="mx-3 -mt-16 mb-6 lg:mx-4">
         <CardBody className="p-4">
-          <div className="mb-10 flex items-center justify-between gap-6">
-            <div className="flex items-center gap-6">
-              <Avatar
-                src="/img/bruce-mars.jpeg"
-                alt="bruce-mars"
-                size="xl"
-                className="rounded-lg shadow-lg shadow-blue-gray-500/40"
+          <div className="gird-cols-1 mb-12 grid gap-12 lg:grid-cols-2 xl:grid-cols-3">
+            <div>
+              <div className="mb-10 flex items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
+                  <Avatar
+                    src="/img/bruce-mars.jpeg"
+                    alt="bruce-mars"
+                    size="xl"
+                    className="rounded-lg shadow-lg shadow-blue-gray-500/40"
+                  />
+                  <div>
+                    <Typography variant="h5" color="blue-gray" className="mb-1">
+                      {userData.staff.name}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      className="font-normal text-blue-gray-600"
+                    >
+                      {userData.staff.positions[0].title}
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+              <ProfileInfoCard
+                title="Profile Information"
+                description={`${userData.description}`}
+                details={{
+                  "full name": userData.staff.name,
+                  mobile: userData.staff.phone,
+                  email: userData.email,
+                  social: (
+                    <div className="flex items-center gap-4">
+                      <i className="fa-brands fa-facebook text-blue-700" />
+                      <i className="fa-brands fa-twitter text-blue-400" />
+                      <i className="fa-brands fa-instagram text-purple-500" />
+                    </div>
+                  ),
+                }}
               />
-              <div>
-                <Typography variant="h5" color="blue-gray" className="mb-1">
-                  {userData.staff.name}
-                </Typography>
-                <Typography
-                  variant="small"
-                  className="font-normal text-blue-gray-600"
-                >
-                  {userData.staff.positions[0].title}
-                </Typography>
-              </div>
             </div>
-          </div>
-          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
-            <ProfileInfoCard
-              title="Profile Information"
-              description="Hi, I'm Alec Thompson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-              details={{
-                "first name": "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
-                social: (
-                  <div className="flex items-center gap-4">
-                    <i className="fa-brands fa-facebook text-blue-700" />
-                    <i className="fa-brands fa-twitter text-blue-400" />
-                    <i className="fa-brands fa-instagram text-purple-500" />
-                  </div>
-                ),
-              }}
-            />
             <div className="col-span-2">
-              <Typography variant="h5" color="blue-gray">
-                Basic Information
-              </Typography>
-              <Typography
-                variant="small"
-                className="mt-1 font-normal text-gray-600"
-              >
-                Update your profile information below.
-              </Typography>
-              <div className="mt-8 flex flex-col">
-                <div className="mb-6 flex flex-col items-end gap-4 md:flex-row">
-                  <div className="w-full">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium"
-                    >
-                      First Name
-                    </Typography>
-                    <Input
-                      size="lg"
-                      placeholder="Emma"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-                      className="focus:border-t-primary w-full border-t-blue-gray-200 placeholder:opacity-100"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium"
-                    >
-                      Last Name
-                    </Typography>
-                    <Input
-                      size="lg"
-                      placeholder="Roberts"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-                      className="focus:border-t-primary w-full border-t-blue-gray-200 placeholder:opacity-100"
-                    />
-                  </div>
-                </div>
-                <div className="mb-6 flex flex-col items-end gap-4 md:flex-row">
-                  <div className="w-full">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium"
-                    >
-                      Email
-                    </Typography>
-                    <Input
-                      size="lg"
-                      placeholder="emma@mail.com"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-                      className="focus:border-t-primary w-full border-t-blue-gray-200 placeholder:opacity-100"
-                    />
-                  </div>
-                </div>
-                <div className="mb-6 flex flex-col items-end gap-4 md:flex-row">
-                  <div className="w-full">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium"
-                    >
-                      Location
-                    </Typography>
-                    <Input
-                      size="lg"
-                      placeholder="Florida, USA"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-                      className="focus:border-t-primary w-full border-t-blue-gray-200 placeholder:opacity-100"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium"
-                    >
-                      Phone Number
-                    </Typography>
-                    <Input
-                      size="lg"
-                      placeholder="+123 0123 456 789"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-                      className="focus:border-t-primary w-full border-t-blue-gray-200 placeholder:opacity-100"
-                    />
-                  </div>
-                </div>
+              <div className="mb-4 grid gap-y-10 ">
+                <JoinNow />
               </div>
-              <div className="flex w-full justify-end">
-                <Button color="green">Save</Button>
-              </div>
+              <UserProfileForm user={userData} />
             </div>
           </div>
           <div className="px-4 pb-4">

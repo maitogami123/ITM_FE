@@ -56,6 +56,7 @@ export function UnitsTable() {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     const fetchData = async () => {
       try {
         // const response = await getAllUnits(null, currentPage);
@@ -76,6 +77,9 @@ export function UnitsTable() {
         }
       } catch (error) {
         console.log("search error: " + error);
+        setLoading(false);
+        setError("có lỗi xảy ra trong quá trình tìm kiếm");
+      } finally {
         setLoading(false);
       }
     };
