@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://s0zhmc0g-5000.asse.devtunnels.ms/api";
+const API_BASE_URL = "http://localhost:5000/api";
 
 const API_ENDPOINTS = {
   staff: `${API_BASE_URL}/staff`,

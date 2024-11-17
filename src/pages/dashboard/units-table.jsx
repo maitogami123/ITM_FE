@@ -60,14 +60,14 @@ export function UnitsTable() {
         const response = await getAllUnits();
         console.log(response);
         if (response.status === 200) {
-          const value = response.data;
-          setData(value);
-          // setPage({
-          //   total: value.total,
-          //   page: value.page,
-          //   limit: value.limit,
-          //   pages: value.pages,
-          // });
+          const { data, total, page, limit, pages } = response.data;
+          setData(data);
+          setPage({
+            total: total,
+            page: page,
+            limit: limit,
+            pages: pages,
+          });
           setLoading(false);
         } else {
           throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
@@ -236,35 +236,24 @@ export function UnitsTable() {
         )}
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
           <Typography variant="small" color="blue-gray" className="font-normal">
-            {/* Page {page.page} of {page.pages} */}
-            Page 1 of 10
+            Page {page.page} of {page.pages}
           </Typography>
           <div className="flex gap-2">
             <Button
               className="rounded-full"
-              loading={loading}
               variant="outlined"
               size="sm"
-              // hidden={page.page == 1} // Disable if on the last page
-              onClick={() => {
-                if (page.page <= page.pages) {
-                  setCurrentPage((prev) => prev - 1); // Correct state update
-                }
-              }}
+              disabled={page.page === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
             >
               Previous
             </Button>
             <Button
               className="rounded-full"
-              loading={loading}
               variant="outlined"
               size="sm"
-              hidden={page.page >= page.pages} // Disable if on the last page
-              onClick={() => {
-                if (page.page < page.pages) {
-                  setCurrentPage((prev) => prev + 1); // Correct state update
-                }
-              }}
+              disabled={page.page === page.pages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
             >
               Next
             </Button>
