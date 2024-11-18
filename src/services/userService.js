@@ -14,7 +14,12 @@ export const updateBasicInfo = (userId, description, email) => {
   });
 };
 
-export const getAllUsers = () => {
-  const url = `${API_ENDPOINTS.user}/`;
+export const getAllUsers = (search = null, page = 1) => {
+  let url = ``;
+  if (search == null) {
+    url = `${API_ENDPOINTS.user}?page=${page}&limit=5&sortBy=username&order=asc/`;
+  } else {
+    url = `${API_ENDPOINTS.user}?search=${search}&page=1&limit=5&sortBy=username&order=asc/`;
+  }
   return interceptedAxios.get(url);
 };

@@ -1,22 +1,21 @@
-import { getAllStaffs } from "@/services/staffService";
-import { AddStaffDialog } from "@/widgets/modelModals/staffModal";
+import { getAllUsers } from "@/services/userService";
+import { AdduserDialog } from "@/widgets/modelModals/userModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
-  Card,
-  CardHeader,
-  Input,
-  Typography,
+  Avatar,
   Button,
+  Card,
   CardBody,
-  Chip,
   CardFooter,
+  CardHeader,
+  IconButton,
+  Input,
+  Tab,
   Tabs,
   TabsHeader,
-  Tab,
-  Avatar,
-  IconButton,
   Tooltip,
+  Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
@@ -30,8 +29,7 @@ const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export function UsersTable() {
   const [open, setOpen] = useState(false);
-  const [idUnit, setIdUnit] = useState("");
-  const handleOpen = () => setOpen(!open);
+  const [idUser, setIdUser] = useState("");
   const [data, setData] = useState([]);
   const [page, setPage] = useState({ total: 0, page: 1, limit: 10, pages: 1 });
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +42,7 @@ export function UsersTable() {
       setError(null);
 
       try {
-        const response = await getAllStaffs(null, currentPage);
+        const response = await getAllUsers(null, currentPage);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);
@@ -65,7 +63,11 @@ export function UsersTable() {
 
   return (
     <>
-      <AddStaffDialog open={open} handleOpen={handleOpen} id={idUnit} />
+      <AdduserDialog
+        open={open}
+        handleOpen={() => setOpen(!open)}
+        id={idUser}
+      />
       <Card className="my-4 h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-8 flex items-center justify-between gap-8">
@@ -81,8 +83,15 @@ export function UsersTable() {
               <Button variant="outlined" size="sm">
                 View All
               </Button>
-              <Button className="flex items-center gap-3" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Member
+              <Button
+                className="flex items-center gap-3"
+                size="sm"
+                onClick={() => {
+                  setIdUser(null);
+                  setOpen(!open);
+                }}
+              >
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add User
               </Button>
             </div>
           </div>
@@ -139,35 +148,20 @@ export function UsersTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((staff, index) => {
-                    const {
-                      _id,
-                      mscb,
-                      name,
-                      gender,
-                      dateOfBirth,
-                      phone,
-                      qualificationCode,
-                      isPermanent,
-                      startDate,
-                      notes,
-                      mainSpecialization,
-                      positions,
-                      rewards,
-                      competitions,
-                    } = staff;
+                  {data.map((user, index) => {
+                    const { _id, username, role, email, staff } = user;
                     const isLast = index === data.length - 1;
                     const rowClasses = isLast
                       ? "p-4"
                       : "p-4 border-b border-blue-gray-50";
 
                     return (
-                      <tr key={name}>
+                      <tr key={_id}>
                         <td className={rowClasses}>
                           <div className="flex items-center gap-3">
                             <Avatar
                               src="/public/img/00199_tqlap.png"
-                              alt={name}
+                              alt={_id}
                               size="sm"
                             />
                             <div className="flex flex-col">
@@ -176,14 +170,14 @@ export function UsersTable() {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {name}
+                                {username}
                               </Typography>
                               <Typography
                                 variant="small"
                                 color="blue-gray"
                                 className="font-normal opacity-70"
                               >
-                                {mscb}
+                                {_id}
                               </Typography>
                             </div>
                           </div>
@@ -194,23 +188,15 @@ export function UsersTable() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {notes}
+                            {role}
                           </Typography>
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal opacity-70"
                           >
-                            {mainSpecialization}
+                            {email}
                           </Typography>
-                        </td>
-                        <td className={rowClasses}>
-                          <Chip
-                            variant="ghost"
-                            size="sm"
-                            value={gender ? "Male" : "Female"}
-                            color={gender ? "green" : "blue-gray"}
-                          />
                         </td>
                         <td className={rowClasses}>
                           <Typography
@@ -218,14 +204,14 @@ export function UsersTable() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {startDate}
+                            {staff}
                           </Typography>
                         </td>
                         <td
                           className={rowClasses}
                           onClick={() => {
-                            handleOpen();
-                            setIdUnit(_id);
+                            setOpen(!open);
+                            setIdUser(_id);
                           }}
                         >
                           <Tooltip content="Edit User">

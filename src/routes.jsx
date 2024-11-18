@@ -1,18 +1,14 @@
 import {
-  HomeIcon,
-  UserCircleIcon,
-  TableCellsIcon,
-  BellIcon,
-  ArrowRightOnRectangleIcon,
-  UserPlusIcon,
-} from "@heroicons/react/24/solid";
-import {
+  CompetitionsTable,
   Home,
   StaffsTable,
   UnitsTable,
-  CompetitionsTable,
 } from "@/pages/dashboard";
-import { SignIn, SignUp } from "@/pages/auth";
+import {
+  HomeIcon,
+  TableCellsIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/solid";
 import { UsersTable } from "./pages/dashboard/users-table";
 
 const icon = {
@@ -21,7 +17,7 @@ const icon = {
 
 export const routes = [
   {
-    title: "Admin pages",
+    title: "Admin ",
     layout: "admin",
     pages: [
       {
@@ -52,7 +48,7 @@ export const routes = [
     ],
   },
   {
-    title: "auth pages",
+    title: "super admin",
     layout: "admin",
     pages: [
       {
