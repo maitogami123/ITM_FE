@@ -6,6 +6,7 @@ const API_ENDPOINTS = {
   user: `${API_BASE_URL}/users`,
   unit: `${API_BASE_URL}/unit`,
   competition: `${API_BASE_URL}/competitions`,
+  reward: `${API_BASE_URL}/rewards`,
 };
 
 export { API_BASE_URL, API_ENDPOINTS };

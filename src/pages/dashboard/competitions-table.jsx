@@ -1,5 +1,8 @@
 import { getAllCompetitions } from "@/services/competitionService";
-import { AddCompetitionDialog } from "@/widgets/modelModals/competitionModal";
+import {
+  AddCompetitionDialog,
+  UpdateCompetitionDialog,
+} from "@/widgets/modelModals/competitionModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
@@ -38,9 +41,11 @@ const TABS = [
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export function CompetitionsTable() {
-  const [open, setOpen] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
   const [idUnit, setIdUnit] = useState("");
-  const handleOpen = () => setOpen(!open);
+  const handleOpenUpdate = () => setOpenUpdate(!openUpdate);
+  const handleOpenCreate = () => setOpenCreate(!openCreate);
   const [data, setData] = useState([]);
   const [page, setPage] = useState({
     total: 0,
@@ -79,7 +84,12 @@ export function CompetitionsTable() {
   }, [currentPage]);
   return (
     <>
-      <AddCompetitionDialog open={open} handleOpen={handleOpen} id={idUnit} />
+      <UpdateCompetitionDialog
+        open={openUpdate}
+        handleOpen={handleOpenUpdate}
+        id={idUnit}
+      />
+      <AddCompetitionDialog open={openCreate} handleOpen={handleOpenCreate} />
       <Card className="my-4 h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-8 flex items-center justify-between gap-8">
@@ -95,7 +105,13 @@ export function CompetitionsTable() {
               <Button variant="outlined" size="sm">
                 view all
               </Button>
-              <Button className="flex items-center gap-3" size="sm">
+              <Button
+                className="flex items-center gap-3"
+                size="sm"
+                onClick={() => {
+                  handleOpenCreate();
+                }}
+              >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
               </Button>
             </div>
@@ -236,7 +252,7 @@ export function CompetitionsTable() {
                           <td
                             className={classes}
                             onClick={() => {
-                              handleOpen();
+                              handleOpenUpdate();
                               setIdUnit(_id);
                             }}
                           >
