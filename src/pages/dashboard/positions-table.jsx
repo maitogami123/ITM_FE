@@ -1,5 +1,6 @@
 import { getAllStaffs } from "@/services/staffService";
-import { AddStaffDialog } from "@/widgets/modelModals/staffModal";
+import { getAllUnits } from "@/services/unitService";
+import { AddUnitDialog } from "@/widgets/modelModals/unitModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
@@ -14,69 +15,80 @@ import {
   Tabs,
   TabsHeader,
   Tab,
-  Avatar,
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+import { number } from "prop-types";
 import { useEffect, useState } from "react";
 
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
-export function StaffsTable() {
+export function PositionsTable() {
   const [open, setOpen] = useState(false);
   const [idUnit, setIdUnit] = useState("");
   const handleOpen = () => setOpen(!open);
   const [data, setData] = useState([]);
-  const [page, setPage] = useState({ total: 0, page: 1, limit: 10, pages: 1 });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState({
+    total: number,
+    page: number,
+    limit: number,
+    pages: number,
+  });
+  let [currentPage, setCurrentPage] = useState(1);
+  let [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-
       try {
-        const response = await getAllStaffs(null, currentPage);
+        // const response = await getAllUnits(null, currentPage);
+        const response = await getAllUnits();
+        console.log(response);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);
-          setPage({ total, page, limit, pages });
+          setPage({
+            total: total,
+            page: page,
+            limit: limit,
+            pages: pages,
+          });
+          setLoading(false);
         } else {
-          throw new Error("An error occurred while fetching data.");
+          throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
         }
       } catch (error) {
-        console.error(error.message);
-        setError("Failed to load data. Please try again.");
+        console.log("search error: " + error);
+        setLoading(false);
+        setError("có lỗi xảy ra trong quá trình tìm kiếm");
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [currentPage]);
-
   return (
     <>
-      <AddStaffDialog open={open} handleOpen={handleOpen} id={idUnit} />
+      <AddUnitDialog open={open} handleOpen={handleOpen} id={idUnit} />
       <Card className="my-4 h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-8 flex items-center justify-between gap-8">
             <div>
               <Typography variant="h5" color="blue-gray">
-                Members List
+                Members list
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
                 See information about all members
               </Typography>
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
               <Button variant="outlined" size="sm">
-                View All
+                view all
               </Button>
               <Button className="flex items-center gap-3" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Member
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
               </Button>
             </div>
           </div>
@@ -124,37 +136,19 @@ export function StaffsTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((staff, index) => {
-                    const {
-                      _id,
-                      mscb,
-                      name,
-                      gender,
-                      dateOfBirth,
-                      phone,
-                      qualificationCode,
-                      isPermanent,
-                      startDate,
-                      notes,
-                      mainSpecialization,
-                      positions,
-                      rewards,
-                      competitions,
-                    } = staff;
+                  {data.map(({ _id, name, staffs }, index) => {
                     const isLast = index === data.length - 1;
-                    const rowClasses = isLast
+                    const classes = isLast
                       ? "p-4"
                       : "p-4 border-b border-blue-gray-50";
 
                     return (
+                      //         <div className="flex items-center justify-center">
+                      //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
+                      // </div>
                       <tr key={name}>
-                        <td className={rowClasses}>
+                        <td className={classes}>
                           <div className="flex items-center gap-3">
-                            <Avatar
-                              src="/public/img/00199_tqlap.png"
-                              alt={name}
-                              size="sm"
-                            />
                             <div className="flex flex-col">
                               <Typography
                                 variant="small"
@@ -163,51 +157,55 @@ export function StaffsTable() {
                               >
                                 {name}
                               </Typography>
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal opacity-70"
-                              >
-                                {mscb}
-                              </Typography>
+                              {/* <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-70"
+                        >
+                          {mscb}
+                        </Typography> */}
                             </div>
                           </div>
                         </td>
-                        <td className={rowClasses}>
+                        <td className={classes}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {staffs.length}
+                            </Typography>
+                            {/* <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal opacity-70"
+                      >
+                        {mainSpecialization}
+                      </Typography> */}
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Chip
+                              variant="ghost"
+                              size="sm"
+                              value={name ? "online" : "offline"}
+                              color={name ? "green" : "blue-gray"}
+                            />
+                          </div>
+                        </td>
+                        <td className={classes}>
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {notes}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {mainSpecialization}
-                          </Typography>
-                        </td>
-                        <td className={rowClasses}>
-                          <Chip
-                            variant="ghost"
-                            size="sm"
-                            value={gender ? "Male" : "Female"}
-                            color={gender ? "green" : "blue-gray"}
-                          />
-                        </td>
-                        <td className={rowClasses}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {startDate}
+                            {staffs.length}
                           </Typography>
                         </td>
                         <td
-                          className={rowClasses}
+                          className={classes}
                           onClick={() => {
                             handleOpen();
                             setIdUnit(_id);
@@ -227,7 +225,6 @@ export function StaffsTable() {
             )}
           </CardBody>
         )}
-
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
           <Typography variant="small" color="blue-gray" className="font-normal">
             Page {page.page} of {page.pages}

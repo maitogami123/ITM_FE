@@ -23,22 +23,7 @@ import {
 import { number } from "prop-types";
 import { useEffect, useState } from "react";
 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
-
-const TABLE_HEAD = ["Title", "Year", "Staff", "Description", ""];
+const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export function CompetitionsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -122,15 +107,6 @@ export function CompetitionsTable() {
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <Tabs value="all" className="w-full md:w-max">
-              <TabsHeader>
-                {TABS.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                  </Tab>
-                ))}
-              </TabsHeader>
-            </Tabs>
             <div className="w-full md:w-72">
               <Input
                 label="Search"

@@ -1,9 +1,11 @@
-import React, { createContext, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import Toast from "@/widgets/toast/toast-message";
+import { jwtDecode } from "jwt-decode";
+import { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [authToken, setAuthToken] = useState(
     localStorage.getItem("token") || null
   );
@@ -19,6 +21,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setAuthToken(null);
     setUser(null);
+    navigate("/");
     Toast.fire({
       icon: "success",
       title: "Signed out successfully",

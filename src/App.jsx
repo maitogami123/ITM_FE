@@ -13,6 +13,7 @@ import {
 } from "./pages/dashboard";
 import PublicProfile from "./pages/users/public-profile";
 import { UsersTable } from "./pages/dashboard/users-table";
+import { PositionsTable } from "./pages/dashboard/positions-table";
 
 const PrivateRoute = ({ children }) => {
   return (
@@ -69,6 +70,7 @@ const routes = [
       { path: "staffs", element: <StaffsTable /> },
       { path: "units", element: <UnitsTable /> },
       { path: "users", element: <UsersTable /> },
+      // { path: "positions", element: <PositionsTable /> },
       { path: "competitions", element: <CompetitionsTable /> },
       { path: "rewards", element: <RewardsTable /> },
       { path: "*", element: <Navigate to="/admin/home" replace /> },
@@ -84,11 +86,11 @@ function AppRoutes() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <AppRoutes />
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

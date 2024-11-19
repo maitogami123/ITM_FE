@@ -11,6 +11,7 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
 import { UsersTable } from "./pages/dashboard/users-table";
+import { PositionsTable } from "./pages/dashboard/positions-table";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -39,7 +40,12 @@ export const routes = [
         path: "/units",
         element: <UnitsTable />,
       },
-
+      // {
+      //   icon: <TableCellsIcon {...icon} />,
+      //   name: "Positions",
+      //   path: "/positions",
+      //   element: <PositionsTable />,
+      // },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "Competitions",
