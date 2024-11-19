@@ -1,5 +1,8 @@
 import { getAllRewards } from "@/services/rewardService";
-import { UpdateRewardDialog } from "@/widgets/modelModals/rewardModal";
+import {
+  AddRewardDialog,
+  UpdateRewardDialog,
+} from "@/widgets/modelModals/rewardModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
@@ -11,30 +14,12 @@ import {
   Chip,
   IconButton,
   Input,
-  Tab,
-  Tabs,
-  TabsHeader,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
-
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Title", "Year", "Status", "Employed", ""];
 
 export function RewardsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -52,34 +37,38 @@ export function RewardsTable() {
   const [currentPage, setCurrentPage] = useState(1);
   let [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await getAllRewards(null, currentPage);
+      console.log(response);
+      if (response.status === 200) {
+        const { data, total, page, limit, pages } = response.data;
+        setData(data);
+        setPage({ total, page, limit, pages });
+        setLoading(false);
+      } else {
+        throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
+      }
+    } catch (error) {
+      console.error(error.message);
+      setError("Failed to load data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await getAllRewards(null, currentPage);
-        console.log(response);
-        if (response.status === 200) {
-          const { data, total, page, limit, pages } = response.data;
-          setData(data);
-          setPage({ total, page, limit, pages });
-          setLoading(false);
-        } else {
-          throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
-        }
-      } catch (error) {
-        console.error(error.message);
-        setError("Failed to load data. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [currentPage]);
   return (
     <>
+      <AddRewardDialog
+        open={openCreate}
+        handleOpen={handleOpenCreate}
+        onCompetitionAdded={fetchData}
+      />
       <UpdateRewardDialog
         open={openUpdate}
         handleOpen={handleOpenUpdate}
@@ -113,15 +102,6 @@ export function RewardsTable() {
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <Tabs value="all" className="w-full md:w-max">
-              <TabsHeader>
-                {TABS.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                  </Tab>
-                ))}
-              </TabsHeader>
-            </Tabs>
             <div className="w-full md:w-72">
               <Input
                 label="Search"

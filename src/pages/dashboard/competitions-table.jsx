@@ -1,10 +1,14 @@
-import { getAllCompetitions } from "@/services/competitionService";
+import {
+  deleteCompetition,
+  getAllCompetitions,
+} from "@/services/competitionService";
 import {
   AddCompetitionDialog,
   UpdateCompetitionDialog,
 } from "@/widgets/modelModals/competitionModal";
+import Toast from "@/widgets/toast/toast-message";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -22,8 +26,9 @@ import {
 } from "@material-tailwind/react";
 import { number } from "prop-types";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Title", "Year", "Status", "Description", ""];
 
 export function CompetitionsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -67,12 +72,47 @@ export function CompetitionsTable() {
   useEffect(() => {
     fetchData();
   }, [currentPage]);
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const deleteReponse = await deleteCompetition({ id });
+          if (deleteReponse.status === 200) {
+            Toast.fire({
+              title: "Deleted!",
+              text: "Account has been deleted.",
+              icon: "success",
+            });
+            setData((prev) => {
+              return prev.filter((item) => item._id !== id);
+            });
+          }
+        } catch (e) {
+          Toast.fire({
+            title: "Error!",
+            text: "Account delete failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
   return (
     <>
       <UpdateCompetitionDialog
         open={openUpdate}
         handleOpen={handleOpenUpdate}
         id={idUnit}
+        onCompetitionAdded={fetchData}
       />
       <AddCompetitionDialog
         open={openCreate}
@@ -212,16 +252,26 @@ export function CompetitionsTable() {
                               {description}
                             </Typography>
                           </td>
-                          <td
-                            className={classes}
-                            onClick={() => {
-                              handleOpenUpdate();
-                              setIdUnit(_id);
-                            }}
-                          >
+                          <td className={classes}>
                             <Tooltip content="Edit User">
-                              <IconButton variant="text">
+                              <IconButton
+                                onClick={() => {
+                                  handleOpenUpdate();
+                                  setIdUnit(_id);
+                                }}
+                                variant="text"
+                              >
                                 <PencilIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Delete Unit">
+                              <IconButton
+                                onClick={() => {
+                                  handleDelete(_id);
+                                }}
+                                variant="text"
+                              >
+                                <TrashIcon className="h-4 w-4" />
                               </IconButton>
                             </Tooltip>
                           </td>

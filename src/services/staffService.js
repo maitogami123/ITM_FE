@@ -5,9 +5,9 @@ import interceptedAxios from "./axiosRequest";
 export const getAllStaffs = (search = null, page = 1) => {
   let url = ``;
   if (search == null) {
-    url = `${API_ENDPOINTS.staff}?page=${page}&limit=5&sortBy=name&order=asc/`;
+    url = `${API_ENDPOINTS.staff}?page=${page}&limit=5&sortBy=name&order=asc`;
   } else {
-    url = `${API_ENDPOINTS.staff}?search=${search}&page=1&limit=5&sortBy=name&order=asc/`;
+    url = `${API_ENDPOINTS.staff}?search=${search}&page=1&limit=5&sortBy=name&order=asc`;
   }
   return interceptedAxios.get(url);
 };

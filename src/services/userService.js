@@ -49,9 +49,9 @@ export const deleteUser = ({ id }) => {
 export const getAllUsers = (search = null, page = 1) => {
   let url = ``;
   if (search == null) {
-    url = `${API_ENDPOINTS.user}?page=${page}&limit=5&sortBy=username&order=asc/`;
+    url = `${API_ENDPOINTS.user}?page=${page}&limit=5&sortBy=username&order=asc`;
   } else {
-    url = `${API_ENDPOINTS.user}?search=${search}&page=1&limit=5&sortBy=username&order=asc/`;
+    url = `${API_ENDPOINTS.user}?search=${search}&page=1&limit=5&sortBy=username&order=as`;
   }
   return interceptedAxios.get(url);
 };
