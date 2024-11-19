@@ -7,6 +7,7 @@ const API_ENDPOINTS = {
   unit: `${API_BASE_URL}/unit`,
   competition: `${API_BASE_URL}/competitions`,
   reward: `${API_BASE_URL}/rewards`,
+  position: `${API_BASE_URL}/positions`,
 };
 
 export { API_BASE_URL, API_ENDPOINTS };

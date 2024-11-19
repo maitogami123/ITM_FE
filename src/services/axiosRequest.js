@@ -15,11 +15,25 @@ interceptedAxios.interceptors.request.use(
     } else {
       console.error("No token found, redirecting to login...");
       // Optionally, redirect to login page or show an alert
-      // window.location.href = '/login'; // Uncomment to redirect
+      window.location.href = "/auth/sign-in"; // Uncomment to redirect
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+interceptedAxios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const { response } = error;
+    if (response && response.data.message === "Invalid Token") {
+      console.error("Token expired, redirecting to login...");
+      localStorage.removeItem("token");
+    }
     return Promise.reject(error);
   }
 );

@@ -1,80 +1,77 @@
-import { getAllCompetitions } from "@/services/competitionService";
-import {
-  AddCompetitionDialog,
-  UpdateCompetitionDialog,
-} from "@/widgets/modelModals/competitionModal";
+import { getAllStaffs } from "@/services/staffService";
+import { getAllUnits } from "@/services/unitService";
+import { AddUnitDialog } from "@/widgets/modelModals/unitModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
-  Button,
   Card,
-  CardBody,
-  CardFooter,
   CardHeader,
-  Chip,
-  IconButton,
   Input,
-  Tab,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  CardFooter,
   Tabs,
   TabsHeader,
+  Tab,
+  IconButton,
   Tooltip,
-  Typography,
 } from "@material-tailwind/react";
 import { number } from "prop-types";
 import { useEffect, useState } from "react";
 
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
-export function CompetitionsTable() {
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [openCreate, setOpenCreate] = useState(false);
+export function PositionsTable() {
+  const [open, setOpen] = useState(false);
   const [idUnit, setIdUnit] = useState("");
-  const handleOpenUpdate = () => setOpenUpdate(!openUpdate);
-  const handleOpenCreate = () => setOpenCreate(!openCreate);
+  const handleOpen = () => setOpen(!open);
   const [data, setData] = useState([]);
   const [page, setPage] = useState({
-    total: 0,
-    page: 1,
-    limit: 10,
-    pages: 1,
+    total: number,
+    page: number,
+    limit: number,
+    pages: number,
   });
-  const [currentPage, setCurrentPage] = useState(1);
+  let [currentPage, setCurrentPage] = useState(1);
   let [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
       try {
-        const response = await getAllCompetitions(null, currentPage);
+        // const response = await getAllUnits(null, currentPage);
+        const response = await getAllUnits();
         console.log(response);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);
-          setPage({ total, page, limit, pages });
+          setPage({
+            total: total,
+            page: page,
+            limit: limit,
+            pages: pages,
+          });
           setLoading(false);
         } else {
           throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
         }
       } catch (error) {
-        console.error(error.message);
-        setError("Failed to load data. Please try again.");
+        console.log("search error: " + error);
+        setLoading(false);
+        setError("có lỗi xảy ra trong quá trình tìm kiếm");
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [currentPage]);
   return (
     <>
-      <UpdateCompetitionDialog
-        open={openUpdate}
-        handleOpen={handleOpenUpdate}
-        id={idUnit}
-      />
-      <AddCompetitionDialog open={openCreate} handleOpen={handleOpenCreate} />
+      <AddUnitDialog open={open} handleOpen={handleOpen} id={idUnit} />
       <Card className="my-4 h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-8 flex items-center justify-between gap-8">
@@ -90,13 +87,7 @@ export function CompetitionsTable() {
               <Button variant="outlined" size="sm">
                 view all
               </Button>
-              <Button
-                className="flex items-center gap-3"
-                size="sm"
-                onClick={() => {
-                  handleOpenCreate();
-                }}
-              >
+              <Button className="flex items-center gap-3" size="sm">
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
               </Button>
             </div>
@@ -145,103 +136,90 @@ export function CompetitionsTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map(
-                    (
-                      {
-                        _id,
-                        title,
-                        year,
-                        description,
-                        projects,
-                        staffs,
-                        rewards,
-                      },
-                      index
-                    ) => {
-                      const isLast = index === data.length - 1;
-                      const classes = isLast
-                        ? "p-4"
-                        : "p-4 border-b border-blue-gray-50";
+                  {data.map(({ _id, name, staffs }, index) => {
+                    const isLast = index === data.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
 
-                      return (
-                        //         <div className="flex items-center justify-center">
-                        //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
-                        // </div>
-                        <tr key={_id}>
-                          <td className={classes}>
-                            <div className="flex items-center gap-3">
-                              <div className="flex flex-col">
-                                <Typography
-                                  variant="small"
-                                  color="blue-gray"
-                                  className="font-normal"
-                                >
-                                  {title}
-                                </Typography>
-                                {/* <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {mscb}
-                        </Typography> */}
-                              </div>
-                            </div>
-                          </td>
-                          <td className={classes}>
+                    return (
+                      //         <div className="flex items-center justify-center">
+                      //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
+                      // </div>
+                      <tr key={name}>
+                        <td className={classes}>
+                          <div className="flex items-center gap-3">
                             <div className="flex flex-col">
                               <Typography
                                 variant="small"
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {staffs.length}
+                                {name}
                               </Typography>
                               {/* <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-70"
+                        >
+                          {mscb}
+                        </Typography> */}
+                            </div>
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {staffs.length}
+                            </Typography>
+                            {/* <Typography
                         variant="small"
                         color="blue-gray"
                         className="font-normal opacity-70"
                       >
                         {mainSpecialization}
                       </Typography> */}
-                            </div>
-                          </td>
-                          <td className={classes}>
-                            <div className="w-max">
-                              <Chip
-                                variant="ghost"
-                                size="sm"
-                                value={year ? "online" : "offline"}
-                                color={year ? "green" : "blue-gray"}
-                              />
-                            </div>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {year}
-                            </Typography>
-                          </td>
-                          <td
-                            className={classes}
-                            onClick={() => {
-                              handleOpenUpdate();
-                              setIdUnit(_id);
-                            }}
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">
+                            <Chip
+                              variant="ghost"
+                              size="sm"
+                              value={name ? "online" : "offline"}
+                              color={name ? "green" : "blue-gray"}
+                            />
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
                           >
-                            <Tooltip content="Edit User">
-                              <IconButton variant="text">
-                                <PencilIcon className="h-4 w-4" />
-                              </IconButton>
-                            </Tooltip>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )}
+                            {staffs.length}
+                          </Typography>
+                        </td>
+                        <td
+                          className={classes}
+                          onClick={() => {
+                            handleOpen();
+                            setIdUnit(_id);
+                          }}
+                        >
+                          <Tooltip content="Edit User">
+                            <IconButton variant="text">
+                              <PencilIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             )}

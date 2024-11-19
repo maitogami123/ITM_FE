@@ -1,8 +1,11 @@
 import { getAllStaffs } from "@/services/staffService";
-import { getAllUnits } from "@/services/unitService";
+import { deleteUnit, getAllUnits } from "@/services/unitService";
+import { AddStaffForms } from "@/widgets/forms/units/add-staff";
+import { AddStaffDialog } from "@/widgets/modelModals/staffModal";
 import { AddUnitDialog } from "@/widgets/modelModals/unitModal";
+import Toast from "@/widgets/toast/toast-message";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -21,26 +24,13 @@ import {
 } from "@material-tailwind/react";
 import { number } from "prop-types";
 import { useEffect, useState } from "react";
-
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
+import Swal from "sweetalert2";
 
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export function UnitsTable() {
   const [open, setOpen] = useState(false);
+  const [addStaffOpen, setAddStaffOpen] = useState(false);
   const [idUnit, setIdUnit] = useState("");
   const handleOpen = () => setOpen(!open);
   const [data, setData] = useState([]);
@@ -59,9 +49,7 @@ export function UnitsTable() {
     setError(null);
     const fetchData = async () => {
       try {
-        // const response = await getAllUnits(null, currentPage);
         const response = await getAllUnits();
-        console.log(response);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);
@@ -85,8 +73,48 @@ export function UnitsTable() {
     };
     fetchData();
   }, [currentPage]);
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const deleteReponse = await deleteUnit({ id });
+          if (deleteReponse.status === 200) {
+            Toast.fire({
+              title: "Deleted!",
+              text: "Account has been deleted.",
+              icon: "success",
+            });
+            setData((prev) => {
+              return prev.filter((item) => item._id !== id);
+            });
+          }
+        } catch (e) {
+          Toast.fire({
+            title: "Error!",
+            text: "Account delete failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
+      <AddStaffForms
+        open={addStaffOpen}
+        handleOpen={() => setAddStaffOpen(!addStaffOpen)}
+        id={idUnit}
+      />
       <AddUnitDialog open={open} handleOpen={handleOpen} id={idUnit} />
       <Card className="my-4 h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -103,21 +131,19 @@ export function UnitsTable() {
               <Button variant="outlined" size="sm">
                 view all
               </Button>
-              <Button className="flex items-center gap-3" size="sm">
+              <Button
+                onClick={() => {
+                  setIdUnit(null);
+                  handleOpen();
+                }}
+                className="flex items-center gap-3"
+                size="sm"
+              >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
               </Button>
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <Tabs value="all" className="w-full md:w-max">
-              <TabsHeader>
-                {TABS.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                  </Tab>
-                ))}
-              </TabsHeader>
-            </Tabs>
             <div className="w-full md:w-72">
               <Input
                 label="Search"
@@ -168,9 +194,6 @@ export function UnitsTable() {
                       : "p-4 border-b border-blue-gray-50";
 
                     return (
-                      //         <div className="flex items-center justify-center">
-                      //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
-                      // </div>
                       <tr key={name}>
                         <td className={classes}>
                           <div className="flex items-center gap-3">
@@ -229,16 +252,37 @@ export function UnitsTable() {
                             {staffs.length}
                           </Typography>
                         </td>
-                        <td
-                          className={classes}
-                          onClick={() => {
-                            handleOpen();
-                            setIdUnit(_id);
-                          }}
-                        >
+                        <td className={classes}>
                           <Tooltip content="Edit User">
-                            <IconButton variant="text">
+                            <IconButton
+                              onClick={() => {
+                                handleOpen();
+                                setIdUnit(_id);
+                              }}
+                              variant="text"
+                            >
                               <PencilIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip content="Add Staff">
+                            <IconButton
+                              onClick={() => {
+                                setAddStaffOpen(!addStaffOpen);
+                                setIdUnit(_id);
+                              }}
+                              variant="text"
+                            >
+                              <UserPlusIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip content="Delete Unit">
+                            <IconButton
+                              onClick={() => {
+                                handleDelete(_id);
+                              }}
+                              variant="text"
+                            >
+                              <TrashIcon className="h-4 w-4" />
                             </IconButton>
                           </Tooltip>
                         </td>

@@ -64,6 +64,28 @@ export default function ProfileMenu({ user, logout }) {
             </Typography>
           </MenuItem>
         </Link>
+        {user.role !== "lecturer" && (
+          <Link to={`/admin/home`}>
+            <MenuItem
+              key={"admin"}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className={`flex items-center gap-2 rounded`}
+            >
+              {React.createElement(UserCircleIcon, {
+                className: `h-4 w-4`,
+                strokeWidth: 2,
+              })}
+              <Typography
+                as="span"
+                variant="small"
+                className="font-normal"
+                color={"inherit"}
+              >
+                Admin
+              </Typography>
+            </MenuItem>
+          </Link>
+        )}
         <MenuItem
           key={"help"}
           onClick={() => setIsMenuOpen((prev) => !prev)}

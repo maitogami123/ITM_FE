@@ -79,23 +79,24 @@ export function UserProfile() {
                   />
                   <div>
                     <Typography variant="h5" color="blue-gray" className="mb-1">
-                      {userData.staff.name}
+                      {(userData.staff && userData.staff.name) ||
+                        userData.username}
                     </Typography>
                     <Typography
                       variant="small"
                       className="font-normal text-blue-gray-600"
                     >
-                      {userData.staff.positions[0].title}
+                      {userData.staff && userData.staff.positions[0].title}
                     </Typography>
                   </div>
                 </div>
               </div>
               <ProfileInfoCard
                 title="Profile Information"
-                description={`${userData.description}`}
+                description={`${userData.description || ""}`}
                 details={{
-                  "full name": userData.staff.name,
-                  mobile: userData.staff.phone,
+                  "full name": (userData.staff && userData.staff.name) || "",
+                  mobile: (userData.staff && userData.staff.phone) || "",
                   email: userData.email,
                   social: (
                     <div className="flex items-center gap-4">

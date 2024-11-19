@@ -1,3 +1,6 @@
+import { getAvailableStaff } from "@/services/staffService";
+import { createUser } from "@/services/userService";
+import Toast from "@/widgets/toast/toast-message";
 import {
   Button,
   Input,
@@ -8,62 +11,55 @@ import {
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 
-export function CreateUserForm({ open, handleOpen, id }) {
-  const [data, setData] = useState(null); // Use null to indicate loading state
-  const [loading, setLoading] = useState(false);
+export function CreateUserForm({ handleOpen }) {
+  const [staffList, setStaffList] = useState([]);
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: { role: "lecturer" },
+    defaultValues: { role: "lecturer", staff: undefined },
   });
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    // try {
-    //   const response = await registerService(data.username, data.password);
-    //   if (response.status === 201) {
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Success!",
-    //       text: "You can now use your newly created account to login!",
-    //       confirmButtonText: "Ok",
-    //     }).then((result) => {
-    //       navigate("/sign-in");
-    //     });
-    //   } else {
-    //     throw new Error("Register failed");
-    //   }
-    // } catch (error) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Oops...",
-    //     text: "Something went wrong!",
-    //   });
-    // }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const staffReponse = await getAvailableStaff();
+        if (staffReponse.status === 200) {
+          setStaffList(staffReponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  // useEffect(() => {
-  //   if (!id) return;
-  //   const fetchData = async () => {
-  //     setLoading(true); // Start loading
-  //     try {
-  //       const response = await getUserById(id);
-  //       if (response.status === 200) {
-  //         setData(response.data);
-  //       } else {
-  //         throw new Error("Failed to fetch data");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching unit data:", error);
-  //     } finally {
-  //       setLoading(false); // Stop loading
-  //     }
-  //   };
-  //   fetchData();
-  // }, [id]);
+  const onSubmit = async (data) => {
+    try {
+      const createReponse = await createUser(data);
+
+      if (createReponse.status === 201) {
+        Toast.fire({
+          icon: "success",
+          title: "Create User Successfully",
+          showCloseButton: false,
+          timer: 1000,
+        });
+        handleOpen();
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Create User Failed",
+        text: error,
+        showCloseButton: false,
+        timer: 1000,
+      });
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <form
@@ -204,6 +200,55 @@ export function CreateUserForm({ open, handleOpen, id }) {
             </Typography>
           )}
         </div>
+      </div>
+      <div>
+        <label htmlFor="staff">
+          <Typography
+            variant="small"
+            className="mb-2 block font-medium text-gray-900"
+          >
+            Staff:
+          </Typography>
+        </label>
+        <Controller
+          name="staff"
+          control={control}
+          render={({ field }) => (
+            <Select
+              size="lg"
+              className={`w-full border-t-blue-gray-200 placeholder:opacity-100 ${
+                errors.staff
+                  ? "focus:border-t-red-600"
+                  : "focus:border-t-gray-900"
+              }`}
+              containerProps={{ className: "!min-w-full" }}
+              labelProps={{ className: "hidden" }}
+              onChange={(e) => {
+                field.onChange(e);
+              }}
+            >
+              {staffList.length > 0 ? (
+                [
+                  <Option>Add later</Option>,
+                  ...staffList.map((e) => {
+                    console.log(e._id);
+                    return (
+                      <Option
+                        key={e._id}
+                        value={e._id}
+                        className="flex items-center gap-2"
+                      >
+                        {e.mscb} - {e.name}
+                      </Option>
+                    );
+                  }),
+                ]
+              ) : (
+                <Option disabled>No Staff Available</Option>
+              )}
+            </Select>
+          )}
+        />
       </div>
       <div className="mt-6 flex flex gap-4 self-end">
         <Button color="red" className="ml-auto" onClick={handleOpen}>

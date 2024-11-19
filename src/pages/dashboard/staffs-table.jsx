@@ -20,12 +20,6 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
-const TABS = [
-  { label: "All", value: "all" },
-  { label: "Monitored", value: "monitored" },
-  { label: "Unmonitored", value: "unmonitored" },
-];
-
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export function StaffsTable() {
@@ -87,15 +81,6 @@ export function StaffsTable() {
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <Tabs value="all" className="w-full md:w-max">
-              <TabsHeader>
-                {TABS.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    {label}
-                  </Tab>
-                ))}
-              </TabsHeader>
-            </Tabs>
             <div className="w-full md:w-72">
               <Input
                 label="Search"
