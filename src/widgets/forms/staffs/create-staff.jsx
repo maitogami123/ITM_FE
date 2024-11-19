@@ -1,15 +1,19 @@
-import { getAvailableStaff } from "@/services/staffService";
-import { createUser } from "@/services/userService";
-import Toast from "@/widgets/toast/toast-message";
+import {
+  ChevronDoubleRightIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/solid";
 import {
   Button,
   Input,
   Typography,
-  Select,
-  Option,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  Checkbox,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import DateTimePicker from "react-datetime-picker";
+import { format } from "date-fns";
+import { useEffect } from "react";
+import { DayPicker } from "react-day-picker";
 import { useForm, Controller } from "react-hook-form";
 
 export function CreateStaffForm({ handleOpen }) {
@@ -99,23 +103,22 @@ export function CreateStaffForm({ handleOpen }) {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="mb-6 ">
+        <div className="mb-6 flex">
           <label htmlFor="gender">
             <Typography
               variant="small"
-              className="mb-2 block font-medium text-gray-900"
+              className="block font-medium text-gray-900"
             >
               Male
             </Typography>
           </label>
-          <Input
+          <Checkbox
             id="gender"
             type="checkbox"
             color="gray"
             size="lg"
             name="gender"
             placeholder="name@mail.com"
-            className={`w-full border-t-blue-gray-200 placeholder:opacity-100 focus:border-t-gray-900`}
             labelProps={{
               className: "hidden",
             }}
@@ -123,36 +126,39 @@ export function CreateStaffForm({ handleOpen }) {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="dateOfBirth">
-            <Typography
-              variant="small"
-              className="mb-2 block font-medium text-gray-900"
-            >
-              Date of Birth
-            </Typography>
-          </label>
-          <Controller
-            name="dateOfBirth"
-            control={control}
-            defaultValue={null}
-            render={({ field }) => (
-              <DateTimePicker
-                {...field}
-                onChange={(value) => field.onChange(value)}
-                value={field.value}
-                className={`w-full border-t-blue-gray-200 placeholder:opacity-100 ${
-                  errors.dateOfBirth
-                    ? "focus:border-t-red-600"
-                    : "focus:border-t-gray-900"
-                }`}
-              />
+          <div>
+            <label htmlFor="dateOfBirth">
+              <Typography
+                variant="small"
+                className="mb-2 block font-medium text-gray-900"
+              >
+                Date of Birth
+              </Typography>
+            </label>
+            <Input
+              id="dateOfBirth"
+              type="text"
+              color="gray"
+              size="lg"
+              name="dateOfBirth"
+              placeholder="name@mail.com"
+              className={`w-full border-t-blue-gray-200 placeholder:opacity-100 ${
+                errors.dateOfBirth
+                  ? "focus:border-t-red-600"
+                  : "focus:border-t-gray-900"
+              }`}
+              labelProps={{
+                className: "hidden",
+              }}
+              {...register("dateOfBirth", { required: true })}
+              error={errors.dateOfBirth ? true : false}
+            />
+            {errors.dateOfBirth && (
+              <Typography variant="small" color="red">
+                Date of Birth is required
+              </Typography>
             )}
-          />
-          {errors.dateOfBirth && (
-            <Typography variant="small" color="red">
-              Date of Birth is required
-            </Typography>
-          )}
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
