@@ -1,8 +1,5 @@
-import { getAllCompetitions } from "@/services/competitionService";
-import {
-  AddCompetitionDialog,
-  UpdateCompetitionDialog,
-} from "@/widgets/modelModals/competitionModal";
+import { getAllRewards } from "@/services/rewardService";
+import { UpdateRewardDialog } from "@/widgets/modelModals/rewardModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
@@ -20,7 +17,6 @@ import {
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import { number } from "prop-types";
 import { useEffect, useState } from "react";
 
 const TABS = [
@@ -38,9 +34,9 @@ const TABS = [
   },
 ];
 
-const TABLE_HEAD = ["Title", "Year", "Staff", "Description", ""];
+const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
-export function CompetitionsTable() {
+export function RewardsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [idUnit, setIdUnit] = useState("");
@@ -57,52 +53,48 @@ export function CompetitionsTable() {
   let [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await getAllCompetitions(null, currentPage);
-      console.log(response);
-      if (response.status === 200) {
-        const { data, total, page, limit, pages } = response.data;
-        setData(data);
-        setPage({ total, page, limit, pages });
-        setLoading(false);
-      } else {
-        throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
-      }
-    } catch (error) {
-      console.error(error.message);
-      setError("Failed to load data. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await getAllRewards(null, currentPage);
+        console.log(response);
+        if (response.status === 200) {
+          const { data, total, page, limit, pages } = response.data;
+          setData(data);
+          setPage({ total, page, limit, pages });
+          setLoading(false);
+        } else {
+          throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");
+        }
+      } catch (error) {
+        console.error(error.message);
+        setError("Failed to load data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, [currentPage]);
   return (
     <>
-      <UpdateCompetitionDialog
+      <UpdateRewardDialog
         open={openUpdate}
         handleOpen={handleOpenUpdate}
         id={idUnit}
       />
-      <AddCompetitionDialog
-        open={openCreate}
-        handleOpen={handleOpenCreate}
-        onCompetitionAdded={fetchData}
-      />
+      {/* <AddCompetitionDialog open={openCreate} handleOpen={handleOpenCreate} /> */}
       <Card className="my-4 h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-8 flex items-center justify-between gap-8">
             <div>
               <Typography variant="h5" color="blue-gray">
-                Competitions list
+                Rewards list
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
-                See information about all competitions
+                See information about all rewards
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -116,8 +108,7 @@ export function CompetitionsTable() {
                   handleOpenCreate();
                 }}
               >
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add
-                competition
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Reward
               </Button>
             </div>
           </div>
@@ -175,34 +166,35 @@ export function CompetitionsTable() {
                 </thead>
                 <tbody>
                   {data.map(
-                    (
-                      {
-                        _id,
-                        title,
-                        year,
-                        description,
-                        projects,
-                        staffs,
-                        rewards,
-                      },
-                      index
-                    ) => {
+                    ({ _id, title, date, staff, competition }, index) => {
                       const isLast = index === data.length - 1;
                       const classes = isLast
                         ? "p-4"
                         : "p-4 border-b border-blue-gray-50";
 
                       return (
+                        //         <div className="flex items-center justify-center">
+                        //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
+                        // </div>
                         <tr key={_id}>
                           <td className={classes}>
-                            <div className="flex flex-col">
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal"
-                              >
-                                {title}
-                              </Typography>
+                            <div className="flex items-center gap-3">
+                              <div className="flex flex-col">
+                                <Typography
+                                  variant="small"
+                                  color="blue-gray"
+                                  className="font-normal"
+                                >
+                                  {title}
+                                </Typography>
+                                {/* <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-70"
+                        >
+                          {mscb}
+                        </Typography> */}
+                              </div>
                             </div>
                           </td>
                           <td className={classes}>
@@ -212,19 +204,25 @@ export function CompetitionsTable() {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {year}
+                                {date}
                               </Typography>
+                              {/* <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal opacity-70"
+                      >
+                        {mainSpecialization}
+                      </Typography> */}
                             </div>
                           </td>
                           <td className={classes}>
-                            <div className="flex flex-col">
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal"
-                              >
-                                {staffs.length}
-                              </Typography>
+                            <div className="w-max">
+                              <Chip
+                                variant="ghost"
+                                size="sm"
+                                value={date ? "online" : "offline"}
+                                color={date ? "green" : "blue-gray"}
+                              />
                             </div>
                           </td>
                           <td className={classes}>
@@ -233,7 +231,7 @@ export function CompetitionsTable() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {description}
+                              {date}
                             </Typography>
                           </td>
                           <td
@@ -243,7 +241,7 @@ export function CompetitionsTable() {
                               setIdUnit(_id);
                             }}
                           >
-                            <Tooltip content="Edit User">
+                            <Tooltip content="Edit Reward">
                               <IconButton variant="text">
                                 <PencilIcon className="h-4 w-4" />
                               </IconButton>

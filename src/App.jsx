@@ -9,6 +9,7 @@ import {
   StaffsTable,
   CompetitionsTable,
   UnitsTable,
+  RewardsTable,
 } from "./pages/dashboard";
 import PublicProfile from "./pages/users/public-profile";
 import { UsersTable } from "./pages/dashboard/users-table";
@@ -69,6 +70,7 @@ const routes = [
       { path: "units", element: <UnitsTable /> },
       { path: "users", element: <UsersTable /> },
       { path: "competitions", element: <CompetitionsTable /> },
+      { path: "rewards", element: <RewardsTable /> },
       { path: "*", element: <Navigate to="/admin/home" replace /> },
     ],
   },

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select"; // Sử dụng react-select cho ComboBox
 import axios from "axios";
 import { getAllStaffs } from "@/services/staffService";
-import { getAllRewards } from "@/services/projectService";
+import { getAllRewards } from "@/services/rewardService";
 
 export function ComboBox({ label, selected, setSelected }) {
   const [options, setOptions] = useState([]);

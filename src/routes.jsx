@@ -1,5 +1,6 @@
 import {
   CompetitionsTable,
+  RewardsTable,
   Home,
   StaffsTable,
   UnitsTable,
@@ -44,6 +45,12 @@ export const routes = [
         name: "Competitions",
         path: "/competitions",
         element: <CompetitionsTable />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Rewards",
+        path: "/rewards",
+        element: <RewardsTable />,
       },
     ],
   },
