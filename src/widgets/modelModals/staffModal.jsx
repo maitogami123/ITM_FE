@@ -1,4 +1,3 @@
-import { getCompetitionById } from "@/services/competitionService";
 import { getStaffById } from "@/services/staffService";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -12,6 +11,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
+import { AddStaffForms } from "../forms/units/add-staff";
+import { CreateStaffForm } from "../forms/staffs/create-staff";
 
 const TABLE_HEAD = ["Name", "Description", "Start Date", "End Date"];
 const TABLE_HEAD_REWARDS = ["title", "Date", "Start Date", "End Date"];
@@ -41,8 +42,6 @@ export function AddStaffDialog({ open, handleOpen, id }) {
     };
     fetchData();
   }, [id]);
-
-  if (!id) return null;
 
   return (
     <Dialog
@@ -75,7 +74,7 @@ export function AddStaffDialog({ open, handleOpen, id }) {
           <div className="flex justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
           </div>
-        ) : (
+        ) : id ? (
           <div className="grid grid-cols-2 gap-4">
             {/* Name Field */}
             <div>
@@ -303,15 +302,10 @@ export function AddStaffDialog({ open, handleOpen, id }) {
               </table>
             </div>
           </div>
+        ) : (
+          <CreateStaffForm />
         )}
       </DialogBody>
-
-      {/* Footer */}
-      <DialogFooter>
-        <Button className="ml-auto" onClick={handleOpen}>
-          Close
-        </Button>
-      </DialogFooter>
     </Dialog>
   );
 }

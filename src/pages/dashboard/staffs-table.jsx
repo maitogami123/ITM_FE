@@ -75,7 +75,14 @@ export function StaffsTable() {
               <Button variant="outlined" size="sm">
                 View All
               </Button>
-              <Button className="flex items-center gap-3" size="sm">
+              <Button
+                onClick={() => {
+                  setIdUnit(null);
+                  handleOpen();
+                }}
+                className="flex items-center gap-3"
+                size="sm"
+              >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Member
               </Button>
             </div>
