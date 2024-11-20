@@ -14,6 +14,7 @@ import {
 import PublicProfile from "./pages/users/public-profile";
 import { UsersTable } from "./pages/dashboard/users-table";
 import { PositionsTable } from "./pages/dashboard/positions-table";
+import CozeChat from "./components/CozeChat";
 
 const PrivateRoute = ({ children }) => {
   return (
@@ -90,6 +91,7 @@ function App() {
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
+      <CozeChat />
     </Router>
   );
 }

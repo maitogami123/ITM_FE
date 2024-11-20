@@ -31,3 +31,18 @@ export const updateStaffUnit = ({ staffId, unitId }) => {
   const url = `${API_ENDPOINTS.staff}/${staffId}/unit/${unitId}`;
   return interceptedAxios.patch(url);
 };
+
+export const createStaff = (data) => {
+  const url = `${API_ENDPOINTS.staff}/`;
+  return interceptedAxios.post(url, data);
+};
+
+export const deleteStaff = ({ id }) => {
+  const url = `${API_ENDPOINTS.staff}/${id}`;
+  return interceptedAxios.delete(url);
+};
+
+export const updateStaff = (data) => {
+  const url = `${API_ENDPOINTS.staff}/${data._id}`;
+  return interceptedAxios.patch(url, data);
+};

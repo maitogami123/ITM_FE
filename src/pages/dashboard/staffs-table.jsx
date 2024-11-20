@@ -1,7 +1,7 @@
-import { getAllStaffs } from "@/services/staffService";
+import { deleteStaff, getAllStaffs } from "@/services/staffService";
 import { AddStaffDialog } from "@/widgets/modelModals/staffModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -19,6 +19,7 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
@@ -56,6 +57,38 @@ export function StaffsTable() {
 
     fetchData();
   }, [currentPage]);
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const deleteReponse = await deleteStaff({ id });
+          setData(() => data.filter((item) => item._id !== id));
+          if (deleteReponse.status === 200) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Staff has been Deleted.",
+              icon: "success",
+            });
+          }
+        } catch (e) {
+          Swal.fire({
+            title: "Error!",
+            text: "Delete staff failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -154,7 +187,7 @@ export function StaffsTable() {
                       : "p-4 border-b border-blue-gray-50";
 
                     return (
-                      <tr key={name}>
+                      <tr key={_id}>
                         <td className={rowClasses}>
                           <div className="flex items-center gap-3">
                             <Avatar
@@ -213,16 +246,26 @@ export function StaffsTable() {
                             {startDate}
                           </Typography>
                         </td>
-                        <td
-                          className={rowClasses}
-                          onClick={() => {
-                            handleOpen();
-                            setIdUnit(_id);
-                          }}
-                        >
-                          <Tooltip content="Edit User">
-                            <IconButton variant="text">
+                        <td className={rowClasses}>
+                          <Tooltip content="Edit Staff">
+                            <IconButton
+                              onClick={() => {
+                                setIdUnit(_id);
+                                handleOpen();
+                              }}
+                              variant="text"
+                            >
                               <PencilIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip content="Delete Staff">
+                            <IconButton
+                              onClick={() => {
+                                handleDelete(_id);
+                              }}
+                              variant="text"
+                            >
+                              <TrashIcon className="h-4 w-4" />
                             </IconButton>
                           </Tooltip>
                         </td>
