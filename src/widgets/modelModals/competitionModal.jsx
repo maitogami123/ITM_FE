@@ -1,11 +1,13 @@
 import {
+  addStaffToCompetition,
   createCompetition,
   getCompetitionById,
+  getCompetitionStaffless,
   removeStaffFromCompetition,
   updateCompetition,
 } from "@/services/competitionService";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Dialog,
@@ -22,7 +24,7 @@ import Swal from "sweetalert2";
 import { ComboBox } from "../combobox/ComboBox";
 import Toast from "../toast/toast-message";
 
-const TABLE_HEAD = ["Name", "Description", "Start Date", "End Date", "Actions"];
+const TABLE_HEAD = ["Name", "MSCB", "Main Specialization", "Actions"];
 const TABLE_HEAD_REWARDS = ["title", "Date", "Start Date", "End Date"];
 
 export function UpdateCompetitionDialog({
@@ -646,6 +648,200 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
           <Button
             className="bg-green-500 text-white hover:bg-green-600"
             onClick={handleCreate}
+            disabled={loading}
+          >
+            {loading ? "Adding..." : "Add"}
+          </Button>
+          <Button
+            className="bg-red-500 text-white hover:bg-red-600"
+            onClick={handleOpen}
+          >
+            Close
+          </Button>
+        </div>
+      </DialogFooter>
+    </Dialog>
+  );
+}
+
+export function AddStaffToCompetitionDialog({
+  open,
+  handleOpen,
+  id,
+  onCompetitionAdded,
+}) {
+  const [data, setData] = useState(null); // Use null to indicate loading state
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true); // Start loading
+    try {
+      const response = await getCompetitionStaffless(id);
+      if (response.status === 200) {
+        setData(response.data);
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching unit data:", error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+  useEffect(() => {
+    if (!id) return;
+    fetchData();
+  }, [id]);
+
+  if (!id) return null;
+
+  const handleAddStaff = async (staffId, unitId) => {
+    try {
+      const updateReponse = await addStaffToCompetition(staffId, unitId);
+      if (updateReponse.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Add User To Unit Successfully",
+          showCloseButton: false,
+          timer: 2000,
+        });
+        fetchData();
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Add User To Unit Failed",
+        text: error,
+        showCloseButton: false,
+        timer: 2000,
+      });
+      console.error("Error fetching data:", error);
+    }
+  };
+  return (
+    <Dialog size="lg" open={open} handler={handleOpen} className="p-4">
+      {/* Header */}
+      <DialogHeader className="relative m-0 block">
+        <Typography variant="h4" color="blue-gray">
+          Add Competition
+        </Typography>
+        <Typography className="mt-1 font-normal text-gray-600">
+          To create a new Competition. You must full fill information.
+        </Typography>
+        <IconButton
+          size="sm"
+          variant="text"
+          className="!absolute right-3.5 top-3.5"
+          onClick={handleOpen}
+        >
+          <XMarkIcon className="h-4 w-4 stroke-2" />
+        </IconButton>
+      </DialogHeader>
+
+      {/* Body */}
+      <DialogBody className="space-y-4 overflow-auto pb-6">
+        {/* Name Field */}
+        <div>
+          <Typography
+            variant="small"
+            color="blue-gray"
+            className="mb-2 text-left font-medium"
+          >
+            Staffs
+          </Typography>
+
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto text-left">
+              <thead>
+                <tr>
+                  {TABLE_HEAD.map((head) => (
+                    <th
+                      key={head}
+                      className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
+                    >
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal leading-none opacity-70"
+                      >
+                        {head}
+                      </Typography>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data && data.length > 0 ? (
+                  data.map(({ _id, name, mscb, mainSpecialization }, index) => {
+                    const isLast = index === data.length - 1;
+                    const rowClass = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+                    return (
+                      <tr key={index}>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {name}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {mscb}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {mainSpecialization}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Tooltip content="Delete User">
+                            <IconButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddStaff(_id, id);
+                              }}
+                              variant="text"
+                            >
+                              <UserPlusIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </DialogBody>
+
+      {/* Footer */}
+      <DialogFooter>
+        <div className="flex gap-2">
+          <Button
+            className="bg-green-500 text-white hover:bg-green-600"
+            onClick={handleOpen}
             disabled={loading}
           >
             {loading ? "Adding..." : "Add"}

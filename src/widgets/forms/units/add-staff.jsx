@@ -1,13 +1,13 @@
 import { getStaffUnitless, updateStaffUnit } from "@/services/staffService";
 import Toast from "@/widgets/toast/toast-message";
-import { TrashIcon, UserPlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { UserPlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import {
   Dialog,
+  DialogBody,
   DialogHeader,
   IconButton,
   Tooltip,
   Typography,
-  DialogBody,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 

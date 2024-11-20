@@ -4,6 +4,7 @@ import {
 } from "@/services/competitionService";
 import {
   AddCompetitionDialog,
+  AddStaffToCompetitionDialog,
   UpdateCompetitionDialog,
 } from "@/widgets/modelModals/competitionModal";
 import Toast from "@/widgets/toast/toast-message";
@@ -15,16 +16,11 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Chip,
   IconButton,
   Input,
-  Tab,
-  Tabs,
-  TabsHeader,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import { number } from "prop-types";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -33,9 +29,11 @@ const TABLE_HEAD = ["Title", "Year", "Status", "Description", ""];
 export function CompetitionsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
+  const [addStaffOpen, setAddStaffOpen] = useState(false);
   const [idUnit, setIdUnit] = useState("");
   const handleOpenUpdate = () => setOpenUpdate(!openUpdate);
   const handleOpenCreate = () => setOpenCreate(!openCreate);
+  const handleAddStaffOpen = () => setAddStaffOpen(!addStaffOpen);
   const [data, setData] = useState([]);
   const [page, setPage] = useState({
     total: 0,
@@ -106,6 +104,7 @@ export function CompetitionsTable() {
       }
     });
   };
+
   return (
     <>
       <UpdateCompetitionDialog
@@ -117,6 +116,12 @@ export function CompetitionsTable() {
       <AddCompetitionDialog
         open={openCreate}
         handleOpen={handleOpenCreate}
+        onCompetitionAdded={fetchData}
+      />
+      <AddStaffToCompetitionDialog
+        open={addStaffOpen}
+        handleOpen={handleAddStaffOpen}
+        id={idUnit}
         onCompetitionAdded={fetchData}
       />
       <Card className="my-4 h-full w-full">
@@ -253,7 +258,7 @@ export function CompetitionsTable() {
                             </Typography>
                           </td>
                           <td className={classes}>
-                            <Tooltip content="Edit User">
+                            <Tooltip content="Edit Competition">
                               <IconButton
                                 onClick={() => {
                                   handleOpenUpdate();
@@ -264,7 +269,18 @@ export function CompetitionsTable() {
                                 <PencilIcon className="h-4 w-4" />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip content="Delete Unit">
+                            <Tooltip content="Add Staff To Competition">
+                              <IconButton
+                                onClick={() => {
+                                  setIdUnit(_id);
+                                  handleAddStaffOpen();
+                                }}
+                                variant="text"
+                              >
+                                <UserPlusIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Delete Competition">
                               <IconButton
                                 onClick={() => {
                                   handleDelete(_id);

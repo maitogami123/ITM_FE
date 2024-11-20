@@ -72,3 +72,13 @@ export const removeStaffFromCompetition = (staffId, competitionId) => {
   const url = `${API_ENDPOINTS.competition}/${competitionId}/staff/${staffId}`;
   return interceptedAxios.delete(url);
 };
+
+export const addStaffToCompetition = (staffId, competitionId) => {
+  const url = `${API_ENDPOINTS.competition}/${competitionId}/staff/${staffId}`;
+  return interceptedAxios.post(url);
+};
+
+export const getCompetitionStaffless = (id) => {
+  const url = `${API_ENDPOINTS.competition}/${id}/staffs-not-in`;
+  return interceptedAxios.get(url);
+};
