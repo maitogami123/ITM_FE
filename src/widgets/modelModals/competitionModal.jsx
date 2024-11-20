@@ -94,6 +94,7 @@ export function UpdateCompetitionDialog({
               text: "Staff has been removed.",
               icon: "success",
             });
+            fetchData();
           }
         } catch (e) {
           Swal.fire({
@@ -106,25 +107,23 @@ export function UpdateCompetitionDialog({
     });
   };
 
+  const fetchData = async () => {
+    setLoading(true); // Start loading
+    try {
+      const response = await getCompetitionById(id);
+      if (response.status === 200) {
+        setData(response.data);
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching unit data:", error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
   useEffect(() => {
     if (!id) return;
-
-    const fetchData = async () => {
-      setLoading(true); // Start loading
-      try {
-        const response = await getCompetitionById(id);
-        if (response.status === 200) {
-          setData(response.data);
-        } else {
-          throw new Error("Failed to fetch data");
-        }
-      } catch (error) {
-        console.error("Error fetching unit data:", error);
-      } finally {
-        setLoading(false); // Stop loading
-      }
-    };
-
     fetchData();
   }, [id]);
 
