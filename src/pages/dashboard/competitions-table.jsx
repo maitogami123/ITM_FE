@@ -4,12 +4,18 @@ import {
 } from "@/services/competitionService";
 import {
   AddCompetitionDialog,
+  AddRewardToCompetitionDialog,
   AddStaffToCompetitionDialog,
   UpdateCompetitionDialog,
 } from "@/widgets/modelModals/competitionModal";
 import Toast from "@/widgets/toast/toast-message";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {
+  GiftTopIcon,
+  PencilIcon,
+  TrashIcon,
+  UserPlusIcon
+} from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -30,10 +36,12 @@ export function CompetitionsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [addStaffOpen, setAddStaffOpen] = useState(false);
+  const [addRewardOpen, setAddRewardOpen] = useState(false);
   const [idUnit, setIdUnit] = useState("");
   const handleOpenUpdate = () => setOpenUpdate(!openUpdate);
   const handleOpenCreate = () => setOpenCreate(!openCreate);
   const handleAddStaffOpen = () => setAddStaffOpen(!addStaffOpen);
+  const handleAddRewardOpen = () => setAddRewardOpen(!addRewardOpen);
   const [data, setData] = useState([]);
   const [page, setPage] = useState({
     total: 0,
@@ -121,6 +129,12 @@ export function CompetitionsTable() {
       <AddStaffToCompetitionDialog
         open={addStaffOpen}
         handleOpen={handleAddStaffOpen}
+        id={idUnit}
+        onCompetitionAdded={fetchData}
+      />
+      <AddRewardToCompetitionDialog
+        open={addRewardOpen}
+        handleOpen={handleAddRewardOpen}
         id={idUnit}
         onCompetitionAdded={fetchData}
       />
@@ -278,6 +292,17 @@ export function CompetitionsTable() {
                                 variant="text"
                               >
                                 <UserPlusIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Add Reward To Competition">
+                              <IconButton
+                                onClick={() => {
+                                  setIdUnit(_id);
+                                  handleAddRewardOpen();
+                                }}
+                                variant="text"
+                              >
+                                <GiftTopIcon className="h-4 w-4" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip content="Delete Competition">

@@ -1,8 +1,11 @@
 import {
+  addRewardToCompetition,
   addStaffToCompetition,
   createCompetition,
   getCompetitionById,
+  getCompetitionRewardless,
   getCompetitionStaffless,
+  removeRewardFromCompetition,
   removeStaffFromCompetition,
   updateCompetition,
 } from "@/services/competitionService";
@@ -24,8 +27,14 @@ import Swal from "sweetalert2";
 import { ComboBox } from "../combobox/ComboBox";
 import Toast from "../toast/toast-message";
 
-const TABLE_HEAD = ["Name", "MSCB", "Main Specialization", "Actions"];
-const TABLE_HEAD_REWARDS = ["title", "Date", "Start Date", "End Date"];
+const TABLE_HEAD = [
+  "Name",
+  "Notes",
+  "Main Specialization",
+  "Start Date",
+  "Actions",
+];
+const TABLE_HEAD_REWARDS = ["title", "Date", "Actions"];
 
 export function UpdateCompetitionDialog({
   open,
@@ -109,6 +118,38 @@ export function UpdateCompetitionDialog({
     });
   };
 
+  const handleDeleteReward = (rewardId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const deleteReponse = await removeRewardFromCompetition(rewardId, id);
+          if (deleteReponse.status === 200) {
+            Swal.fire({
+              title: "Removed!",
+              text: "Reward has been removed.",
+              icon: "success",
+            });
+            fetchData();
+          }
+        } catch (e) {
+          Swal.fire({
+            title: "Error!",
+            text: "Remove Reward failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
+
   const fetchData = async () => {
     setLoading(true); // Start loading
     try {
@@ -127,7 +168,7 @@ export function UpdateCompetitionDialog({
   useEffect(() => {
     if (!id) return;
     fetchData();
-  }, [id]);
+  }, [id, onCompetitionAdded]);
 
   if (!id) return null;
 
@@ -347,7 +388,7 @@ export function UpdateCompetitionDialog({
                 <table className="min-w-full table-auto text-left">
                   <thead>
                     <tr>
-                      {TABLE_HEAD.map((head) => (
+                      {TABLE_HEAD_REWARDS.map((head) => (
                         <th
                           key={head}
                           className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
@@ -391,21 +432,12 @@ export function UpdateCompetitionDialog({
                                 {date}
                               </Typography>
                             </td>
-                            {/* <td className={rowClass}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {staff}
-                            </Typography>
-                          </td> */}
                             <td className={rowClass}>
                               <Tooltip content="Delete Reward">
                                 <IconButton
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    handleDelete(_id);
+                                    handleDeleteReward(_id);
                                   }}
                                   variant="text"
                                 >
@@ -419,7 +451,7 @@ export function UpdateCompetitionDialog({
                     ) : (
                       <tr>
                         <td
-                          colSpan={TABLE_HEAD.length}
+                          colSpan={TABLE_HEAD_REWARDS.length}
                           className="p-4 text-center"
                         >
                           No data available
@@ -813,6 +845,194 @@ export function AddStaffToCompetitionDialog({
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleAddStaff(_id, id);
+                              }}
+                              variant="text"
+                            >
+                              <UserPlusIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </DialogBody>
+
+      {/* Footer */}
+      <DialogFooter>
+        <div className="flex gap-2">
+          <Button
+            className="bg-green-500 text-white hover:bg-green-600"
+            onClick={handleOpen}
+            disabled={loading}
+          >
+            {loading ? "Adding..." : "Add"}
+          </Button>
+          <Button
+            className="bg-red-500 text-white hover:bg-red-600"
+            onClick={handleOpen}
+          >
+            Close
+          </Button>
+        </div>
+      </DialogFooter>
+    </Dialog>
+  );
+}
+
+export function AddRewardToCompetitionDialog({
+  open,
+  handleOpen,
+  id,
+  onCompetitionAdded,
+}) {
+  const [data, setData] = useState(null); // Use null to indicate loading state
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true); // Start loading
+    try {
+      const response = await getCompetitionRewardless(id);
+      if (response.status === 200) {
+        setData(response.data);
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching reward data:", error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+  useEffect(() => {
+    if (!id) return;
+    fetchData();
+  }, [id]);
+
+  if (!id) return null;
+
+  const handleAddReward = async (rewardId, unitId) => {
+    try {
+      const updateReponse = await addRewardToCompetition(rewardId, unitId);
+      if (updateReponse.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Add User To Unit Successfully",
+          showCloseButton: false,
+          timer: 2000,
+        });
+        if (onCompetitionAdded) {
+          onCompetitionAdded(); // Gọi callback nếu có
+        }
+        fetchData();
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Add User To Unit Failed",
+        text: error,
+        showCloseButton: false,
+        timer: 2000,
+      });
+      console.error("Error fetching data:", error);
+    }
+  };
+  return (
+    <Dialog size="lg" open={open} handler={handleOpen} className="p-4">
+      {/* Header */}
+      <DialogHeader className="relative m-0 block">
+        <Typography variant="h4" color="blue-gray">
+          Add Reward
+        </Typography>
+        <Typography className="mt-1 font-normal text-gray-600">
+          To create a new Reward. You must full fill information.
+        </Typography>
+        <IconButton
+          size="sm"
+          variant="text"
+          className="!absolute right-3.5 top-3.5"
+          onClick={handleOpen}
+        >
+          <XMarkIcon className="h-4 w-4 stroke-2" />
+        </IconButton>
+      </DialogHeader>
+
+      {/* Body */}
+      <DialogBody className="space-y-4 overflow-auto pb-6">
+        {/* Name Field */}
+        <div>
+          <Typography
+            variant="small"
+            color="blue-gray"
+            className="mb-2 text-left font-medium"
+          >
+            Rewards
+          </Typography>
+
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto text-left">
+              <thead>
+                <tr>
+                  {TABLE_HEAD.map((head) => (
+                    <th
+                      key={head}
+                      className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
+                    >
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal leading-none opacity-70"
+                      >
+                        {head}
+                      </Typography>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data && data.length > 0 ? (
+                  data.map(({ _id, title, date }, index) => {
+                    const isLast = index === data.length - 1;
+                    const rowClass = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+                    return (
+                      <tr key={index}>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {title}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {date}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Tooltip content="Delete User">
+                            <IconButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddReward(_id, id);
                               }}
                               variant="text"
                             >

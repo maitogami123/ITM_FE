@@ -73,12 +73,27 @@ export const removeStaffFromCompetition = (staffId, competitionId) => {
   return interceptedAxios.delete(url);
 };
 
+export const removeRewardFromCompetition = (rewardId, competitionId) => {
+  const url = `${API_ENDPOINTS.competition}/${competitionId}/reward/${rewardId}`;
+  return interceptedAxios.delete(url);
+};
+
 export const addStaffToCompetition = (staffId, competitionId) => {
   const url = `${API_ENDPOINTS.competition}/${competitionId}/staff/${staffId}`;
   return interceptedAxios.post(url);
 };
 
+export const addRewardToCompetition = (rewardId, competitionId) => {
+  const url = `${API_ENDPOINTS.competition}/${competitionId}/reward/${rewardId}`;
+  return interceptedAxios.post(url);
+};
+
 export const getCompetitionStaffless = (id) => {
   const url = `${API_ENDPOINTS.competition}/${id}/staffs-not-in`;
+  return interceptedAxios.get(url);
+};
+
+export const getCompetitionRewardless = (id) => {
+  const url = `${API_ENDPOINTS.competition}/${id}/rewards-not-in`;
   return interceptedAxios.get(url);
 };
