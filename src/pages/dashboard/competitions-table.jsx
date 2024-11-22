@@ -1,6 +1,7 @@
 import {
   deleteCompetition,
   getAllCompetitions,
+  getExportCompetition,
 } from "@/services/competitionService";
 import {
   AddCompetitionDialog,
@@ -9,12 +10,15 @@ import {
   UpdateCompetitionDialog,
 } from "@/widgets/modelModals/competitionModal";
 import Toast from "@/widgets/toast/toast-message";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import {
   GiftTopIcon,
   PencilIcon,
   TrashIcon,
-  UserPlusIcon
+  UserPlusIcon,
 } from "@heroicons/react/24/solid";
 import {
   Button,
@@ -113,6 +117,58 @@ export function CompetitionsTable() {
     });
   };
 
+  const handleExport = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, export it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await getExportCompetition();
+          if (response.status === 200) {
+            // Tạo blob từ dữ liệu trả về
+            const blob = new Blob([response.data], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+
+            // Tạo URL tạm thời từ blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Tạo thẻ <a> để tải file
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "competition_statistics.xlsx"; // Tên file tải xuống
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Hiển thị thông báo thành công
+            Toast.fire({
+              title: "Exported!",
+              text: "Competition has been exported.",
+              icon: "success",
+            });
+
+            // Giải phóng URL
+            window.URL.revokeObjectURL(url);
+          }
+        } catch (e) {
+          // Hiển thị thông báo lỗi
+          Toast.fire({
+            title: "Error!",
+            text: "Competition export failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
       <UpdateCompetitionDialog
@@ -162,6 +218,16 @@ export function CompetitionsTable() {
               >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add
                 competition
+              </Button>
+              <Button
+                className="flex items-center gap-3"
+                size="sm"
+                onClick={() => {
+                  handleExport();
+                }}
+              >
+                <ArrowDownIcon strokeWidth={2} className="h-4 w-4" /> Export
+                competitions
               </Button>
             </div>
           </div>

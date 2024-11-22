@@ -97,3 +97,10 @@ export const getCompetitionRewardless = (id) => {
   const url = `${API_ENDPOINTS.competition}/${id}/rewards-not-in`;
   return interceptedAxios.get(url);
 };
+
+export const getExportCompetition = () => {
+  const url = `${API_ENDPOINTS.competition}/export/staffs`;
+  return interceptedAxios.get(url, {
+    responseType: "blob", // Quan trọng: Cấu hình để nhận blob
+  });
+};
