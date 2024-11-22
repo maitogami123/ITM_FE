@@ -1,10 +1,12 @@
-import { getAllRewards } from "@/services/rewardService";
+import { deleteReward, getAllRewards } from "@/services/rewardService";
 import {
   AddRewardDialog,
+  AddStaffToRewardDialog,
   UpdateRewardDialog,
 } from "@/widgets/modelModals/rewardModal";
+import Toast from "@/widgets/toast/toast-message";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -18,13 +20,16 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const TABLE_HEAD = ["Title", "Year", "Status", "Employed", ""];
 
 export function RewardsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
+  const [addStaffOpen, setAddStaffOpen] = useState(false);
   const [idUnit, setIdUnit] = useState("");
+  const handleAddStaffOpen = () => setAddStaffOpen(!addStaffOpen);
   const handleOpenUpdate = () => setOpenUpdate(!openUpdate);
   const handleOpenCreate = () => setOpenCreate(!openCreate);
   const [data, setData] = useState([]);
@@ -59,6 +64,40 @@ export function RewardsTable() {
     }
   };
 
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const deleteReponse = await deleteReward({ id });
+          if (deleteReponse.status === 200) {
+            Toast.fire({
+              title: "Deleted!",
+              text: "Reward has been deleted.",
+              icon: "success",
+            });
+            setData((prev) => {
+              return prev.filter((item) => item._id !== id);
+            });
+          }
+        } catch (e) {
+          Toast.fire({
+            title: "Error!",
+            text: "Reward delete failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     fetchData();
   }, [currentPage]);
@@ -72,6 +111,11 @@ export function RewardsTable() {
       <UpdateRewardDialog
         open={openUpdate}
         handleOpen={handleOpenUpdate}
+        id={idUnit}
+      />
+      <AddStaffToRewardDialog
+        open={addStaffOpen}
+        handleOpen={handleAddStaffOpen}
         id={idUnit}
       />
       {/* <AddCompetitionDialog open={openCreate} handleOpen={handleOpenCreate} /> */}
@@ -214,16 +258,37 @@ export function RewardsTable() {
                               {date}
                             </Typography>
                           </td>
-                          <td
-                            className={classes}
-                            onClick={() => {
-                              handleOpenUpdate();
-                              setIdUnit(_id);
-                            }}
-                          >
+                          <td className={classes}>
                             <Tooltip content="Edit Reward">
-                              <IconButton variant="text">
+                              <IconButton
+                                onClick={() => {
+                                  handleOpenUpdate();
+                                  setIdUnit(_id);
+                                }}
+                                variant="text"
+                              >
                                 <PencilIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Add Reward To Competition">
+                              <IconButton
+                                onClick={() => {
+                                  setIdUnit(_id);
+                                  handleAddStaffOpen();
+                                }}
+                                variant="text"
+                              >
+                                <UserPlusIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Delete Competition">
+                              <IconButton
+                                onClick={() => {
+                                  handleDelete(_id);
+                                }}
+                                variant="text"
+                              >
+                                <TrashIcon className="h-4 w-4" />
                               </IconButton>
                             </Tooltip>
                           </td>

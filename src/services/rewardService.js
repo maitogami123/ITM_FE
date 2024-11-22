@@ -1,4 +1,3 @@
-import axios from "axios";
 import { API_ENDPOINTS } from "../utils/constant";
 import interceptedAxios from "./axiosRequest";
 
@@ -17,6 +16,11 @@ export const getRewardById = (id) => {
   return interceptedAxios.get(url);
 };
 
+export const getRewardStaffless = (id) => {
+  const url = `${API_ENDPOINTS.reward}/${id}/staffs-not-in`;
+  return interceptedAxios.get(url);
+};
+
 export const createReward = async ({
   title,
   date,
@@ -31,6 +35,11 @@ export const createReward = async ({
   };
   const url = `${API_ENDPOINTS.reward}`;
   return await interceptedAxios.post(url, rewardData);
+};
+
+export const addStaffToReward = (staffId, rewardId) => {
+  const url = `${API_ENDPOINTS.reward}/${rewardId}/staff/${staffId}`;
+  return interceptedAxios.post(url);
 };
 
 export const updateReward = async (id, { title, date, staff, competition }) => {
@@ -52,4 +61,14 @@ export const updateReward = async (id, { title, date, staff, competition }) => {
       error.response?.data?.message || "Failed to update competition"
     );
   }
+};
+
+export const deleteReward = ({ id }) => {
+  const url = `${API_ENDPOINTS.reward}/${id}`;
+  return interceptedAxios.delete(url);
+};
+
+export const removeStaffFromReward = (staffId, rewardId) => {
+  const url = `${API_ENDPOINTS.reward}/${rewardId}/staff/${staffId}`;
+  return interceptedAxios.delete(url);
 };
