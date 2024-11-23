@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Toast from "../toast/toast-message";
 
-const TABLE_HEAD = ["Name", "Description", "Start Date", "End Date"];
+const TABLE_HEAD = ["Name", "MSCB", "Main Specialization", "Action"];
 const TABLE_HEAD_REWARDS = ["title", "Date", "Start Date", "End Date"];
 
 export function UpdateRewardDialog({

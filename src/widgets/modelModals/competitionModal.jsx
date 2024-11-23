@@ -34,6 +34,7 @@ const TABLE_HEAD = [
   "Start Date",
   "Actions",
 ];
+const TABLE_HEAD_ADDSTAFF = ["Name", "MSCB", "Main Specialization", "Actions"];
 const TABLE_HEAD_REWARDS = ["title", "Date", "Actions"];
 
 export function UpdateCompetitionDialog({
@@ -755,10 +756,10 @@ export function AddStaffToCompetitionDialog({
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Add Competition
+          Add Staff for Competition
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
-          To create a new Competition. You must full fill information.
+          To add a staff to Competition. You must choose staff in this table
         </Typography>
         <IconButton
           size="sm"
@@ -787,7 +788,7 @@ export function AddStaffToCompetitionDialog({
             <table className="min-w-full table-auto text-left">
               <thead>
                 <tr>
-                  {TABLE_HEAD.map((head) => (
+                  {TABLE_HEAD_ADDSTAFF.map((head) => (
                     <th
                       key={head}
                       className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
@@ -984,7 +985,7 @@ export function AddRewardToCompetitionDialog({
             <table className="min-w-full table-auto text-left">
               <thead>
                 <tr>
-                  {TABLE_HEAD.map((head) => (
+                  {TABLE_HEAD_REWARDS.map((head) => (
                     <th
                       key={head}
                       className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
