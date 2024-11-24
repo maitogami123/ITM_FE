@@ -104,3 +104,13 @@ export const getExportCompetition = () => {
     responseType: "blob", // Quan trọng: Cấu hình để nhận blob
   });
 };
+
+export const getCompetitionForStaff = (staffId) => {
+  const url = `${API_ENDPOINTS.competition}/active/${staffId}`;
+  return interceptedAxios.get(url);
+};
+
+export const registerStaff = (competitionId, staffId) => {
+  const url = `${API_ENDPOINTS.competition}/${competitionId}/register/${staffId}`;
+  return interceptedAxios.post(url);
+};

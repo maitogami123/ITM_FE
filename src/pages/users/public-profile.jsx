@@ -79,12 +79,10 @@ export function PublicProfile() {
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
             <ProfileInfoCard
               title="Profile Information"
-              description="Hi, I'm Alec Thompson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               details={{
-                "first name": "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
+                name: userData.name,
+                mobile: userData.phone,
+                "main specialization": userData.mainSpecialization,
                 social: (
                   <div className="flex items-center gap-4">
                     <i className="fa-brands fa-facebook text-blue-700" />

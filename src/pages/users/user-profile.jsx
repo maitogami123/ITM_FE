@@ -1,6 +1,5 @@
 import UserProfileForm from "@/components/user/user-form";
 import { projectsData } from "@/data";
-import { getStaffById } from "@/services/staffService";
 import { getUserById } from "@/services/userService";
 import JoinNow from "@/widgets/campain/join-now";
 import { ProfileInfoCard } from "@/widgets/cards";
@@ -86,7 +85,9 @@ export function UserProfile() {
                       variant="small"
                       className="font-normal text-blue-gray-600"
                     >
-                      {userData.staff && userData.staff.positions[0].title}
+                      {userData.staff &&
+                        userData.staff.positions[0] &&
+                        userData.staff.positions[0].title}
                     </Typography>
                   </div>
                 </div>
