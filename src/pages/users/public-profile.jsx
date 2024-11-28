@@ -1,19 +1,18 @@
-import { projectsData } from "@/data";
 import { getStaffById } from "@/services/staffService";
 import { ProfileInfoCard } from "@/widgets/cards";
 import {
   Avatar,
-  Button,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
-  Input,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import UserProfile from "./user-profile";
+import UserProfileForm from "@/components/user/user-form";
 
 export function PublicProfile() {
   const { id } = useParams(); // Lấy id từ URL
@@ -82,6 +81,7 @@ export function PublicProfile() {
               details={{
                 name: userData.name,
                 mobile: userData.phone,
+                email: userData.user.email,
                 "main specialization": userData.mainSpecialization,
                 social: (
                   <div className="flex items-center gap-4">
@@ -93,82 +93,121 @@ export function PublicProfile() {
               }}
             />
             <div className="col-span-2">
-              <div className="px-4 pb-4">
-                {/* <Typography variant="h6" color="blue-gray" className="mb-2">
-                  Projects
-                </Typography>
-                <Typography
-                  variant="small"
-                  className="font-normal text-blue-gray-500"
-                >
-                  Architects design houses
-                </Typography> */}
-                <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2">
-                  {/* {projectsData.map(
-                    ({ img, title, description, tag, route, members }) => (
-                      <Card key={title} color="transparent" shadow={false}>
-                        <CardHeader
-                          floated={false}
-                          color="gray"
-                          className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                        >
-                          <img
-                            src={img}
-                            alt={title}
-                            className="h-full w-full object-cover"
-                          />
-                        </CardHeader>
-                        <CardBody className="py-0 px-1">
-                          <Typography
-                            variant="small"
-                            className="font-normal text-blue-gray-500"
-                          >
-                            {tag}
-                          </Typography>
-                          <Typography
-                            variant="h5"
-                            color="blue-gray"
-                            className="mt-1 mb-2"
-                          >
-                            {title}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            className="font-normal text-blue-gray-500"
-                          >
-                            {description}
-                          </Typography>
-                        </CardBody>
-                        <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
-                          <Link to={route}>
-                            <Button variant="outlined" size="sm">
-                              view project
-                            </Button>
-                          </Link>
-                          <div>
-                            {members.map(({ img, name }, key) => (
-                              <Tooltip key={name} content={name}>
-                                <Avatar
-                                  src={img}
-                                  alt={name}
-                                  size="xs"
-                                  variant="circular"
-                                  className={`cursor-pointer border-2 border-white ${
-                                    key === 0 ? "" : "-ml-2.5"
-                                  }`}
-                                />
-                              </Tooltip>
-                            ))}
-                          </div>
-                        </CardFooter>
-                      </Card>
-                    )
-                  )} */}
+              <div className="flex flex-col">
+                <div className="mb-6 flex flex-col items-end gap-4 md:flex-row">
+                  <div className="w-full">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="mb-2 font-medium"
+                    >
+                      Description
+                    </Typography>
+                    <Typography>{userData.user.description}</Typography>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </CardBody>
+        {userData.rewards && userData.rewards.length > 0 && (
+          <div className="px-4 pb-4">
+            <Typography variant="h3" color="blue-gray" className="mb-2">
+              Rewards
+            </Typography>
+            <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+              {userData.rewards.map(({ title, description, years, _id }) => (
+                <Card key={_id} color="transparent" shadow={false}>
+                  <CardHeader
+                    floated={false}
+                    color="gray"
+                    className="mx-0 mt-0 mb-4 h-64 xl:h-40"
+                  >
+                    <img
+                      src={"/img/home-decor-1.jpeg"}
+                      alt={title}
+                      className="h-full w-full object-cover"
+                    />
+                  </CardHeader>
+                  <CardBody className="py-0 px-1">
+                    <Typography
+                      variant="small"
+                      className="font-normal text-blue-gray-500"
+                    >
+                      {years}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      color="blue-gray"
+                      className="mt-1 mb-2"
+                    >
+                      {title}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      className="font-normal text-blue-gray-500"
+                    >
+                      {description}
+                    </Typography>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+        {userData.competitions && userData.competitions.length > 0 && (
+          <div className="px-4 pb-4">
+            <Typography variant="h3" color="blue-gray" className="mb-2">
+              Competitions
+            </Typography>
+            <Typography
+              variant="small"
+              className="font-normal text-blue-gray-500"
+            >
+              Participated competitions
+            </Typography>
+            <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+              {userData.competitions.map(
+                ({ title, description, years, _id }) => (
+                  <Card key={_id} color="transparent" shadow={false}>
+                    <CardHeader
+                      floated={false}
+                      color="gray"
+                      className="mx-0 mt-0 mb-4 h-64 xl:h-40"
+                    >
+                      <img
+                        src={"/img/home-decor-1.jpeg"}
+                        alt={title}
+                        className="h-full w-full object-cover"
+                      />
+                    </CardHeader>
+                    <CardBody className="py-0 px-1">
+                      <Typography
+                        variant="small"
+                        className="font-normal text-blue-gray-500"
+                      >
+                        {years}
+                      </Typography>
+                      <Typography
+                        variant="h5"
+                        color="blue-gray"
+                        className="mt-1 mb-2"
+                      >
+                        {title}
+                      </Typography>
+                      <Typography
+                        variant="small"
+                        className="font-normal text-blue-gray-500"
+                      >
+                        {description}
+                      </Typography>
+                    </CardBody>
+                  </Card>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </Card>
     </div>
   );

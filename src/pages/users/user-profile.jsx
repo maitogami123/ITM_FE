@@ -99,13 +99,7 @@ export function UserProfile() {
                   "full name": (userData.staff && userData.staff.name) || "",
                   mobile: (userData.staff && userData.staff.phone) || "",
                   email: userData.email,
-                  social: (
-                    <div className="flex items-center gap-4">
-                      <i className="fa-brands fa-facebook text-blue-700" />
-                      <i className="fa-brands fa-twitter text-blue-400" />
-                      <i className="fa-brands fa-instagram text-purple-500" />
-                    </div>
-                  ),
+                  "expected salary increment date": userData.nextIncrementDate,
                 }}
               />
             </div>
@@ -116,79 +110,118 @@ export function UserProfile() {
               <UserProfileForm user={userData} />
             </div>
           </div>
-          <div className="px-4 pb-4">
-            <Typography variant="h6" color="blue-gray" className="mb-2">
-              Projects
-            </Typography>
-            <Typography
-              variant="small"
-              className="font-normal text-blue-gray-500"
-            >
-              Architects design houses
-            </Typography>
-            <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              {/* {projectsData.map(
-                ({ img, title, description, tag, route, members }) => (
-                  <Card key={title} color="transparent" shadow={false}>
-                    <CardHeader
-                      floated={false}
-                      color="gray"
-                      className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                    >
-                      <img
-                        src={img}
-                        alt={title}
-                        className="h-full w-full object-cover"
-                      />
-                    </CardHeader>
-                    <CardBody className="py-0 px-1">
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
+          {userData.staff.rewards && userData.staff.rewards.length > 0 && (
+            <div className="px-4 pb-4">
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                Rewards
+              </Typography>
+              <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+                {userData.staff.rewards.map(
+                  ({ title, description, years, _id }) => (
+                    <Card key={_id} color="transparent" shadow={false}>
+                      <CardHeader
+                        floated={false}
+                        color="gray"
+                        className="mx-0 mt-0 mb-4 h-64 xl:h-40"
                       >
-                        {tag}
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        color="blue-gray"
-                        className="mt-1 mb-2"
-                      >
-                        {title}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        {description}
-                      </Typography>
-                    </CardBody>
-                    <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
-                      <Link to={route}>
-                        <Button variant="outlined" size="sm">
-                          view project
-                        </Button>
-                      </Link>
-                      <div>
-                        {members.map(({ img, name }, key) => (
-                          <Tooltip key={name} content={name}>
+                        <img
+                          src={"/img/home-decor-1.jpeg"}
+                          alt={title}
+                          className="h-full w-full object-cover"
+                        />
+                      </CardHeader>
+                      <CardBody className="py-0 px-1">
+                        <Typography
+                          variant="small"
+                          className="font-normal text-blue-gray-500"
+                        >
+                          {years}
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          color="blue-gray"
+                          className="mt-1 mb-2"
+                        >
+                          {title}
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          className="font-normal text-blue-gray-500"
+                        >
+                          {description}
+                        </Typography>
+                      </CardBody>
+                    </Card>
+                  )
+                )}
+              </div>
+            </div>
+          )}
+          {userData.staff.competitions &&
+            userData.staff.competitions.length > 0 && (
+              <div className="px-4 pb-4">
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  Competitions
+                </Typography>
+                <Typography
+                  variant="small"
+                  className="font-normal text-blue-gray-500"
+                >
+                  Participated competitions
+                </Typography>
+                <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+                  {userData.staff.competitions.map(
+                    ({ title, description, years, _id, staffs }) => (
+                      <Card key={_id} color="transparent" shadow={false}>
+                        <CardHeader
+                          floated={false}
+                          color="gray"
+                          className="mx-0 mt-0 mb-4 h-64 xl:h-40"
+                        >
+                          <img
+                            src={"/img/home-decor-1.jpeg"}
+                            alt={title}
+                            className="h-full w-full object-cover"
+                          />
+                        </CardHeader>
+                        <CardBody className="py-0 px-1">
+                          <Typography
+                            variant="small"
+                            className="font-normal text-blue-gray-500"
+                          >
+                            {years}
+                          </Typography>
+                          <Typography
+                            variant="h5"
+                            color="blue-gray"
+                            className="mt-1 mb-2"
+                          >
+                            {title}
+                          </Typography>
+                          <Typography
+                            variant="small"
+                            className="font-normal text-blue-gray-500"
+                          >
+                            {description}
+                          </Typography>
+                        </CardBody>
+                        <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
+                          <Tooltip content={"Thanh"}>
                             <Avatar
-                              src={img}
-                              alt={name}
+                              src={"/img/team-1.jpeg"}
+                              alt={"Thanh"}
                               size="xs"
                               variant="circular"
-                              className={`cursor-pointer border-2 border-white ${
-                                key === 0 ? "" : "-ml-2.5"
-                              }`}
+                              className={`cursor-pointer border-2 border-white`}
                             />
                           </Tooltip>
-                        ))}
-                      </div>
-                    </CardFooter>
-                  </Card>
-                )
-              )} */}
-            </div>
-          </div>
+                        </CardFooter>
+                      </Card>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
         </CardBody>
       </Card>
     </div>
