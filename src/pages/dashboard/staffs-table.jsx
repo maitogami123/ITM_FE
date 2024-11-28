@@ -116,7 +116,7 @@ export function StaffsTable() {
                 className="flex items-center gap-3"
                 size="sm"
               >
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Member
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Staff
               </Button>
             </div>
           </div>

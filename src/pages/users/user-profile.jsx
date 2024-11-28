@@ -127,7 +127,7 @@ export function UserProfile() {
               Architects design houses
             </Typography>
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              {projectsData.map(
+              {/* {projectsData.map(
                 ({ img, title, description, tag, route, members }) => (
                   <Card key={title} color="transparent" shadow={false}>
                     <CardHeader
@@ -186,7 +186,7 @@ export function UserProfile() {
                     </CardFooter>
                   </Card>
                 )
-              )}
+              )} */}
             </div>
           </div>
         </CardBody>

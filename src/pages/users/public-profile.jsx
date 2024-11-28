@@ -67,12 +67,12 @@ export function PublicProfile() {
                 <Typography variant="h5" color="blue-gray" className="mb-1">
                   {userData.name}
                 </Typography>
-                <Typography
+                {/* <Typography
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
                   {userData.positions[0].title}
-                </Typography>
+                </Typography> */}
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ export function PublicProfile() {
             />
             <div className="col-span-2">
               <div className="px-4 pb-4">
-                <Typography variant="h6" color="blue-gray" className="mb-2">
+                {/* <Typography variant="h6" color="blue-gray" className="mb-2">
                   Projects
                 </Typography>
                 <Typography
@@ -102,9 +102,9 @@ export function PublicProfile() {
                   className="font-normal text-blue-gray-500"
                 >
                   Architects design houses
-                </Typography>
+                </Typography> */}
                 <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2">
-                  {projectsData.map(
+                  {/* {projectsData.map(
                     ({ img, title, description, tag, route, members }) => (
                       <Card key={title} color="transparent" shadow={false}>
                         <CardHeader
@@ -163,7 +163,7 @@ export function PublicProfile() {
                         </CardFooter>
                       </Card>
                     )
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

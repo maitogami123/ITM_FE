@@ -88,7 +88,8 @@ export function PositionsTable() {
                 view all
               </Button>
               <Button className="flex items-center gap-3" size="sm">
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add
+                position
               </Button>
             </div>
           </div>

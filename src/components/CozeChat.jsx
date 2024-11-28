@@ -14,7 +14,7 @@ const CozeChat = () => {
           bot_id: "7439347335895171090",
         },
         componentProps: {
-          title: "Coze",
+          title: "ITM Assistant",
         },
       });
     };
