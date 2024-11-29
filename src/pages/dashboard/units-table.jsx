@@ -1,32 +1,26 @@
-import { getAllStaffs } from "@/services/staffService";
 import { deleteUnit, getAllUnits } from "@/services/unitService";
 import { AddStaffForms } from "@/widgets/forms/units/add-staff";
-import { AddStaffDialog } from "@/widgets/modelModals/staffModal";
 import { AddUnitDialog } from "@/widgets/modelModals/unitModal";
 import Toast from "@/widgets/toast/toast-message";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
-  Card,
-  CardHeader,
-  Input,
-  Typography,
   Button,
+  Card,
   CardBody,
-  Chip,
   CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Avatar,
+  CardHeader,
+  Chip,
   IconButton,
+  Input,
   Tooltip,
+  Typography,
 } from "@material-tailwind/react";
 import { number } from "prop-types";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Unit", "Number of personnel", ""];
 
 export function UnitsTable() {
   const [open, setOpen] = useState(false);
@@ -124,7 +118,7 @@ export function UnitsTable() {
                 Members list
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
-                See information about all members
+                See information about all Units
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -139,7 +133,7 @@ export function UnitsTable() {
                 className="flex items-center gap-3"
                 size="sm"
               >
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Unit
               </Button>
             </div>
           </div>
@@ -205,13 +199,6 @@ export function UnitsTable() {
                               >
                                 {name}
                               </Typography>
-                              {/* <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {mscb}
-                        </Typography> */}
                             </div>
                           </div>
                         </td>
@@ -222,35 +209,9 @@ export function UnitsTable() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {staffs.length}
+                              {staffs.length} members
                             </Typography>
-                            {/* <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        {mainSpecialization}
-                      </Typography> */}
                           </div>
-                        </td>
-                        <td className={classes}>
-                          <div className="w-max">
-                            <Chip
-                              variant="ghost"
-                              size="sm"
-                              value={name ? "online" : "offline"}
-                              color={name ? "green" : "blue-gray"}
-                            />
-                          </div>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {staffs.length}
-                          </Typography>
                         </td>
                         <td className={classes}>
                           <Tooltip content="Edit User">

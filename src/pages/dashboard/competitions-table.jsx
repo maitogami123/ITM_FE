@@ -34,7 +34,13 @@ import {
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Title", "Year", "Status", "Description", ""];
+const TABLE_HEAD = [
+  "Title",
+  "Year",
+  "Number of personnel participating",
+  "Description",
+  "",
+];
 
 export function CompetitionsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -324,7 +330,7 @@ export function CompetitionsTable() {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {staffs.length}
+                                {staffs.length} members
                               </Typography>
                             </div>
                           </td>

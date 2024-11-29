@@ -27,6 +27,22 @@ export const getStaffUnitless = () => {
   return interceptedAxios.get(url);
 };
 
+export const getListSalaryIncrements = (
+  search = null,
+  page = 1,
+  sortBy = "name",
+  order = "asc",
+  limit = 5
+) => {
+  let url = ``;
+  if (search == null) {
+    url = `${API_ENDPOINTS.staff}/increments?page=${page}&limit=${limit}&sortBy=${sortBy}&order=${order}`;
+  } else {
+    url = `${API_ENDPOINTS.staff}/increments?search=${search}&page=1&limit=${limit}&sortBy=${sortBy}&order=${order}`;
+  }
+  return interceptedAxios.get(url);
+};
+
 export const updateStaffUnit = ({ staffId, unitId }) => {
   const url = `${API_ENDPOINTS.staff}/${staffId}/unit/${unitId}`;
   return interceptedAxios.patch(url);
@@ -45,4 +61,11 @@ export const deleteStaff = ({ id }) => {
 export const updateStaff = (data) => {
   const url = `${API_ENDPOINTS.staff}/${data._id}`;
   return interceptedAxios.patch(url, data);
+};
+
+export const getExportSalary = () => {
+  const url = `${API_ENDPOINTS.staff}/export/salary`;
+  return interceptedAxios.get(url, {
+    responseType: "blob", // Quan trọng: Cấu hình để nhận blob
+  });
 };

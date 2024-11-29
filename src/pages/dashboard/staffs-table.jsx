@@ -1,27 +1,24 @@
 import { deleteStaff, getAllStaffs } from "@/services/staffService";
+import { formatDate } from "@/utils/helper";
 import { AddStaffDialog } from "@/widgets/modelModals/staffModal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
-  Card,
-  CardHeader,
-  Input,
-  Typography,
-  Button,
-  CardBody,
-  Chip,
-  CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
   Avatar,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   IconButton,
+  Input,
   Tooltip,
+  Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Members", "Chuyên môn", "Phone", "Start Date", ""];
 
 export function StaffsTable() {
   const [open, setOpen] = useState(false);
@@ -230,12 +227,13 @@ export function StaffsTable() {
                           </Typography>
                         </td>
                         <td className={rowClasses}>
-                          <Chip
-                            variant="ghost"
-                            size="sm"
-                            value={gender ? "Male" : "Female"}
-                            color={gender ? "green" : "blue-gray"}
-                          />
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {phone}
+                          </Typography>
                         </td>
                         <td className={rowClasses}>
                           <Typography
@@ -243,7 +241,7 @@ export function StaffsTable() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {startDate}
+                            {formatDate(startDate)}
                           </Typography>
                         </td>
                         <td className={rowClasses}>

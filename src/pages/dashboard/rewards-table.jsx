@@ -1,4 +1,5 @@
 import { deleteReward, getAllRewards } from "@/services/rewardService";
+import { formatDate } from "@/utils/helper";
 import {
   AddRewardDialog,
   AddStaffToRewardDialog,
@@ -13,7 +14,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Chip,
   IconButton,
   Input,
   Tooltip,
@@ -22,7 +22,7 @@ import {
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Title", "Year", "Status", "Employed", ""];
+const TABLE_HEAD = ["Title", "Year", "Competition", "Staff", ""];
 
 export function RewardsTable() {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -47,7 +47,6 @@ export function RewardsTable() {
     setError(null);
     try {
       const response = await getAllRewards(null, currentPage);
-      console.log(response);
       if (response.status === 200) {
         const { data, total, page, limit, pages } = response.data;
         setData(data);
@@ -195,11 +194,7 @@ export function RewardsTable() {
                       const classes = isLast
                         ? "p-4"
                         : "p-4 border-b border-blue-gray-50";
-
                       return (
-                        //         <div className="flex items-center justify-center">
-                        //   <div className="h-8 w-8 animate-spin rounded-full border-4 border-dashed border-blue-500"></div>
-                        // </div>
                         <tr key={_id}>
                           <td className={classes}>
                             <div className="flex items-center gap-3">
@@ -211,13 +206,6 @@ export function RewardsTable() {
                                 >
                                   {title}
                                 </Typography>
-                                {/* <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {mscb}
-                        </Typography> */}
                               </div>
                             </div>
                           </td>
@@ -228,25 +216,8 @@ export function RewardsTable() {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {date}
+                                {formatDate(date)}
                               </Typography>
-                              {/* <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        {mainSpecialization}
-                      </Typography> */}
-                            </div>
-                          </td>
-                          <td className={classes}>
-                            <div className="w-max">
-                              <Chip
-                                variant="ghost"
-                                size="sm"
-                                value={date ? "online" : "offline"}
-                                color={date ? "green" : "blue-gray"}
-                              />
                             </div>
                           </td>
                           <td className={classes}>
@@ -255,7 +226,16 @@ export function RewardsTable() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {date}
+                              {competition?.title}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {staff?.name}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -299,6 +279,7 @@ export function RewardsTable() {
                 </tbody>
               </table>
             )}
+            console.log("🚀 ~ RewardsTable ~ data:", data)
           </CardBody>
         )}
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">

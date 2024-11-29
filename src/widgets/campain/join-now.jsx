@@ -68,39 +68,48 @@ export function JoinNow() {
   };
 
   return (
-    <>
-      {competitionList &&
-        competitionList.length > 0 &&
-        competitionList.map((competition) => {
-          return (
-            <section
-              key={competition._id}
-              className="rounded-xl rounded-l-xl border border-blue-gray-100 bg-[url('/img/gradient-bg-1.png')] bg-cover bg-right bg-no-repeat p-10"
-            >
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="mb-2 font-bold"
+    <div className="max-h-[400px] overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-md">
+      <Typography
+        variant="h3"
+        color="blue-gray"
+        className="sticky top-0 z-10 mb-2 border-b border-gray-500/25 bg-white p-4 text-center font-bold shadow-md"
+      >
+        UPCOMING COMPETITIONS
+      </Typography>
+      <div className="space-y-6 p-4">
+        {competitionList &&
+          competitionList.length > 0 &&
+          competitionList.map((competition) => {
+            return (
+              <section
+                key={competition._id}
+                className="rounded-xl rounded-l-xl border border-blue-gray-100 bg-[url('/img/gradient-bg-1.png')] bg-cover bg-right bg-no-repeat p-10"
               >
-                Upcoming Events
-              </Typography>
-              <Typography variant="h3" color="blue-gray">
-                {competition.title}
-              </Typography>
-              <Typography className="mt-2 mb-6 !text-base font-normal text-gray-800">
-                {competition.description}
-              </Typography>
-              <Button
-                variant="outlined"
-                onClick={() => handleRegisterUser(competition._id, user.id)}
-                className="flex-shrink-0"
-              >
-                join now
-              </Button>
-            </section>
-          );
-        })}
-    </>
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="mb-2 font-bold"
+                >
+                  Upcoming Events
+                </Typography>
+                <Typography variant="h3" color="blue-gray">
+                  {competition.title}
+                </Typography>
+                <Typography className="mt-2 mb-6 !text-base font-normal text-gray-800">
+                  {competition.description}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleRegisterUser(competition._id, user.id)}
+                  className="flex-shrink-0"
+                >
+                  join now
+                </Button>
+              </section>
+            );
+          })}
+      </div>
+    </div>
   );
 }
 export default JoinNow;

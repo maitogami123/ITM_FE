@@ -1,261 +1,156 @@
-import React from "react";
 import {
-  Typography,
+  getExportSalary,
+  getListSalaryIncrements,
+} from "@/services/staffService";
+import JoinNow from "@/widgets/campain/join-now";
+import ListSalaryTable from "@/widgets/listSalary/ListSalaryTable";
+import Toast from "@/widgets/toast/toast-message";
+import { CheckIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
   Card,
-  CardHeader,
   CardBody,
+  CardFooter,
+  CardHeader,
   IconButton,
   Menu,
   MenuHandler,
-  MenuList,
   MenuItem,
-  Avatar,
-  Tooltip,
-  Progress,
+  MenuList,
+  Typography,
 } from "@material-tailwind/react";
-import {
-  ClockIcon,
-  CheckIcon,
-  EllipsisVerticalIcon,
-  ArrowUpIcon,
-} from "@heroicons/react/24/outline";
-import { StatisticsCard } from "@/widgets/cards";
-import { StatisticsChart } from "@/widgets/charts";
-import {
-  statisticsCardsData,
-  statisticsChartsData,
-  projectsTableData,
-  ordersOverviewData,
-} from "@/data";
-import JoinNow from "@/widgets/campain/join-now";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export function Home() {
+  const [page, setPage] = useState({ total: 0, page: 1, limit: 10, pages: 1 });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleExport = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, export it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await getExportSalary();
+          if (response.status === 200) {
+            // Tạo blob từ dữ liệu trả về
+            const blob = new Blob([response.data], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+
+            // Tạo URL tạm thời từ blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Tạo thẻ <a> để tải file
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "salaryIncrements_statistics.xlsx"; // Tên file tải xuống
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Hiển thị thông báo thành công
+            Toast.fire({
+              title: "Exported!",
+              text: "Salary Increments has been exported.",
+              icon: "success",
+            });
+
+            // Giải phóng URL
+            window.URL.revokeObjectURL(url);
+          }
+        } catch (e) {
+          // Hiển thị thông báo lỗi
+          Toast.fire({
+            title: "Error!",
+            text: "Competition export failed.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
+
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 ">
         <JoinNow />
       </div>
-      <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-        {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
-          <StatisticsCard
-            key={title}
-            {...rest}
-            title={title}
-            icon={React.createElement(icon, {
-              className: "w-6 h-6 text-white",
-            })}
-            footer={
-              <Typography className="font-normal text-blue-gray-600">
-                <strong className={footer.color}>{footer.value}</strong>
-                &nbsp;{footer.label}
-              </Typography>
-            }
-          />
-        ))}
-      </div>
-      <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-        {statisticsChartsData.map((props) => (
-          <StatisticsChart
-            key={props.title}
-            {...props}
-            footer={
-              <Typography
-                variant="small"
-                className="flex items-center font-normal text-blue-gray-600"
-              >
-                <ClockIcon strokeWidth={2} className="h-4 w-4 text-inherit" />
-                &nbsp;{props.footer}
-              </Typography>
-            }
-          />
-        ))}
-      </div>
-      <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Card className="overflow-hidden xl:col-span-2">
-          <CardHeader
-            floated={false}
-            shadow={false}
-            color="transparent"
-            className="m-0 flex items-center justify-between p-6"
-          >
-            <div>
-              <Typography variant="h6" color="blue-gray" className="mb-1">
-                Projects
-              </Typography>
-              <Typography
-                variant="small"
-                className="flex items-center gap-1 font-normal text-blue-gray-600"
-              >
-                <CheckIcon strokeWidth={3} className="h-4 w-4 text-blue-500" />
-                <strong>30 done</strong> this month
-              </Typography>
-            </div>
-            <Menu placement="left-start">
-              <MenuHandler>
-                <IconButton size="sm" variant="text" color="blue-gray">
-                  <EllipsisVerticalIcon
-                    strokeWidth={3}
-                    fill="currenColor"
-                    className="h-6 w-6"
-                  />
-                </IconButton>
-              </MenuHandler>
-              <MenuList>
-                <MenuItem>Action</MenuItem>
-                <MenuItem>Another Action</MenuItem>
-                <MenuItem>Something else here</MenuItem>
-              </MenuList>
-            </Menu>
-          </CardHeader>
-          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-            <table className="w-full min-w-[640px] table-auto">
-              <thead>
-                <tr>
-                  {["companies", "members", "budget", "completion"].map(
-                    (el) => (
-                      <th
-                        key={el}
-                        className="border-b border-blue-gray-50 py-3 px-6 text-left"
-                      >
-                        <Typography
-                          variant="small"
-                          className="text-[11px] font-medium uppercase text-blue-gray-400"
-                        >
-                          {el}
-                        </Typography>
-                      </th>
-                    )
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {projectsTableData.map(
-                  ({ img, name, members, budget, completion }, key) => {
-                    const className = `py-3 px-5 ${
-                      key === projectsTableData.length - 1
-                        ? ""
-                        : "border-b border-blue-gray-50"
-                    }`;
-
-                    return (
-                      <tr key={name}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            <Avatar src={img} alt={name} size="sm" />
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {name}
-                            </Typography>
-                          </div>
-                        </td>
-                        <td className={className}>
-                          {members.map(({ img, name }, key) => (
-                            <Tooltip key={name} content={name}>
-                              <Avatar
-                                src={img}
-                                alt={name}
-                                size="xs"
-                                variant="circular"
-                                className={`cursor-pointer border-2 border-white ${
-                                  key === 0 ? "" : "-ml-2.5"
-                                }`}
-                              />
-                            </Tooltip>
-                          ))}
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            className="text-xs font-medium text-blue-gray-600"
-                          >
-                            {budget}
-                          </Typography>
-                        </td>
-                        <td className={className}>
-                          <div className="w-10/12">
-                            <Typography
-                              variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
-                            >
-                              {completion}%
-                            </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? "green" : "blue"}
-                              className="h-1"
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
-              </tbody>
-            </table>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardHeader
-            floated={false}
-            shadow={false}
-            color="transparent"
-            className="m-0 p-6"
-          >
-            <Typography variant="h6" color="blue-gray" className="mb-2">
-              Orders Overview
+      <Card className="my-4 h-full w-full">
+        <CardHeader
+          floated={false}
+          shadow={false}
+          color="transparent"
+          className="flex items-center justify-between p-6"
+        >
+          <div>
+            <Typography variant="h5" color="blue-gray" className="mb-1">
+              List Salary
             </Typography>
             <Typography
               variant="small"
               className="flex items-center gap-1 font-normal text-blue-gray-600"
             >
-              <ArrowUpIcon
-                strokeWidth={3}
-                className="h-3.5 w-3.5 text-green-500"
-              />
-              <strong>24%</strong> this month
+              <CheckIcon strokeWidth={3} className="h-4 w-4 text-blue-500" />
+              <strong>List Salary Increments</strong> during this period
             </Typography>
-          </CardHeader>
-          <CardBody className="pt-0">
-            {ordersOverviewData.map(
-              ({ icon, color, title, description }, key) => (
-                <div key={title} className="flex items-start gap-4 py-3">
-                  <div
-                    className={`relative p-1 after:absolute after:-bottom-6 after:left-2/4 after:w-0.5 after:-translate-x-2/4 after:bg-blue-gray-50 after:content-[''] ${
-                      key === ordersOverviewData.length - 1
-                        ? "after:h-0"
-                        : "after:h-4/6"
-                    }`}
-                  >
-                    {React.createElement(icon, {
-                      className: `!w-5 !h-5 ${color}`,
-                    })}
-                  </div>
-                  <div>
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="block font-medium"
-                    >
-                      {title}
-                    </Typography>
-                    <Typography
-                      as="span"
-                      variant="small"
-                      className="text-xs font-medium text-blue-gray-500"
-                    >
-                      {description}
-                    </Typography>
-                  </div>
-                </div>
-              )
-            )}
-          </CardBody>
-        </Card>
-      </div>
+          </div>
+          <Menu placement="left-start">
+            <MenuHandler>
+              <IconButton size="sm" variant="text" color="blue-gray">
+                <EllipsisVerticalIcon
+                  strokeWidth={3}
+                  className="h-6 w-6 text-blue-gray-600"
+                />
+              </IconButton>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem
+                onClick={() => {
+                  handleExport();
+                }}
+              >
+                Export to Excel
+              </MenuItem>
+              <MenuItem>Another Action</MenuItem>
+              <MenuItem>Something else here</MenuItem>
+            </MenuList>
+          </Menu>
+        </CardHeader>
+
+        <ListSalaryTable currentPage={currentPage} setPageData={setPage} />
+
+        <CardFooter className="flex items-center justify-between border-t p-4">
+          <Typography variant="small" color="blue-gray">
+            Page {page.page} of {page.pages}
+          </Typography>
+          <div className="flex gap-2">
+            <Button
+              variant="outlined"
+              size="sm"
+              disabled={page.page === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outlined"
+              size="sm"
+              disabled={page.page === page.pages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

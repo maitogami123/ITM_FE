@@ -20,7 +20,7 @@ import {
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Members", "Roles", "Description", ""];
 
 export function UsersTable() {
   const [open, setOpen] = useState(false);
@@ -166,7 +166,8 @@ export function UsersTable() {
                 </thead>
                 <tbody>
                   {data.map((user, index) => {
-                    const { _id, username, role, email, staff } = user;
+                    const { _id, username, role, email, staff, description } =
+                      user;
                     const isLast = index === data.length - 1;
                     const rowClasses = isLast
                       ? "p-4"
@@ -221,7 +222,7 @@ export function UsersTable() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {staff}
+                            {description}
                           </Typography>
                         </td>
                         <td className={rowClasses}>

@@ -21,7 +21,7 @@ export function AddUnitDialog({ open, handleOpen, id }) {
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Manage Item
+          Manage Unit
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
           Keep your records up-to-date and organized.
