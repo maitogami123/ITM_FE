@@ -9,7 +9,7 @@ import { CheckIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import {
   Button,
   Card,
-  CardBody,
+  Input,
   CardFooter,
   CardHeader,
   IconButton,
@@ -25,6 +25,11 @@ import Swal from "sweetalert2";
 export function Home() {
   const [page, setPage] = useState({ total: 0, page: 1, limit: 10, pages: 1 });
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   const handleExport = () => {
     Swal.fire({
@@ -102,6 +107,15 @@ export function Home() {
               <strong>List Salary Increments</strong> during this period
             </Typography>
           </div>
+          <div>
+            <Input
+              type="text"
+              value={searchQuery}
+              placeholder="Tên cán bộ"
+              label="Search"
+              onChange={handleSearch}
+            />
+          </div>
           <Menu placement="left-start">
             <MenuHandler>
               <IconButton size="sm" variant="text" color="blue-gray">
@@ -125,7 +139,11 @@ export function Home() {
           </Menu>
         </CardHeader>
 
-        <ListSalaryTable currentPage={currentPage} setPageData={setPage} />
+        <ListSalaryTable
+          currentPage={currentPage}
+          setPageData={setPage}
+          searchText={searchQuery}
+        />
 
         <CardFooter className="flex items-center justify-between border-t p-4">
           <Typography variant="small" color="blue-gray">

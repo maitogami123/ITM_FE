@@ -2,7 +2,7 @@ import { getListSalaryIncrements } from "@/services/staffService";
 import { Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
-function ListSalaryTable({ currentPage, setPageData }) {
+function ListSalaryTable({ currentPage, setPageData, searchText }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ function ListSalaryTable({ currentPage, setPageData }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await getListSalaryIncrements(null, currentPage);
+      const response = await getListSalaryIncrements(searchText, currentPage);
       if (response.status === 200) {
         const { data, total, page, limit, pages } = response.data;
         setData(data);
@@ -29,7 +29,7 @@ function ListSalaryTable({ currentPage, setPageData }) {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, searchText]);
 
   if (loading) {
     return (

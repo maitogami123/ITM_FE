@@ -30,13 +30,18 @@ export function StaffsTable() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const response = await getAllStaffs(null, currentPage);
+        const response = await getAllStaffs(searchQuery, currentPage);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);
@@ -53,7 +58,7 @@ export function StaffsTable() {
     };
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, searchQuery]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -121,6 +126,9 @@ export function StaffsTable() {
             <div className="w-full md:w-72">
               <Input
                 label="Search"
+                value={searchQuery}
+                onChange={handleSearch}
+                placeholder="Tên cán bộ"
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
               />
             </div>
