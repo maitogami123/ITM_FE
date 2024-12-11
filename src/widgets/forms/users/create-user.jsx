@@ -47,6 +47,8 @@ export function CreateUserForm({ handleOpen }) {
           showCloseButton: false,
           timer: 1000,
         });
+        window.location.reload()
+
         handleOpen();
       }
     } catch (error) {

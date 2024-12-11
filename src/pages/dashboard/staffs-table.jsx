@@ -18,7 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Giảng viên", "Chuyên môn", "Số điện thoại", "Ngày làm việc", ""];
+const TABLE_HEAD = ["Giảng viên", "Chuyên ngành chính", "Số điện thoại", "Ngày làm việc", ""];
 
 export function StaffsTable() {
   const [open, setOpen] = useState(false);
@@ -29,14 +29,17 @@ export function StaffsTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const response = await getAllStaffs(null, currentPage);
+        const response = await getAllStaffs(searchQuery || null, currentPage);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);
@@ -53,7 +56,7 @@ export function StaffsTable() {
     };
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, searchQuery]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -102,9 +105,9 @@ export function StaffsTable() {
               </Typography>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
-              <Button variant="outlined" size="sm">
+              {/* <Button variant="outlined" size="sm">
               xem tất cả
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => {
                   setIdUnit(null);
@@ -121,6 +124,9 @@ export function StaffsTable() {
             <div className="w-full md:w-72">
               <Input
                 label="Search"
+                value={searchQuery}
+                onChange={handleSearch}
+                placeholder="Tên cán bộ"
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
               />
             </div>
@@ -187,11 +193,6 @@ export function StaffsTable() {
                       <tr key={_id}>
                         <td className={rowClasses}>
                           <div className="flex items-center gap-3">
-                            <Avatar
-                              src="/public/img/00199_tqlap.png"
-                              alt={name}
-                              size="sm"
-                            />
                             <div className="flex flex-col">
                               <Typography
                                 variant="small"

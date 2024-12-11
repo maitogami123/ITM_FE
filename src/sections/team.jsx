@@ -48,44 +48,44 @@ function TeamCard({ img, name, title }) {
 const linkImg = "../../public/img/";
 const members = [
   {
-    img: `${linkImg}001174_tttinh.png`,
-    name: "PGS. TS. Trần Trung Tính",
-    title: "Hiệu trưởng",
+    img: `${linkImg}DTNGHI.jpg`,
+    name: "PGS.TS. Đỗ Thanh Nghị",
+    title: "Chủ tịch Hội đồng",
   },
   {
-    img: `${linkImg}000273_tnhai.png`,
-    name: "GS. TS. Trần Ngọc Hải",
-    title: "Phó Hiệu trưởng",
+    img: `${linkImg}NHHOA.jpg`,
+    name: "TS. Nguyễn Hữu Hòa",
+    title: "Ủy viên ",
   },
   {
-    img: `${linkImg}001349_lvlam.png`,
-    name: "TS. Lê Văn Lâm",
-    title: "Phó Hiệu Trưởng",
+    img: `${linkImg}PNguyenKhang.jpg`,
+    name: "PGS.TS. Phạm Nguyên Khang",
+    title: "Ủy viên",
   },
   {
-    img: `${linkImg}000483_nhtrung.png`,
-    name: "PGS. TS. Nguyễn Hiếu Trung",
-    title: "Phó Hiệu Trưởng",
+    img: `${linkImg}NBHUNG.jpg`,
+    name: "TS. Ngô Bá Hùng",
+    title: "Ủy viên",
   },
   {
-    img: `${linkImg}000267_ntphuong.png`,
-    name: "GS.TS. Nguyễn Thanh Phương",
-    title: "Chủ tịch Hội đồng Trường",
+    img: `${linkImg}HXHIEP.jpg`,
+    name: "PGS.TS. Huỳnh Xuân Hiệp",
+    title: "Ủy viên",
   },
   {
-    img: `${linkImg}001062_ncngon.png`,
-    name: "PGS.TS. Nguyễn Chí Ngôn",
-    title: "Web Developer",
+    img: `${linkImg}NTNGHE.jpg`,
+    name: "PGS.TS. Nguyễn Thái Nghe",
+    title: "Ủy viên",
   },
   {
-    img: `${linkImg}00199_tqlap.png`,
-    name: "PGS.TS. Trịnh Quốc Lập",
-    title: " Trưởng Ban Đào tạo và ĐBCL Trường",
+    img: `${linkImg}TNMTHU.jpg`,
+    name: "TS. Trần Nguyễn Minh Thư",
+    title: "Ủy viên",
   },
   {
-    img: `${linkImg}002143_lvvang.png`,
-    name: "PGS.TS. Lê Văn Vàng",
-    title: " Trưởng Ban Tổ chức, Nhân sự và Pháp chế",
+    img: `${linkImg}TMTHAI.jpg`,
+    name: "TS. Trương Minh Thái",
+    title: "Ủy viên",
   },
 ];
 

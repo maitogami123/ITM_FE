@@ -71,8 +71,8 @@ function HeroSection16() {
               variant="lead"
               className="mx-auto w-3/5 text-base !text-gray-500 lg:text-lg"
             >
-              Trường Đại học Cần Thơ có vai trò quan trọng trong đào tạo đa
-              ngành, đa lĩnh vực, cung cấp nguồn nhân lực cho thành phố Cần Thơ
+              Trường Công nghệ thông tin và truyền thông có vai trò quan trọng
+              , đa lĩnh vực, cung cấp nguồn nhân lực cho thành phố Cần Thơ
               cũng như vùng đồng bằng sông Cửu Long.
             </Typography>
             <SearchPage></SearchPage>

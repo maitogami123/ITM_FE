@@ -103,14 +103,14 @@ export function UserProfile() {
                 }}
               />
             </div>
-            <div className="col-span-2">
+            {userData.staff && <div className="col-span-2">
               <div className="mb-4 grid gap-y-10 ">
                 <JoinNow />
               </div>
               <UserProfileForm user={userData} />
-            </div>
+            </div>}
           </div>
-          {userData.staff.rewards && userData.staff.rewards.length > 0 && (
+          {userData.staff && userData.staff.rewards && userData.staff.rewards.length > 0 && (
             <div className="px-4 pb-4">
               <Typography variant="h6" color="blue-gray" className="mb-2">
                 Rewards
@@ -157,7 +157,7 @@ export function UserProfile() {
               </div>
             </div>
           )}
-          {userData.staff.competitions &&
+          {userData.staff && userData.staff.competitions &&
             userData.staff.competitions.length > 0 && (
               <div className="px-4 pb-4">
                 <Typography variant="h6" color="blue-gray" className="mb-2">

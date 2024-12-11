@@ -196,7 +196,7 @@ export function Footer16() {
         </div>
       </div>
       <div className="mt-8 text-center text-xs text-white/80">
-        © 2024 Đại học Cần Thơ | Lượt truy cập: 37079156
+        © 2024 Đại học Cần Thơ 
       </div>
     </footer>
   );

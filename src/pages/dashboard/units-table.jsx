@@ -122,9 +122,9 @@ export function UnitsTable() {
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button variant="outlined" size="sm">
+              {/* <Button variant="outlined" size="sm">
               xem tất cả
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => {
                   setIdUnit(null);
@@ -135,14 +135,6 @@ export function UnitsTable() {
               >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Tạo mới
               </Button>
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="w-full md:w-72">
-              <Input
-                label="Search"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-              />
             </div>
           </div>
         </CardHeader>
@@ -209,7 +201,7 @@ export function UnitsTable() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {staffs.length} members
+                              {staffs.length} Giảng viên
                             </Typography>
                           </div>
                         </td>

@@ -75,6 +75,7 @@ export function UsersTable() {
               text: "Account has been deleted.",
               icon: "success",
             });
+            window.location.reload();
           }
         } catch (e) {
           Swal.fire({
@@ -106,9 +107,9 @@ export function UsersTable() {
               </Typography>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
-              <Button variant="outlined" size="sm">
+              {/* <Button variant="outlined" size="sm">
               xem tất cả
-              </Button>
+              </Button> */}
               <Button
                 className="flex items-center gap-3"
                 size="sm"
@@ -119,14 +120,6 @@ export function UsersTable() {
               >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Tạo mới
               </Button>
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="w-full md:w-72">
-              <Input
-                label="Search"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-              />
             </div>
           </div>
         </CardHeader>
@@ -177,11 +170,6 @@ export function UsersTable() {
                       <tr key={_id}>
                         <td className={rowClasses}>
                           <div className="flex items-center gap-3">
-                            <Avatar
-                              src="/public/img/00199_tqlap.png"
-                              alt={_id}
-                              size="sm"
-                            />
                             <div className="flex flex-col">
                               <Typography
                                 variant="small"

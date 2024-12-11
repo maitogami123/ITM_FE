@@ -553,10 +553,10 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Add Competition
+          Thi đua
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
-          To create a new Competition. You must full fill information.
+          Nhập nội dung thi đua
         </Typography>
         <IconButton
           size="sm"
@@ -577,12 +577,12 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Title
+            Chủ đề
           </Typography>
           <Input
             color="gray"
             size="lg"
-            placeholder="Input Title"
+            placeholder="Nhập chủ đề"
             name="title"
             onChange={(e) => {
               setTitle(e.target.value);
@@ -606,12 +606,12 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Year
+            Năm
           </Typography>
           <Input
             color="gray"
             size="lg"
-            placeholder="Input Year"
+            placeholder="Nhập năm"
             type="number"
             name="year"
             onChange={(e) => {
@@ -636,12 +636,12 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Description
+            Mô tả
           </Typography>
           <Input
             color="gray"
             size="lg"
-            placeholder="Input Description"
+            placeholder="Nhập mô tả"
             name="description"
             onChange={(e) => {
               setDescription(e.target.value);
@@ -659,13 +659,13 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
             </Typography>
           )}
         </div>
-        <div>
+        {/* <div>
           <ComboBox
             label="Staffs"
             selected={staffs} // Giá trị Staff đã chọn
             setSelected={setStaffs} // Hàm cập nhật giá trị
           />
-        </div>
+        </div> */}
         {/* <div>
           <ComboBox
             label="Rewards"
@@ -683,13 +683,13 @@ export function AddCompetitionDialog({ open, handleOpen, onCompetitionAdded }) {
             onClick={handleCreate}
             disabled={loading}
           >
-            {loading ? "Adding..." : "Add"}
+            {loading ? "Adding..." : "Thêm"}
           </Button>
           <Button
             className="bg-red-500 text-white hover:bg-red-600"
             onClick={handleOpen}
           >
-            Close
+            Thoát
           </Button>
         </div>
       </DialogFooter>
@@ -756,10 +756,10 @@ export function AddStaffToCompetitionDialog({
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Add Staff for Competition
+          Thêm giảng viên vào thi đua
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
-          To add a staff to Competition. You must choose staff in this table
+          Để thêm giảng viên vào thi đua bạn phải chọn giảng viên có trong bảng
         </Typography>
         <IconButton
           size="sm"
@@ -780,7 +780,7 @@ export function AddStaffToCompetitionDialog({
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Staffs
+            Giảng viên
           </Typography>
 
           {/* Table */}
@@ -859,7 +859,7 @@ export function AddStaffToCompetitionDialog({
                 ) : (
                   <tr>
                     <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
-                      No data available
+                      Dữ liệu không có sẵn
                     </td>
                   </tr>
                 )}
@@ -953,10 +953,10 @@ export function AddRewardToCompetitionDialog({
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Add Reward
+          Khen thưởng
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
-          To create a new Reward. You must full fill information.
+          Nhập nội dung khen thưởng
         </Typography>
         <IconButton
           size="sm"
@@ -977,7 +977,7 @@ export function AddRewardToCompetitionDialog({
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Rewards
+            Khen thưởng
           </Typography>
 
           {/* Table */}
@@ -1047,7 +1047,7 @@ export function AddRewardToCompetitionDialog({
                 ) : (
                   <tr>
                     <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
-                      No data available
+                      Dữ liệu rỗng
                     </td>
                   </tr>
                 )}
@@ -1071,7 +1071,7 @@ export function AddRewardToCompetitionDialog({
             className="bg-red-500 text-white hover:bg-red-600"
             onClick={handleOpen}
           >
-            Close
+            Thoát
           </Button>
         </div>
       </DialogFooter>

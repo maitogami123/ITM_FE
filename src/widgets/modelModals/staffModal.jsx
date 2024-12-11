@@ -31,10 +31,10 @@ export function AddStaffDialog({ open, handleOpen, id }) {
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Manage Item
+          Cập nhật thông tin giảng viên
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
-          Keep your records up-to-date and organized.
+          Cập nhật thông tin
         </Typography>
         <IconButton
           size="sm"

@@ -143,7 +143,7 @@ export function UpdateUnitForm({ handleOpen, id }) {
         </div>
         <div className="flex flex gap-4 self-end">
           <Button color="green" size="md" type="submit">
-            Update Unit
+            Cập nhật 
           </Button>
         </div>
       </form>

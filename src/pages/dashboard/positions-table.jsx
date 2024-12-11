@@ -77,16 +77,16 @@ export function PositionsTable() {
           <div className="mb-8 flex items-center justify-between gap-8">
             <div>
               <Typography variant="h5" color="blue-gray">
-                Members list
+                Danh sách giảng viên
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
-                See information about all members
+                Thông tin giảng viên
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button variant="outlined" size="sm">
+              {/* <Button variant="outlined" size="sm">
               xem tất cả
-              </Button>
+              </Button> */}
               <Button className="flex items-center gap-3" size="sm">
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Tạo mới
               </Button>

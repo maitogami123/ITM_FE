@@ -19,7 +19,7 @@ const icon = {
 
 export const routes = [
   {
-    title: "Admin ",
+    title: "Home ",
     layout: "admin",
     pages: [
       {
@@ -54,14 +54,14 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "Phần thưởng",
+        name: "Khen thưởng",
         path: "/rewards",
         element: <RewardsTable />,
       },
     ],
   },
   {
-    title: "super admin",
+    title: "admin",
     layout: "admin",
     pages: [
       {

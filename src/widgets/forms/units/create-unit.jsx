@@ -25,6 +25,7 @@ export function CreateUnitForm({ handleOpen }) {
           timer: 1000,
         });
         handleOpen();
+        window.location.reload()
       }
     } catch (error) {
       Toast.fire({
@@ -50,7 +51,7 @@ export function CreateUnitForm({ handleOpen }) {
               variant="small"
               className="mb-2 block font-medium text-gray-900"
             >
-              Name
+              Tên khoa
             </Typography>
           </label>
           <Input
@@ -59,7 +60,7 @@ export function CreateUnitForm({ handleOpen }) {
             color="gray"
             size="lg"
             name="name"
-            placeholder="name@mail.com"
+            placeholder="Nhập tên khoa"
             className={`w-full border-t-blue-gray-200 placeholder:opacity-100 ${
               errors.name ? "focus:border-t-red-600" : "focus:border-t-gray-900"
             }`}
@@ -71,17 +72,17 @@ export function CreateUnitForm({ handleOpen }) {
           />
           {errors.name && (
             <Typography variant="small" color="red">
-              Name is required
+              Tên khoa là bắt buộc
             </Typography>
           )}
         </div>
       </div>
       <div className="mt-6 flex flex gap-4 self-end">
         <Button color="red" className="ml-auto" onClick={handleOpen}>
-          Close
+          Thoát
         </Button>
         <Button color="green" size="md" type="submit">
-          Add Unit
+          Thêm
         </Button>
       </div>
     </form>

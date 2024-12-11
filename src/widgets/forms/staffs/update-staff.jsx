@@ -134,7 +134,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
               variant="small"
               className="mb-2 block font-medium text-gray-900"
             >
-              Name
+              Tên giảng viên
             </Typography>
           </label>
           <Input
@@ -168,7 +168,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 variant="small"
                 className="mb-2 block font-medium text-gray-900"
               >
-                Gender: {data.gender}
+                Gender
               </Typography>
             </label>
             <Controller
@@ -187,16 +187,14 @@ export function UpdateStaffForm({ handleOpen, id }) {
                   labelProps={{ className: "hidden" }}
                   onChange={(value) => field.onChange(value)}
                 >
-                  <Option value="not_declare">Not declared</Option>
-                  <Option value="male">Male</Option>
-                  <Option value="female">Female</Option>
-                  <Option value="other">Other</Option>
+                  <Option value="male">Nam</Option>
+                  <Option value="female">Nữ</Option>
                 </Select>
               )}
             />
             {errors.gender && (
               <Typography variant="small" color="red">
-                Gender is required
+                Giới tính là bắt buộc
               </Typography>
             )}
           </div>
@@ -206,7 +204,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 variant="small"
                 className="block font-medium text-gray-900"
               >
-                Permanent Contract
+                Nhân viên chính thức
               </Typography>
             </label>
             <Checkbox
@@ -228,7 +226,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 variant="small"
                 className="mb-2 block font-medium text-gray-900"
               >
-                Date of Birth
+                Ngày sinh
               </Typography>
             </label>
             <Input
@@ -289,7 +287,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
               variant="small"
               className="mb-2 block font-medium text-gray-900"
             >
-              Main Specialization
+              Chuyên ngành chính
             </Typography>
           </label>
           <Input
@@ -313,7 +311,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
               variant="small"
               className="mb-2 block font-medium text-gray-900"
             >
-              Unit: {data.unit && data.unit.name}
+              Khoa
             </Typography>
           </label>
           <Controller
@@ -354,7 +352,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
           />
           {errors.unit && (
             <Typography variant="small" color="red">
-              Unit is required
+              Khoa là bắt buộc
             </Typography>
           )}
         </div>
@@ -364,7 +362,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
               variant="small"
               className="mb-2 block font-medium text-gray-900"
             >
-              Qualification: {data.qualificationCode}
+              Chuyên ngành chính
             </Typography>
           </label>
           <Controller
@@ -383,16 +381,16 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 labelProps={{ className: "hidden" }}
                 onChange={(value) => field.onChange(value)}
               >
-                <Option value="BSc">BSc</Option>
-                <Option value="MSc">MSc</Option>
-                <Option value="PhD">PhD</Option>
-                <Option value="unknown">unknown</Option>
+                <Option value="Giáo sư">Giáo Sư</Option>
+                <Option value="Phó giáo sư">Phó Giáo Sư </Option>
+                <Option value="Tiến sĩ">Tiến Sĩ</Option>
+                <Option value="Thạc sĩ">Thạc sĩ</Option>
               </Select>
             )}
           />
           {errors.qualificationCode && (
             <Typography variant="small" color="red">
-              Qualification is required
+              Chuyên ngành chính là bắt buộc
             </Typography>
           )}
         </div>
@@ -403,7 +401,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 variant="small"
                 className="mb-2 block font-medium text-gray-900"
               >
-                Start Date
+                Ngày làm việc
               </Typography>
             </label>
             <Input
@@ -436,10 +434,10 @@ export function UpdateStaffForm({ handleOpen, id }) {
       </div>
       <div className="mt-6 flex flex gap-4 self-end">
         <Button color="red" className="ml-auto" onClick={handleOpen}>
-          Close
+          Thoát
         </Button>
         <Button color="green" size="md" type="submit">
-          Update staff
+          Cập nhật
         </Button>
       </div>
     </form>

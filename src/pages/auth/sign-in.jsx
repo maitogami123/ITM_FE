@@ -123,7 +123,7 @@ export function SignIn() {
           >
             sign in
           </Button>
-          <div className="!mt-4 flex justify-end">
+          {/* <div className="!mt-4 flex justify-end">
             <Typography
               as="a"
               href="#"
@@ -133,8 +133,8 @@ export function SignIn() {
             >
               Forgot password
             </Typography>
-          </div>
-          <Button
+          </div> */}
+          {/* <Button
             variant="outlined"
             size="lg"
             className="mt-6 flex h-12 items-center justify-center gap-2"
@@ -156,7 +156,7 @@ export function SignIn() {
             <Link to={"/sign-up"} className="font-medium text-gray-900">
               Create account
             </Link>
-          </Typography>
+          </Typography> */}
         </form>
       </div>
     </section>

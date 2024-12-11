@@ -11,10 +11,10 @@ const CozeChat = () => {
     script.onload = () => {
       new CozeWebSDK.WebChatClient({
         config: {
-          bot_id: "7439347335895171090",
+          bot_id: "7446132922887258119",
         },
         componentProps: {
-          title: "ITM Assistant",
+          title: "BOT",
         },
       });
     };

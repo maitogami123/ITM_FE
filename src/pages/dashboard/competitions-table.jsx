@@ -205,16 +205,16 @@ export function CompetitionsTable() {
           <div className="mb-8 flex items-center justify-between gap-8">
             <div>
               <Typography variant="h5" color="blue-gray">
-                Competitions list
+                Danh sách thi đua
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
-                See information about all competitions
+                Nhập thông tin thi đua
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button variant="outlined" size="sm">
+              {/* <Button variant="outlined" size="sm">
                 xem tất cả
-              </Button>
+              </Button> */}
               <Button
                 className="flex items-center gap-3"
                 size="sm"
@@ -233,14 +233,6 @@ export function CompetitionsTable() {
               >
                 <ArrowDownIcon strokeWidth={2} className="h-4 w-4" /> Xuất excel
               </Button>
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="w-full md:w-72">
-              <Input
-                label="Search"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-              />
             </div>
           </div>
         </CardHeader>
@@ -328,7 +320,7 @@ export function CompetitionsTable() {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {staffs.length} members
+                                {staffs.length} Giảng viên
                               </Typography>
                             </div>
                           </td>
@@ -407,7 +399,7 @@ export function CompetitionsTable() {
               disabled={page.page === 1}
               onClick={() => setCurrentPage((prev) => prev - 1)}
             >
-              Previous
+              Quay lại
             </Button>
             <Button
               className="rounded-full"
@@ -416,7 +408,7 @@ export function CompetitionsTable() {
               disabled={page.page === page.pages}
               onClick={() => setCurrentPage((prev) => prev + 1)}
             >
-              Next
+              Trang tiếp
             </Button>
           </div>
         </CardFooter>

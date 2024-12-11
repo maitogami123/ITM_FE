@@ -157,7 +157,7 @@ export function UpdateRewardDialog({
                 color="blue-gray"
                 className="mb-2 text-left font-medium"
               >
-                Title
+                Chủ đề
               </Typography>
               <Input
                 color="gray"
@@ -177,12 +177,12 @@ export function UpdateRewardDialog({
                 color="blue-gray"
                 className="mb-2 text-left font-medium"
               >
-                Date
+                Năm
               </Typography>
               <Input
                 color="gray"
                 size="lg"
-                placeholder="Title"
+                placeholder="Chủ đề"
                 name="title"
                 value={data?.date || ""}
                 onChange={(e) => setData({ ...data, date: e.target.value })}
@@ -198,7 +198,7 @@ export function UpdateRewardDialog({
                 color="blue-gray"
                 className="text-left font-medium"
               >
-                Staff
+                Giảng viên
               </Typography>
 
               {/* Input Field with Tooltip */}
@@ -206,7 +206,7 @@ export function UpdateRewardDialog({
                 <Input
                   color="gray"
                   size="lg"
-                  placeholder="Staff"
+                  placeholder="Giảng viên"
                   name="staff"
                   value={
                     data?.staff
@@ -238,12 +238,12 @@ export function UpdateRewardDialog({
                 color="blue-gray"
                 className="mb-2 text-left font-medium"
               >
-                Competition
+                Thi đua
               </Typography>
               <Input
                 color="gray"
                 size="lg"
-                placeholder="Competition"
+                placeholder="Thi đua"
                 name="competition"
                 value={
                   data?.competition
@@ -277,7 +277,7 @@ export function UpdateRewardDialog({
             className="bg-red-500 text-white hover:bg-red-600"
             onClick={handleOpen}
           >
-            Close
+            Thoát
           </Button>
         </div>
       </DialogFooter>
@@ -297,9 +297,9 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
 
   const validateFields = () => {
     const newErrors = {};
-    if (!title.trim()) newErrors.title = "Title is required.";
-    if (!date.trim()) newErrors.date = "Date is required.";
-    if (!description.trim()) newErrors.description = "Description is required.";
+    if (!title.trim()) newErrors.title = "Chủ đề là bắt buộc.";
+    if (!date.trim()) newErrors.date = "Thời gian là bắt buộc.";
+    if (!description.trim()) newErrors.description = "Nội dung là bắt buộc.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Không có lỗi -> hợp lệ
   };
@@ -317,13 +317,13 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
     try {
       const response = await createReward(competitionData);
       if (response.status === 201) {
-        alert("Competition created successfully!");
+        alert("Tạo thi đua thành công!");
         handleOpen(); // Close dialog
         if (onCompetitionAdded) {
           onCompetitionAdded(); // Notify parent to reload data
         }
       } else {
-        alert("Failed to create reward.");
+        alert("Tạo khen thưởng thất bại.");
       }
     } catch (error) {
       console.error("Error creating reward:", error);
@@ -337,10 +337,10 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">
-          Add Reward
+          Khen thưởng giảng viên
         </Typography>
         <Typography className="mt-1 font-normal text-gray-600">
-          To create a new Reward. You must full fill information.
+          Nhập nội dung khen thưởng
         </Typography>
         <IconButton
           size="sm"
@@ -361,12 +361,12 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Title
+            Chủ đề
           </Typography>
           <Input
             color="gray"
             size="lg"
-            placeholder="Input Title"
+            placeholder="Nhập chủ đề khen thưởng"
             name="title"
             onChange={(e) => {
               setTitle(e.target.value);
@@ -390,12 +390,12 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Date
+            Thời gian
           </Typography>
           <Input
             color="gray"
             size="lg"
-            placeholder="Input Year"
+            placeholder="Nhập năm"
             name="year"
             onChange={(e) => {
               setDate(e.target.value);
@@ -419,12 +419,12 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
             color="blue-gray"
             className="mb-2 text-left font-medium"
           >
-            Description
+            Nội dung
           </Typography>
           <Input
             color="gray"
             size="lg"
-            placeholder="Input Description"
+            placeholder="Nhập mô tả"
             name="description"
             onChange={(e) => {
               setDescription(e.target.value);
@@ -466,13 +466,13 @@ export function AddRewardDialog({ open, handleOpen, onCompetitionAdded }) {
             onClick={handleCreate}
             disabled={loading}
           >
-            {loading ? "Adding..." : "Add"}
+            {loading ? "Adding..." : "Thêm"}
           </Button>
           <Button
             className="bg-red-500 text-white hover:bg-red-600"
             onClick={handleOpen}
           >
-            Close
+            Thoát
           </Button>
         </div>
       </DialogFooter>

@@ -81,7 +81,7 @@ export function PublicProfile() {
               details={{
                 name: userData.name,
                 mobile: userData.phone,
-                email: userData.user.email,
+                email: userData.user && userData.user.email,
                 "main specialization": userData.mainSpecialization,
                 social: (
                   <div className="flex items-center gap-4">
@@ -103,7 +103,7 @@ export function PublicProfile() {
                     >
                       Description
                     </Typography>
-                    <Typography>{userData.user.description}</Typography>
+                    <Typography>{userData.user && userData.user.description}</Typography>
                   </div>
                 </div>
               </div>

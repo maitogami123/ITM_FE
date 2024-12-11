@@ -64,7 +64,7 @@ export function SearchPage() {
           <Input
             className="search_Value w-full"
             color="gray"
-            label="Nhập tên giáo viên cần tìm"
+            label="Nhập tên giảng viên cần tìm"
             size="lg"
             value={searchValue}
             onChange={(e) => {
