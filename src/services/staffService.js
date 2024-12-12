@@ -7,7 +7,7 @@ export const getAllStaffs = (search = null, page = 1) => {
   if (search == null) {
     url = `${API_ENDPOINTS.staff}?page=${page}&limit=5&sortBy=name&order=asc`;
   } else {
-    url = `${API_ENDPOINTS.staff}?search=${search}&page=1&limit=5&sortBy=name&order=asc`;
+    url = `${API_ENDPOINTS.staff}?search=${search}&page=${page}&limit=5&sortBy=name&order=asc`;
   }
   return interceptedAxios.get(url);
 };
@@ -38,7 +38,7 @@ export const getListSalaryIncrements = (
   if (search == null) {
     url = `${API_ENDPOINTS.staff}/increments?page=${page}&limit=${limit}&sortBy=${sortBy}&order=${order}`;
   } else {
-    url = `${API_ENDPOINTS.staff}/increments?search=${search}&page=1&limit=${limit}&sortBy=${sortBy}&order=${order}`;
+    url = `${API_ENDPOINTS.staff}/increments?search=${search}&page=${page}&limit=${limit}&sortBy=${sortBy}&order=${order}`;
   }
   return interceptedAxios.get(url);
 };

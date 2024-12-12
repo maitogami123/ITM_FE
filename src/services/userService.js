@@ -51,7 +51,7 @@ export const getAllUsers = (search = null, page = 1) => {
   if (search == null) {
     url = `${API_ENDPOINTS.user}?page=${page}&limit=5&sortBy=username&order=asc`;
   } else {
-    url = `${API_ENDPOINTS.user}?search=${search}&page=1&limit=5&sortBy=username&order=as`;
+    url = `${API_ENDPOINTS.user}?search=${search}&page=${page}&limit=5&sortBy=username&order=as`;
   }
   return interceptedAxios.get(url);
 };

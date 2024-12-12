@@ -31,7 +31,8 @@ export function UpdateStaffForm({ handleOpen, id }) {
     defaultValues: {
       gender: "not_declare",
       isPermanent: false,
-      qualificationCode: "unknown",
+      qualificationCode: "Thạc sĩ",
+      teacherGrade: "V.07.01.01",
     },
   });
 
@@ -383,10 +384,10 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 labelProps={{ className: "hidden" }}
                 onChange={(value) => field.onChange(value)}
               >
-                <Option value="BSc">BSc</Option>
-                <Option value="MSc">MSc</Option>
-                <Option value="PhD">PhD</Option>
-                <Option value="unknown">unknown</Option>
+                <Option value="Giáo sư">Giáo sư</Option>
+                <Option value="Phó giáo sư">Phó giáo sư</Option>
+                <Option value="Tiến sĩ">Tiến sĩ</Option>
+                <Option value="Thạc sĩ">Thạc sĩ</Option>
               </Select>
             )}
           />
@@ -396,7 +397,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
             </Typography>
           )}
         </div>
-        <div className="mb-6">
+        <div>
           <div>
             <label htmlFor="startDate">
               <Typography
@@ -432,6 +433,43 @@ export function UpdateStaffForm({ handleOpen, id }) {
               </Typography>
             )}
           </div>
+        </div>
+        <div>
+          <label htmlFor="gender">
+            <Typography
+              variant="small"
+              className="mb-2 block font-medium text-gray-900"
+            >
+              Teacher Grade: {data.teacherGrade}
+            </Typography>
+          </label>
+          <Controller
+            name="teacherGrade"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                size="lg"
+                className={`w-full border-t-blue-gray-200 placeholder:opacity-100 ${
+                  errors.teacherGrade
+                    ? "focus:border-t-red-600"
+                    : "focus:border-t-gray-900"
+                }`}
+                containerProps={{ className: "!min-w-full" }}
+                labelProps={{ className: "hidden" }}
+                onChange={(value) => field.onChange(value)}
+              >
+                <Option value="V.07.01.01">V.07.01.01</Option>
+                <Option value="V.07.01.02">V.07.01.02</Option>
+                <Option value="V.07.01.03">V.07.01.03</Option>
+              </Select>
+            )}
+          />
+          {errors.teacherGrade && (
+            <Typography variant="small" color="red">
+              Teacher Grade is required
+            </Typography>
+          )}
         </div>
       </div>
       <div className="mt-6 flex flex gap-4 self-end">

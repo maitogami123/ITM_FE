@@ -18,7 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Members", "Chuyên môn", "Phone", "Start Date", ""];
+const TABLE_HEAD = ["Members", "Mail", "Chuyên môn", "Phone", "Start Date", ""];
 
 export function StaffsTable() {
   const [open, setOpen] = useState(false);
@@ -35,28 +35,28 @@ export function StaffsTable() {
     setSearchQuery(event.target.value);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
 
-      try {
-        const response = await getAllStaffs(searchQuery, currentPage);
-        if (response.status === 200) {
-          const { data, total, page, limit, pages } = response.data;
-          setData(data);
-          setPage({ total, page, limit, pages });
-        } else {
-          throw new Error("An error occurred while fetching data.");
-        }
-      } catch (error) {
-        console.error(error.message);
-        setError("Failed to load data. Please try again.");
-      } finally {
-        setLoading(false);
+    try {
+      const response = await getAllStaffs(searchQuery, currentPage);
+      if (response.status === 200) {
+        const { data, total, page, limit, pages } = response.data;
+        setData(data);
+        setPage({ total, page, limit, pages });
+      } else {
+        throw new Error("An error occurred while fetching data.");
       }
-    };
+    } catch (error) {
+      console.error(error.message);
+      setError("Failed to load data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
 
@@ -185,6 +185,7 @@ export function StaffsTable() {
                       positions,
                       rewards,
                       competitions,
+                      user,
                     } = staff;
                     const isLast = index === data.length - 1;
                     const rowClasses = isLast
@@ -224,7 +225,18 @@ export function StaffsTable() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {notes}
+                            {user?.email ? user.email : "chưa cập nhật email"}
+                          </Typography>
+                        </td>
+                        <td className={rowClasses}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {qualificationCode
+                              ? qualificationCode
+                              : "Chưa cập nhật"}
                           </Typography>
                           <Typography
                             variant="small"
