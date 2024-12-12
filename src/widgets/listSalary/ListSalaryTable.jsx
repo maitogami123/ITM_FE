@@ -11,7 +11,10 @@ function ListSalaryTable({ currentPage, setPageData, searchText }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await getListSalaryIncrements(searchText || null, currentPage);
+      const response = await getListSalaryIncrements(
+        searchText || null,
+        currentPage
+      );
       if (response.status === 200) {
         const { data, total, page, limit, pages } = response.data;
         setData(data);
@@ -29,7 +32,7 @@ function ListSalaryTable({ currentPage, setPageData, searchText }) {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage,searchText]);
+  }, [currentPage, searchText]);
 
   if (loading) {
     return (
@@ -48,94 +51,165 @@ function ListSalaryTable({ currentPage, setPageData, searchText }) {
   }
 
   return (
-    <table className="mt-4 w-full min-w-max table-auto text-left">
-      <thead>
-        <tr>
-          {[
-            "Mã số cán bộ",
-            "Họ và tên",
-            "Học vị",
-            "Ngày cuối cùng tăng lương",
-            "Ngày tiếp theo tăng lương",
-          ].map((el) => (
-            <th
-              key={el}
-              className="border-y border-blue-gray-100 bg-gray-50 p-4"
-            >
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="text-[11px] font-medium uppercase text-blue-gray-400"
+    <div className="w-full overflow-x-auto">
+      <table className="mt-4 w-full min-w-[1400px] table-auto text-left">
+        <thead>
+          <tr>
+            {[
+              "Mã số cán bộ",
+              "Họ và tên",
+              "Học vị",
+              "Mã ngạch",
+              "Bậc lương",
+              "Hệ số lương",
+              "Lương cơ bản",
+              "Khen thưởng",
+              "Thi đua",
+              "Ngày cuối tăng lương",
+              "Ngày tiếp theo tăng lương",
+              "Thời gian còn lại",
+            ].map((el) => (
+              <th
+                key={el}
+                className="border-y border-blue-gray-100 bg-gray-50 p-4"
               >
-                {el}
-              </Typography>
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((increment, key) => {
-          const {
-            _id,
-            mscb,
-            name,
-            qualificationCode,
-            lastIncrementDate,
-            nextIncrementDate,
-          } = increment;
-          const isLast = key === data.length - 1;
-          const rowClasses = isLast
-            ? "p-4"
-            : "p-4 border-b border-blue-gray-50";
-
-          return (
-            <tr key={key}>
-              <td className={rowClasses}>
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="font-bold"
+                  className="whitespace-nowrap text-[11px] font-medium uppercase text-blue-gray-400"
                 >
-                  {mscb}
+                  {el}
                 </Typography>
-              </td>
-              <td className={rowClasses}>
-                <Typography
-                  variant="small"
-                  className="text-xs font-medium text-blue-gray-600"
-                >
-                  {name}
-                </Typography>
-              </td>
-              <td className={rowClasses}>
-                <Typography
-                  variant="small"
-                  className="text-xs font-medium text-blue-gray-600"
-                >
-                  {qualificationCode}
-                </Typography>
-              </td>
-              <td className={rowClasses}>
-                <Typography
-                  variant="small"
-                  className="text-xs font-medium text-blue-gray-600"
-                >
-                  {lastIncrementDate}
-                </Typography>
-              </td>
-              <td className={rowClasses}>
-                <Typography
-                  variant="small"
-                  className="text-xs font-medium text-blue-gray-600"
-                >
-                  {nextIncrementDate}
-                </Typography>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((increment, key) => {
+            const {
+              mscb,
+              name,
+              qualificationCode,
+              teacherGrade,
+              salaryLevel,
+              salaryCoefficent,
+              salary,
+              lastIncrementDate,
+              nextIncrementDate,
+              remainingMonths,
+              rewardsCount,
+              competitionsCount,
+            } = increment;
+            const isLast = key === data.length - 1;
+            const rowClasses = isLast
+              ? "p-4"
+              : "p-4 border-b border-blue-gray-50";
+
+            return (
+              <tr key={key}>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-bold"
+                  >
+                    {mscb}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {name}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {qualificationCode}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {teacherGrade}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {salaryLevel}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {salaryCoefficent?.toFixed(2)}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {salary?.toLocaleString("vi-VN")} VNĐ
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {rewardsCount} (-{rewardsCount * 3} tháng)
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {competitionsCount} (-{competitionsCount} tháng)
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {lastIncrementDate}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {nextIncrementDate}
+                  </Typography>
+                </td>
+                <td className={rowClasses}>
+                  <Typography
+                    variant="small"
+                    className="text-xs font-medium text-blue-gray-600"
+                  >
+                    {remainingMonths} tháng
+                  </Typography>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

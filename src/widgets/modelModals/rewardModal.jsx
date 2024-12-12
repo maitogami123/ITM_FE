@@ -513,11 +513,11 @@ export function AddStaffToRewardDialog({
 
   const handleAddStaff = async (staffId, rewardId) => {
     try {
-      const updateReponse = await addStaffToReward(staffId, rewardId);
-      if (updateReponse.status === 200) {
+      const updateResponse = await addStaffToReward(staffId, rewardId);
+      if (updateResponse.status === 200) {
         Toast.fire({
           icon: "success",
-          title: "Add User To Unit Successfully",
+          title: "Add Staff To Reward Successfully",
           showCloseButton: false,
           timer: 2000,
         });
@@ -526,12 +526,11 @@ export function AddStaffToRewardDialog({
     } catch (error) {
       Toast.fire({
         icon: "error",
-        title: "Add User To Unit Failed",
-        text: error,
+        title: error.response?.data?.message || "Add Staff To Reward Failed",
         showCloseButton: false,
         timer: 2000,
       });
-      console.error("Error fetching data:", error);
+      console.error("Error adding staff to reward:", error);
     }
   };
 
