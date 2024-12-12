@@ -12,8 +12,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { TeacherGrade } from "@/utils/constant";
-import { QualificationCode } from "@/utils/constant";
+import { TeacherGrade, QualificationCode } from "@/utils/constant";
 
 export function CreateStaffForm({ handleOpen }) {
   const [unitList, setUnitList] = useState([]);
@@ -265,7 +264,7 @@ export function CreateStaffForm({ handleOpen }) {
             {...register("phone")}
           />
         </div>
-        <div className="mb-6 ">
+        {/* <div className="mb-6 ">
           <label htmlFor="mainSpecialization">
             <Typography
               variant="small"
@@ -286,7 +285,7 @@ export function CreateStaffForm({ handleOpen }) {
             }}
             {...register("mainSpecialization")}
           />
-        </div>
+        </div> */}
       </div>
       <div className="mb-6 grid grid-cols-2 gap-4">
         <div>
@@ -404,13 +403,13 @@ export function CreateStaffForm({ handleOpen }) {
                 onChange={(value) => field.onChange(value)}
               >
                 <Option value={TeacherGrade.GRADE_I}>
-                  Giảng viên cao cấp (Hạng I)
+                  Giảng viên cao cấp - {TeacherGrade.GRADE_I} (Hạng I)
                 </Option>
                 <Option value={TeacherGrade.GRADE_II}>
-                  Giảng viên chính (Hạng II)
+                  Giảng viên chính - {TeacherGrade.GRADE_II} (Hạng II)
                 </Option>
                 <Option value={TeacherGrade.GRADE_III}>
-                  Giảng viên (Hạng III)
+                  Giảng viên - {TeacherGrade.GRADE_III} (Hạng III)
                 </Option>
               </Select>
             )}

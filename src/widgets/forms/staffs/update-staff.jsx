@@ -37,7 +37,7 @@ export function UpdateStaffForm({ handleOpen, id }) {
     defaultValues: {
       gender: "not_declare",
       isPermanent: false,
-      qualificationCode: "unknown",
+      qualificationCode: QualificationCode.ThS,
     },
   });
 

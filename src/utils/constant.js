@@ -17,10 +17,10 @@ export const TeacherGrade = {
 };
 
 export const QualificationCode = {
-  Gs: "Gs",
-  PGs: "PGs",
-  TS: "TS",
-  ThS: "ThS",
+  Gs: "Giáo sư",
+  PGs: "Phó giáo sư",
+  TS: "Tiến sĩ",
+  ThS: "Thạc sĩ",
 };
 
 export { API_BASE_URL, API_ENDPOINTS };

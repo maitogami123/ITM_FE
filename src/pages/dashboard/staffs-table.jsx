@@ -20,9 +20,9 @@ import Swal from "sweetalert2";
 
 const TABLE_HEAD = [
   "Giảng viên",
-  "Chuyên ngành chính",
-  "Số điện thoại",
-  "Ngày làm việc",
+  "Thông tin cá nhân",
+  "Trình độ",
+  "Ngạch",
   "Lương",
   "",
 ];
@@ -187,9 +187,6 @@ export function StaffsTable() {
                       startDate,
                       notes,
                       mainSpecialization,
-                      positions,
-                      rewards,
-                      competitions,
                       teacherGrade,
                       salaryLevel,
                       salary,
@@ -217,44 +214,92 @@ export function StaffsTable() {
                                 color="blue-gray"
                                 className="font-normal opacity-70"
                               >
-                                {mscb}
+                                MSCB: {mscb}
                               </Typography>
                             </div>
                           </div>
                         </td>
                         <td className={rowClasses}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {notes}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {mainSpecialization}
-                          </Typography>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              Giới tính:{" "}
+                              {gender === "male"
+                                ? "Nam"
+                                : gender === "female"
+                                ? "Nữ"
+                                : "Không xác định"}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              Ngày sinh: {formatDate(dateOfBirth)}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              SĐT: {phone}
+                            </Typography>
+                          </div>
                         </td>
                         <td className={rowClasses}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {phone}
-                          </Typography>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              Trình độ: {qualificationCode}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              Chuyên ngành: {mainSpecialization}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {isPermanent ? "Chính thức" : "Không chính thức"}
+                            </Typography>
+                          </div>
                         </td>
                         <td className={rowClasses}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {formatDate(startDate)}
-                          </Typography>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              Ngạch: {teacherGrade}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              Ngày vào làm: {formatDate(startDate)}
+                            </Typography>
+                            {notes && (
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal opacity-70"
+                              >
+                                Ghi chú: {notes}
+                              </Typography>
+                            )}
+                          </div>
                         </td>
                         <td className={rowClasses}>
                           <div className="flex flex-col">
@@ -274,6 +319,13 @@ export function StaffsTable() {
                               className="font-normal opacity-70"
                             >
                               Bậc {salaryLevel}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal opacity-70"
+                            >
+                              Nâng bậc: {formatDate(nextPromotionDate)}
                             </Typography>
                           </div>
                         </td>
