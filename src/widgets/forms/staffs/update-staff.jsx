@@ -2,6 +2,10 @@ import {
   createStaff,
   getStaffById,
   updateStaff,
+  getSalaryInfo,
+  updateTeacherGrade,
+  promoteSalaryLevel,
+  demoteSalaryLevel,
 } from "@/services/staffService";
 import { getAllUnits } from "@/services/unitService";
 import { validateDate } from "@/utils/helper";
@@ -16,10 +20,12 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { TeacherGrade, QualificationCode } from "@/utils/constant";
 
 export function UpdateStaffForm({ handleOpen, id }) {
   const [unitList, setUnitList] = useState([]);
   const [data, setData] = useState({});
+  const [salaryInfo, setSalaryInfo] = useState(null);
 
   const {
     register,
@@ -57,15 +63,21 @@ export function UpdateStaffForm({ handleOpen, id }) {
 
     const fetchData = async () => {
       try {
-        const response = await getStaffById(id);
-        if (response.status === 200) {
-          reset(response.data);
-          setData(response.data);
-        } else {
-          throw new Error("Failed to fetch data");
+        const [staffResponse, salaryResponse] = await Promise.all([
+          getStaffById(id),
+          getSalaryInfo(id),
+        ]);
+
+        if (staffResponse.status === 200) {
+          reset(staffResponse.data);
+          setData(staffResponse.data);
+        }
+
+        if (salaryResponse.status === 200) {
+          setSalaryInfo(salaryResponse.data);
         }
       } catch (error) {
-        console.error("Error fetching unit data:", error);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
@@ -92,6 +104,81 @@ export function UpdateStaffForm({ handleOpen, id }) {
         timer: 2000,
       });
       console.error("Error fetching data:", error);
+    }
+  };
+
+  const handlePromoteSalary = async () => {
+    try {
+      const response = await promoteSalaryLevel(id);
+      if (response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Nâng bậc lương thành công",
+          showCloseButton: false,
+          timer: 2000,
+        });
+        // Refresh salary info
+        const newSalaryInfo = await getSalaryInfo(id);
+        setSalaryInfo(newSalaryInfo.data);
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Nâng bậc lương thất bại",
+        text: error.response?.data?.message || "Đã có lỗi xảy ra",
+        showCloseButton: false,
+        timer: 2000,
+      });
+    }
+  };
+
+  const handleUpdateTeacherGrade = async (newGrade) => {
+    try {
+      const response = await updateTeacherGrade(id, newGrade);
+      if (response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Cập nhật ngạch thành công",
+          showCloseButton: false,
+          timer: 2000,
+        });
+        // Refresh salary info
+        const newSalaryInfo = await getSalaryInfo(id);
+        setSalaryInfo(newSalaryInfo.data);
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Cập nhật ngạch thất bại",
+        text: error.response?.data?.message || "Đã có lỗi xảy ra",
+        showCloseButton: false,
+        timer: 2000,
+      });
+    }
+  };
+
+  const handleDemoteSalary = async () => {
+    try {
+      const response = await demoteSalaryLevel(id);
+      if (response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Giảm bậc lương thành công",
+          showCloseButton: false,
+          timer: 2000,
+        });
+        // Refresh salary info
+        const newSalaryInfo = await getSalaryInfo(id);
+        setSalaryInfo(newSalaryInfo.data);
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Giảm bậc lương thất bại",
+        text: error.response?.data?.message || "Đã có lỗi xảy ra",
+        showCloseButton: false,
+        timer: 2000,
+      });
     }
   };
 
@@ -381,10 +468,10 @@ export function UpdateStaffForm({ handleOpen, id }) {
                 labelProps={{ className: "hidden" }}
                 onChange={(value) => field.onChange(value)}
               >
-                <Option value="Giáo sư">Giáo Sư</Option>
-                <Option value="Phó giáo sư">Phó Giáo Sư </Option>
-                <Option value="Tiến sĩ">Tiến Sĩ</Option>
-                <Option value="Thạc sĩ">Thạc sĩ</Option>
+                <Option value={QualificationCode.Gs}>Giáo sư</Option>
+                <Option value={QualificationCode.PGs}>Phó giáo sư</Option>
+                <Option value={QualificationCode.TS}>Tiến sĩ</Option>
+                <Option value={QualificationCode.ThS}>Thạc sĩ</Option>
               </Select>
             )}
           />
@@ -431,6 +518,79 @@ export function UpdateStaffForm({ handleOpen, id }) {
             )}
           </div>
         </div>
+      </div>
+      <div className="mb-6">
+        <Typography variant="h6" color="blue-gray" className="mb-4">
+          Thông tin lương
+        </Typography>
+        {salaryInfo && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Typography variant="small" className="mb-2 font-medium">
+                  Ngạch giảng viên
+                </Typography>
+                <Select
+                  value={salaryInfo.teacherGrade}
+                  onChange={(value) => handleUpdateTeacherGrade(value)}
+                  className="w-full"
+                >
+                  <Option value={TeacherGrade.GRADE_I}>
+                    Giảng viên cao cấp - {TeacherGrade.GRADE_I} (Hạng I)
+                  </Option>
+                  <Option value={TeacherGrade.GRADE_II}>
+                    Giảng viên chính - {TeacherGrade.GRADE_II} (Hạng II)
+                  </Option>
+                  <Option value={TeacherGrade.GRADE_III}>
+                    Giảng viên - {TeacherGrade.GRADE_III} (Hạng III)
+                  </Option>
+                </Select>
+              </div>
+              <div>
+                <Typography variant="small" className="font-medium">
+                  Bậc lương: {salaryInfo.salaryLevel}/
+                  {salaryInfo.maxSalaryLevel}
+                </Typography>
+                <Typography variant="small" className="font-medium">
+                  Hệ số: {salaryInfo.salaryCoefficent.toFixed(2)}
+                </Typography>
+                <Typography variant="small" className="font-medium">
+                  Lương:{" "}
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(salaryInfo.salary)}
+                </Typography>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <Typography variant="small" className="font-medium">
+                Ngày nâng bậc tiếp theo:{" "}
+                {new Date(salaryInfo.nextPromotionDate).toLocaleDateString(
+                  "vi-VN"
+                )}
+              </Typography>
+              <div className="flex gap-2">
+                <Button
+                  color="red"
+                  size="sm"
+                  onClick={handleDemoteSalary}
+                  disabled={salaryInfo.salaryLevel <= 1}
+                >
+                  Giảm bậc lương
+                </Button>
+                <Button
+                  color="blue"
+                  size="sm"
+                  onClick={handlePromoteSalary}
+                  disabled={salaryInfo.salaryLevel >= salaryInfo.maxSalaryLevel}
+                >
+                  Nâng bậc lương
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <div className="mt-6 flex flex gap-4 self-end">
         <Button color="red" className="ml-auto" onClick={handleOpen}>

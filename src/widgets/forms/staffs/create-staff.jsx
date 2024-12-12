@@ -12,6 +12,8 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { TeacherGrade } from "@/utils/constant";
+import { QualificationCode } from "@/utils/constant";
 
 export function CreateStaffForm({ handleOpen }) {
   const [unitList, setUnitList] = useState([]);
@@ -25,7 +27,8 @@ export function CreateStaffForm({ handleOpen }) {
     defaultValues: {
       gender: "not_declare",
       isPermanent: false,
-      qualificationCode: "unknown",
+      qualificationCode: QualificationCode.ThS,
+      teacherGrade: TeacherGrade.GRADE_III,
     },
   });
 
@@ -60,7 +63,7 @@ export function CreateStaffForm({ handleOpen }) {
           showCloseButton: false,
           timer: 1000,
         });
-        window.location.reload()
+        window.location.reload();
 
         handleOpen();
       }
@@ -343,13 +346,13 @@ export function CreateStaffForm({ handleOpen }) {
               variant="small"
               className="mb-2 block font-medium text-gray-900"
             >
-                Trình độ
+              Trình độ
             </Typography>
           </label>
           <Controller
             name="qualificationCode"
             control={control}
-            rules={{ required:true }}
+            rules={{ required: true }}
             render={({ field }) => (
               <Select
                 size="lg"
@@ -362,16 +365,59 @@ export function CreateStaffForm({ handleOpen }) {
                 labelProps={{ className: "hidden" }}
                 onChange={(value) => field.onChange(value)}
               >
-                <Option value="Giáo sư">Giáo Sư</Option>
-                <Option value="Phó giáo sư">Phó Giáo Sư </Option>
-                <Option value="Tiến sĩ">Tiến Sĩ</Option>
-                <Option value="Thạc sĩ">Thạc sĩ</Option>
+                <Option value={QualificationCode.Gs}>Giáo sư</Option>
+                <Option value={QualificationCode.PGs}>Phó giáo sư</Option>
+                <Option value={QualificationCode.TS}>Tiến sĩ</Option>
+                <Option value={QualificationCode.ThS}>Thạc sĩ</Option>
               </Select>
             )}
           />
           {errors.qualificationCode && (
             <Typography variant="small" color="red">
               Trình độ là bắt buộc
+            </Typography>
+          )}
+        </div>
+        <div>
+          <label htmlFor="teacherGrade">
+            <Typography
+              variant="small"
+              className="mb-2 block font-medium text-gray-900"
+            >
+              Ngạch giảng viên
+            </Typography>
+          </label>
+          <Controller
+            name="teacherGrade"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                size="lg"
+                className={`w-full border-t-blue-gray-200 placeholder:opacity-100 ${
+                  errors.teacherGrade
+                    ? "focus:border-t-red-600"
+                    : "focus:border-t-gray-900"
+                }`}
+                containerProps={{ className: "!min-w-full" }}
+                labelProps={{ className: "hidden" }}
+                onChange={(value) => field.onChange(value)}
+              >
+                <Option value={TeacherGrade.GRADE_I}>
+                  Giảng viên cao cấp (Hạng I)
+                </Option>
+                <Option value={TeacherGrade.GRADE_II}>
+                  Giảng viên chính (Hạng II)
+                </Option>
+                <Option value={TeacherGrade.GRADE_III}>
+                  Giảng viên (Hạng III)
+                </Option>
+              </Select>
+            )}
+          />
+          {errors.teacherGrade && (
+            <Typography variant="small" color="red">
+              Ngạch giảng viên là bắt buộc
             </Typography>
           )}
         </div>

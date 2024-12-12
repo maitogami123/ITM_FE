@@ -18,7 +18,14 @@ import {
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Giảng viên", "Chuyên ngành chính", "Số điện thoại", "Ngày làm việc", ""];
+const TABLE_HEAD = [
+  "Giảng viên",
+  "Chuyên ngành chính",
+  "Số điện thoại",
+  "Ngày làm việc",
+  "Lương",
+  "",
+];
 
 export function StaffsTable() {
   const [open, setOpen] = useState(false);
@@ -183,6 +190,10 @@ export function StaffsTable() {
                       positions,
                       rewards,
                       competitions,
+                      teacherGrade,
+                      salaryLevel,
+                      salary,
+                      nextPromotionDate,
                     } = staff;
                     const isLast = index === data.length - 1;
                     const rowClasses = isLast
@@ -244,6 +255,27 @@ export function StaffsTable() {
                           >
                             {formatDate(startDate)}
                           </Typography>
+                        </td>
+                        <td className={rowClasses}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {new Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              }).format(salary)}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal opacity-70"
+                            >
+                              Bậc {salaryLevel}
+                            </Typography>
+                          </div>
                         </td>
                         <td className={rowClasses}>
                           <Tooltip content="Edit Staff">

@@ -69,3 +69,23 @@ export const getExportSalary = () => {
     responseType: "blob", // Quan trọng: Cấu hình để nhận blob
   });
 };
+
+export const updateTeacherGrade = (id, teacherGrade) => {
+  const url = `${API_ENDPOINTS.staff}/${id}/teacher-grade`;
+  return interceptedAxios.patch(url, { teacherGrade });
+};
+
+export const promoteSalaryLevel = (id) => {
+  const url = `${API_ENDPOINTS.staff}/${id}/promote`;
+  return interceptedAxios.patch(url);
+};
+
+export const getSalaryInfo = (id) => {
+  const url = `${API_ENDPOINTS.staff}/${id}/salary`;
+  return interceptedAxios.get(url);
+};
+
+export const demoteSalaryLevel = (id) => {
+  const url = `${API_ENDPOINTS.staff}/${id}/demote`;
+  return interceptedAxios.patch(url);
+};
