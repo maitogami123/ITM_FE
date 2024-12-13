@@ -68,7 +68,6 @@ export function CompetitionsTable() {
     setError(null);
     try {
       const response = await getAllCompetitions(null, currentPage);
-      console.log(response);
       if (response.status === 200) {
         const { data, total, page, limit, pages } = response.data;
         setData(data);
@@ -222,7 +221,8 @@ export function CompetitionsTable() {
                   handleOpenCreate();
                 }}
               >
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" />Tạo mới
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" />
+                Tạo mới
               </Button>
               <Button
                 className="flex items-center gap-3"

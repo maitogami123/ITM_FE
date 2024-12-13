@@ -27,7 +27,6 @@ export function ComboBox({ label, selected, setSelected }) {
               value: reward._id,
               label: `${reward.title} -- ${reward.date}`,
             }));
-          console.log(response);
         }
         if (response && response.status === 200) {
           const { data } = response.data;

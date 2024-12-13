@@ -36,10 +36,8 @@ export function CreateStaffForm({ handleOpen }) {
       try {
         // const response = await getAllUnits(null, currentPage);
         const response = await getAllUnits();
-        console.log(response);
         if (response.status === 200) {
           const { data } = response.data;
-          console.log(data);
           setUnitList(data);
         } else {
           throw new Error("có lỗi xảy ra trong quá trình tìm kiếm");

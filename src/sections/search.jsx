@@ -46,7 +46,6 @@ export function SearchPage() {
       const response = await getStaffById(id);
       if ((response.status = 200)) {
         const data = await response.data;
-        console.log("User Data:", data);
         navigate(`/${id}`, { state: { userData: data } });
       }
     } catch (error) {
@@ -83,32 +82,45 @@ export function SearchPage() {
           />
           {isFocused && (
             <div className="absolute z-10 mt-2 max-h-64 w-full overflow-y-auto rounded border border-gray-300 bg-white shadow-lg">
-              <table className="w-full border-collapse text-left">
-                <tbody>
-                  {tableValue.length > 0 ? (
-                    tableValue.map((row, index) => (
-                      <tr
-                        key={index}
-                        className="cursor-pointer hover:bg-gray-100"
-                      >
-                        {/* <td className="border-b p-2">{row.id}</td> */}
-                        <td
-                          className="border-b p-2"
-                          onClick={() => handleClick(row._id)}
-                        >
+              <ul className="divide-y divide-gray-200">
+                {tableValue.length > 0 ? (
+                  tableValue.map((row, index) => (
+                    <li
+                      key={index}
+                      className="flex cursor-pointer items-center gap-4 p-4 hover:bg-gray-100"
+                      onClick={() => handleClick(row._id)}
+                    >
+                      {/* Avatar or Image */}
+                      <img
+                        src={
+                          row.image || row.gender == "male"
+                            ? "/img/default-man.png"
+                            : "/img/default-woman.png"
+                        }
+                        alt={row.name}
+                        className="h-12 w-12 flex-shrink-0 rounded-full object-cover"
+                      />
+                      {/* Information */}
+                      <div className="flex flex-1 flex-col">
+                        <span className="text-lg font-medium text-gray-800">
                           {row.name}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td className="border-b p-2 text-center" colSpan={1}>
-                        Không tìm thấy giảng viên cần tìm
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {row.qualificationCode && `${row.qualificationCode}`}
+                          {row.user && ` - ${row.user.email}`}
+                          {row.phone && ` - ${row.phone}`}
+                          {row.mainSpecialization &&
+                            ` - ${row.mainSpecialization}`}
+                        </span>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-2 text-center text-gray-500">
+                    Không tìm thấy giảng viên cần tìm
+                  </li>
+                )}
+              </ul>
             </div>
           )}
         </div>

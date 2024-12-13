@@ -48,8 +48,6 @@ export function UpdateRewardDialog({
       if (result.isConfirmed) {
         try {
           const deleteReponse = await removeStaffFromReward(staffId, id);
-          console.log("Hello");
-          console.log(deleteReponse);
           if (deleteReponse.status === 200) {
             Swal.fire({
               title: "Removed!",
@@ -84,7 +82,6 @@ export function UpdateRewardDialog({
 
       const response = await updateReward(id, updatedData); // Gọi API cập nhật
       if (response.status === 200) {
-        console.log("Update successful:", response.data);
         if (onCompetitionAdded) {
           onCompetitionAdded(response.data); // Gọi callback nếu có
         }

@@ -45,7 +45,6 @@ export function PositionsTable() {
       try {
         // const response = await getAllUnits(null, currentPage);
         const response = await getAllUnits();
-        console.log(response);
         if (response.status === 200) {
           const { data, total, page, limit, pages } = response.data;
           setData(data);

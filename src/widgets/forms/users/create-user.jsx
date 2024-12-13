@@ -47,7 +47,7 @@ export function CreateUserForm({ handleOpen }) {
           showCloseButton: false,
           timer: 1000,
         });
-        window.location.reload()
+        window.location.reload();
 
         handleOpen();
       }
@@ -233,7 +233,6 @@ export function CreateUserForm({ handleOpen }) {
                 [
                   <Option>Add later</Option>,
                   ...staffList.map((e) => {
-                    console.log(e._id);
                     return (
                       <Option
                         key={e._id}

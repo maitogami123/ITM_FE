@@ -141,9 +141,9 @@ export function UpdateUnitForm({ handleOpen, id }) {
             )}
           </div>
         </div>
-        <div className="flex flex gap-4 self-end">
+        <div className="flex gap-4 self-end">
           <Button color="green" size="md" type="submit">
-            Cập nhật 
+            Cập nhật
           </Button>
         </div>
       </form>
@@ -151,111 +151,113 @@ export function UpdateUnitForm({ handleOpen, id }) {
         <Typography
           variant="small"
           color="blue-gray"
-          className="mb-2 text-left font-medium"
+          className="mb-1 text-left font-medium"
         >
           Staffs
         </Typography>
-        <table className="mt-4 w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
+        <div className="mt-4 max-h-96 overflow-x-auto">
+          <table className="w-full min-w-max table-auto text-left">
+            <thead>
+              <tr>
+                {TABLE_HEAD.map((head) => (
+                  <th
+                    key={head}
+                    className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                   >
-                    {head}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data?.staffs?.length > 0 ? (
-              data.staffs.map(
-                ({ _id, mscb, name, gender, startDate, notes }, index) => {
-                  const isLast = index === data.staffs.length - 1;
-                  const rowClass = isLast
-                    ? "p-4"
-                    : "p-4 border-b border-blue-gray-50";
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal leading-none opacity-70"
+                    >
+                      {head}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data?.staffs?.length > 0 ? (
+                data.staffs.map(
+                  ({ _id, mscb, name, gender, startDate, notes }, index) => {
+                    const isLast = index === data.staffs.length - 1;
+                    const rowClass = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
 
-                  return (
-                    <tr key={_id}>
-                      <td className={rowClass}>
-                        <div className="flex flex-col">
+                    return (
+                      <tr key={_id}>
+                        <td className={rowClass}>
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {name}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal opacity-70"
+                            >
+                              {mscb}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={rowClass}>
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {name}
+                            {notes}
                           </Typography>
+                        </td>
+                        <td className={rowClass}>
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal opacity-70"
+                            className="font-normal"
                           >
-                            {mscb}
+                            {gender ? "Male" : "Female"}
                           </Typography>
-                        </div>
-                      </td>
-                      <td className={rowClass}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {notes}
-                        </Typography>
-                      </td>
-                      <td className={rowClass}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {gender ? "Male" : "Female"}
-                        </Typography>
-                      </td>
-                      <td className={rowClass}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {startDate}
-                        </Typography>
-                      </td>
-                      <td className={rowClass}>
-                        <Tooltip content="Delete User">
-                          <IconButton
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(_id);
-                            }}
-                            variant="text"
+                        </td>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
                           >
-                            <TrashIcon className="h-4 w-4" />
-                          </IconButton>
-                        </Tooltip>
-                      </td>
-                    </tr>
-                  );
-                }
-              )
-            ) : (
-              <tr>
-                <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
-                  No data available
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                            {startDate}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Tooltip content="Delete User">
+                            <IconButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(_id);
+                              }}
+                              variant="text"
+                            >
+                              <TrashIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )
+              ) : (
+                <tr>
+                  <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
+                    No data available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

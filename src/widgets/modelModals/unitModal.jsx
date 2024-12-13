@@ -17,7 +17,12 @@ export function AddUnitDialog({ open, handleOpen, id }) {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Dialog size="lg" open={open} handler={handleOpen} className="p-4">
+    <Dialog
+      size="lg"
+      open={open}
+      handler={handleOpen}
+      className="min-h-min p-4"
+    >
       {/* Header */}
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4" color="blue-gray">

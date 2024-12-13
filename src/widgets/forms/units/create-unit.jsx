@@ -16,7 +16,6 @@ export function CreateUnitForm({ handleOpen }) {
   const onSubmit = async (data) => {
     try {
       const createReponse = await createUnit(data);
-      console.log(createReponse);
       if (createReponse.status === 201) {
         Toast.fire({
           icon: "success",
@@ -25,7 +24,7 @@ export function CreateUnitForm({ handleOpen }) {
           timer: 1000,
         });
         handleOpen();
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       Toast.fire({
