@@ -89,3 +89,18 @@ export const demoteSalaryLevel = (id) => {
   const url = `${API_ENDPOINTS.staff}/${id}/demote`;
   return interceptedAxios.patch(url);
 };
+
+export const uploadAvatarImage = ({ id, file, mscb, name }) => {
+  const url = `${API_ENDPOINTS.staff}/${id}/upload-image`;
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("mscb", mscb);
+  formData.append("image", file); // Thêm file vào FormData
+
+  return interceptedAxios.post(url, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

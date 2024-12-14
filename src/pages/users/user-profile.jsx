@@ -1,5 +1,4 @@
 import UserProfileForm from "@/components/user/user-form";
-import { projectsData } from "@/data";
 import { getUserById } from "@/services/userService";
 import JoinNow from "@/widgets/campain/join-now";
 import { ProfileInfoCard } from "@/widgets/cards";
@@ -10,21 +9,22 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Input,
   Spinner,
-  Textarea,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-
+import { useLocation, useParams } from "react-router-dom";
+import axios from "axios"; // Sử dụng axios cho upload ảnh
+import { uploadAvatarImage } from "@/services/staffService";
 export function UserProfile() {
-  const { id } = useParams(); // Lấy id từ URL
+  const { id } = useParams(); // Lấy ID từ URL
   const location = useLocation(); // Lấy state từ điều hướng
-  const [userData, setUserData] = useState(location.state?.userData || null); // Dữ liệu truyền từ SearchPage
-  const [loading, setLoading] = useState(!userData); // Nếu có dữ liệu ban đầu thì không cần loading
+  const [userData, setUserData] = useState(location.state?.userData || null);
+  const [loading, setLoading] = useState(!userData);
   const [error, setError] = useState(null);
+  const [newAvatar, setNewAvatar] = useState(null); // Trạng thái ảnh mới
+  const [isUploading, setIsUploading] = useState(false); // Trạng thái đang upload ảnh
 
   useEffect(() => {
     if (!userData) {
@@ -34,7 +34,6 @@ export function UserProfile() {
         try {
           const response = await getUserById(id);
           if (response.status === 200) {
-            console.log(response.data);
             setUserData(response.data);
           } else {
             throw new Error("Failed to fetch user data");
@@ -49,6 +48,41 @@ export function UserProfile() {
       fetchData();
     }
   }, [id, userData]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewAvatar(file);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!newAvatar) return;
+    setIsUploading(true);
+    try {
+      console.log(userData.staff);
+      const response = await uploadAvatarImage({
+        id: userData?.staff?._id,
+        file: newAvatar,
+        mscb: userData?.staff?.mscb,
+        name: userData?.staff?.name,
+      });
+      if (response.status === 200) {
+        setUserData((prev) => ({
+          ...prev,
+          avatar: response.data.imagePath, // Cập nhật đường dẫn avatar
+        }));
+        setNewAvatar(null);
+      } else {
+        throw new Error("Failed to upload avatar");
+      }
+    } catch (err) {
+      console.error("Lỗi khi upload ảnh:", err.message);
+      alert("Đã xảy ra lỗi khi upload ảnh.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   if (loading)
     return (
@@ -70,12 +104,45 @@ export function UserProfile() {
             <div>
               <div className="mb-10 flex items-center justify-between gap-6">
                 <div className="flex items-center gap-6">
-                  <Avatar
-                    src="/img/bruce-mars.jpeg"
-                    alt="bruce-mars"
-                    size="xl"
-                    className="rounded-lg shadow-lg shadow-blue-gray-500/40"
-                  />
+                  <div className="group relative">
+                    {/* Avatar: Hiển thị ảnh xem trước nếu có */}
+                    <Avatar
+                      src={
+                        newAvatar
+                          ? URL.createObjectURL(newAvatar)
+                          : userData.staff?.image ||
+                            "../../../public/img/default-man.png"
+                      }
+                      alt={userData.staff?.name || "User"}
+                      size="xl"
+                      className="rounded-full shadow-lg shadow-blue-gray-500/40"
+                    />
+                    {/* Icon chỉnh sửa */}
+                    <div className="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white opacity-50 transition-opacity duration-300 hover:bg-blue-600 group-hover:opacity-100">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="h-5 w-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L7.5 20.5H4v-3.5L16.732 3.732z"
+                        />
+                      </svg>
+                    </div>
+                    {/* Input chọn file ảnh */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0"
+                      onChange={handleFileChange}
+                    />
+                  </div>
+
                   <div>
                     <Typography variant="h5" color="blue-gray" className="mb-1">
                       {(userData.staff && userData.staff.name) ||
@@ -91,7 +158,22 @@ export function UserProfile() {
                     </Typography>
                   </div>
                 </div>
+                {newAvatar && (
+                  <div className="mt-4 flex items-center gap-4">
+                    <Button
+                      color="green"
+                      onClick={handleUpload}
+                      disabled={isUploading}
+                    >
+                      {isUploading ? "Uploading..." : "Confirm Upload"}
+                    </Button>
+                    <Button color="red" onClick={() => setNewAvatar(null)}>
+                      Cancel
+                    </Button>
+                  </div>
+                )}
               </div>
+
               <ProfileInfoCard
                 title="Profile Information"
                 description={`${userData.description || ""}`}
@@ -103,61 +185,66 @@ export function UserProfile() {
                 }}
               />
             </div>
-            {userData.staff && <div className="col-span-2">
-              <div className="mb-4 grid gap-y-10 ">
-                <JoinNow />
+            {userData.staff && (
+              <div className="col-span-2">
+                <div className="mb-4 grid gap-y-10 ">
+                  <JoinNow />
+                </div>
+                <UserProfileForm user={userData} />
               </div>
-              <UserProfileForm user={userData} />
-            </div>}
+            )}
           </div>
-          {userData.staff && userData.staff.rewards && userData.staff.rewards.length > 0 && (
-            <div className="px-4 pb-4">
-              <Typography variant="h6" color="blue-gray" className="mb-2">
-                Rewards
-              </Typography>
-              <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-                {userData.staff.rewards.map(
-                  ({ title, description, years, _id }) => (
-                    <Card key={_id} color="transparent" shadow={false}>
-                      <CardHeader
-                        floated={false}
-                        color="gray"
-                        className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                      >
-                        <img
-                          src={"/img/home-decor-1.jpeg"}
-                          alt={title}
-                          className="h-full w-full object-cover"
-                        />
-                      </CardHeader>
-                      <CardBody className="py-0 px-1">
-                        <Typography
-                          variant="small"
-                          className="font-normal text-blue-gray-500"
+          {userData.staff &&
+            userData.staff.rewards &&
+            userData.staff.rewards.length > 0 && (
+              <div className="px-4 pb-4">
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  Rewards
+                </Typography>
+                <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+                  {userData.staff.rewards.map(
+                    ({ title, description, years, _id }) => (
+                      <Card key={_id} color="transparent" shadow={false}>
+                        <CardHeader
+                          floated={false}
+                          color="gray"
+                          className="mx-0 mt-0 mb-4 h-64 xl:h-40"
                         >
-                          {years}
-                        </Typography>
-                        <Typography
-                          variant="h5"
-                          color="blue-gray"
-                          className="mt-1 mb-2"
-                        >
-                          {title}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          className="font-normal text-blue-gray-500"
-                        >
-                          {description}
-                        </Typography>
-                      </CardBody>
-                    </Card>
-                  )
-                )}
+                          <img
+                            src={"/img/home-decor-1.jpeg"}
+                            alt={title}
+                            className="h-full w-full object-cover"
+                          />
+                        </CardHeader>
+                        <CardBody className="py-0 px-1">
+                          <Typography
+                            variant="small"
+                            className="font-normal text-blue-gray-500"
+                          >
+                            {years}
+                          </Typography>
+                          <Typography
+                            variant="h5"
+                            color="blue-gray"
+                            className="mt-1 mb-2"
+                          >
+                            {title}
+                          </Typography>
+                          <Typography
+                            variant="small"
+                            className="font-normal text-blue-gray-500"
+                          >
+                            {description}
+                          </Typography>
+                        </CardBody>
+                      </Card>
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-          {userData.staff && userData.staff.competitions &&
+            )}
+          {userData.staff &&
+            userData.staff.competitions &&
             userData.staff.competitions.length > 0 && (
               <div className="px-4 pb-4">
                 <Typography variant="h6" color="blue-gray" className="mb-2">

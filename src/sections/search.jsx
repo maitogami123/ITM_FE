@@ -124,11 +124,6 @@ export function SearchPage() {
             </div>
           )}
         </div>
-
-        {/* Search Button */}
-        <Button color="gray" className="w-full px-4 py-2 md:ml-4 md:w-auto">
-          Tìm kiếm giảng viên
-        </Button>
       </div>
     </div>
   );
