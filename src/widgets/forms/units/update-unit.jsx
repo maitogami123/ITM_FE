@@ -16,7 +16,15 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Start Date", "Actions"];
+const TABLE_HEAD = [
+  "Member",
+  "Employee",
+  "Sex",
+  "Phone",
+  "Email",
+  "Start Date",
+  "Actions",
+];
 
 export function UpdateUnitForm({ handleOpen, id }) {
   const [data, setData] = useState(null); // Use null to indicate loading state
@@ -32,6 +40,7 @@ export function UpdateUnitForm({ handleOpen, id }) {
       try {
         const response = await getUnitById(id);
         if (response.status === 200) {
+          console.log(response.data);
           setData(response.data);
           reset(response.data);
         } else {
@@ -178,7 +187,10 @@ export function UpdateUnitForm({ handleOpen, id }) {
             <tbody>
               {data?.staffs?.length > 0 ? (
                 data.staffs.map(
-                  ({ _id, mscb, name, gender, startDate, notes }, index) => {
+                  (
+                    { _id, mscb, name, gender, startDate, notes, phone, user },
+                    index
+                  ) => {
                     const isLast = index === data.staffs.length - 1;
                     const rowClass = isLast
                       ? "p-4"
@@ -210,7 +222,7 @@ export function UpdateUnitForm({ handleOpen, id }) {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {notes}
+                            {notes || <i>Đang chờ cập nhật</i>}
                           </Typography>
                         </td>
                         <td className={rowClass}>
@@ -220,6 +232,24 @@ export function UpdateUnitForm({ handleOpen, id }) {
                             className="font-normal"
                           >
                             {gender ? "Male" : "Female"}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {phone}
+                          </Typography>
+                        </td>
+                        <td className={rowClass}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {user?.email || <i>Email chưa được cập nhật</i>}
                           </Typography>
                         </td>
                         <td className={rowClass}>
