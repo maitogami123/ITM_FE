@@ -1,3 +1,5 @@
+import { getUserById } from "@/services/userService";
+import { API_BASE } from "@/utils/constant";
 import {
   ChevronDownIcon,
   LifebuoyIcon,
@@ -13,11 +15,42 @@ import {
   MenuList,
   Typography,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function ProfileMenu({ user, logout }) {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userData, setUserData] = useState(location.state?.userData || null); // Dữ liệu truyền từ SearchPage
+  const [loading, setLoading] = useState(!userData); // Nếu có dữ liệu ban đầu thì không cần loading
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!userData) {
+      // Nếu không có dữ liệu, gọi API để lấy dữ liệu
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const response = await getUserById(user.id);
+          if (response.status === 200) {
+            console.log("USER");
+            console.log(response.data);
+            setUserData(response.data);
+          } else {
+            throw new Error("Failed to fetch user data");
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [user.id, userData]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -31,8 +64,16 @@ export default function ProfileMenu({ user, logout }) {
             variant="circular"
             size="sm"
             alt={user.username}
-            className="border border-gray-900 p-0.5"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            className="border border-gray-900 "
+            // src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            src={
+              userData?.staff?.image
+                ? `${API_BASE + userData?.staff?.image}`
+                : userData.staff?.gender == "male"
+                ? "/img/default-man.png"
+                : "/img/default-woman.png"
+            }
+            // className="rounded-lg shadow-lg shadow-blue-gray-500/40"
           />
           <Typography className="uppercase">{user.username}</Typography>
           <ChevronDownIcon

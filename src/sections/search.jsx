@@ -1,7 +1,8 @@
-import { Button, Input } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
 import { getAllStaffs, getStaffById } from "@/services/staffService";
+import { API_BASE } from "@/utils/constant";
+import { Input } from "@material-tailwind/react";
 import debounce from "lodash.debounce";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function SearchPage() {
@@ -93,7 +94,9 @@ export function SearchPage() {
                       {/* Avatar or Image */}
                       <img
                         src={
-                          row.image || row.gender == "male"
+                          row?.image
+                            ? `${API_BASE + row?.image}`
+                            : row.image || row.gender == "male"
                             ? "/img/default-man.png"
                             : "/img/default-woman.png"
                         }

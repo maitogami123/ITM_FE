@@ -1,18 +1,15 @@
 import { getStaffById } from "@/services/staffService";
+import { API_BASE } from "@/utils/constant";
 import { ProfileInfoCard } from "@/widgets/cards";
 import {
   Avatar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import UserProfile from "./user-profile";
-import UserProfileForm from "@/components/user/user-form";
 
 export function PublicProfile() {
   const { id } = useParams(); // Lấy id từ URL
@@ -57,8 +54,14 @@ export function PublicProfile() {
           <div className="mb-10 flex items-center justify-between gap-6">
             <div className="flex items-center gap-6">
               <Avatar
-                src="/img/bruce-mars.jpeg"
-                alt="bruce-mars"
+                src={
+                  userData?.image
+                    ? `${API_BASE + userData?.image}`
+                    : userData.staff?.gender == "male"
+                    ? "/img/default-man.png"
+                    : "/img/default-woman.png"
+                }
+                alt={userData.staff?.name || "User"}
                 size="xl"
                 className="rounded-lg shadow-lg shadow-blue-gray-500/40"
               />
@@ -103,7 +106,9 @@ export function PublicProfile() {
                     >
                       Description
                     </Typography>
-                    <Typography>{userData.user && userData.user.description}</Typography>
+                    <Typography>
+                      {userData.user && userData.user.description}
+                    </Typography>
                   </div>
                 </div>
               </div>

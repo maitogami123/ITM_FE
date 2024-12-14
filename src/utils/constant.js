@@ -1,3 +1,4 @@
+const API_BASE = "http://localhost:5000";
 const API_BASE_URL = "http://localhost:5000/api";
 
 const API_ENDPOINTS = {
@@ -23,4 +24,4 @@ export const QualificationCode = {
   ThS: "Thạc sĩ",
 };
 
-export { API_BASE_URL, API_ENDPOINTS };
+export { API_BASE_URL, API_ENDPOINTS, API_BASE };

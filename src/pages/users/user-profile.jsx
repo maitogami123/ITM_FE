@@ -1,5 +1,7 @@
 import UserProfileForm from "@/components/user/user-form";
+import { uploadAvatarImage } from "@/services/staffService";
 import { getUserById } from "@/services/userService";
+import { API_BASE } from "@/utils/constant";
 import JoinNow from "@/widgets/campain/join-now";
 import { ProfileInfoCard } from "@/widgets/cards";
 import {
@@ -15,8 +17,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import axios from "axios"; // Sử dụng axios cho upload ảnh
-import { uploadAvatarImage } from "@/services/staffService";
+import Swal from "sweetalert2";
 export function UserProfile() {
   const { id } = useParams(); // Lấy ID từ URL
   const location = useLocation(); // Lấy state từ điều hướng
@@ -26,28 +27,26 @@ export function UserProfile() {
   const [newAvatar, setNewAvatar] = useState(null); // Trạng thái ảnh mới
   const [isUploading, setIsUploading] = useState(false); // Trạng thái đang upload ảnh
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await getUserById(id);
+      if (response.status === 200) {
+        setUserData(response.data);
+      } else {
+        throw new Error("Failed to fetch user data");
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     if (!userData) {
-      // Nếu không có dữ liệu, gọi API để lấy dữ liệu
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const response = await getUserById(id);
-          if (response.status === 200) {
-            setUserData(response.data);
-          } else {
-            throw new Error("Failed to fetch user data");
-          }
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-
       fetchData();
     }
-  }, [id, userData]);
+  }, [id, userData, newAvatar]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -60,7 +59,6 @@ export function UserProfile() {
     if (!newAvatar) return;
     setIsUploading(true);
     try {
-      console.log(userData.staff);
       const response = await uploadAvatarImage({
         id: userData?.staff?._id,
         file: newAvatar,
@@ -73,12 +71,28 @@ export function UserProfile() {
           avatar: response.data.imagePath, // Cập nhật đường dẫn avatar
         }));
         setNewAvatar(null);
+        Swal.fire({
+          icon: "success",
+          title: "Update Avatar",
+          text: "Your avatar has been updated successfully!",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "Green",
+        });
+        window.location.reload();
       } else {
         throw new Error("Failed to upload avatar");
       }
     } catch (err) {
       console.error("Lỗi khi upload ảnh:", err.message);
-      alert("Đã xảy ra lỗi khi upload ảnh.");
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text:
+          "There was an error updating your avatar. Please try again.\n " +
+          err.message,
+        confirmButtonText: "Close",
+        confirmButtonColor: "Red",
+      });
     } finally {
       setIsUploading(false);
     }
@@ -92,7 +106,8 @@ export function UserProfile() {
       </div>
     );
   if (error) return <p>Error: {error}</p>;
-
+  console.log("=====UserData=====");
+  console.log(userData);
   return (
     <div className="container mx-auto">
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)] bg-cover	bg-center">
@@ -110,8 +125,11 @@ export function UserProfile() {
                       src={
                         newAvatar
                           ? URL.createObjectURL(newAvatar)
-                          : userData.staff?.image ||
-                            "../../../public/img/default-man.png"
+                          : userData.staff?.image
+                          ? `${API_BASE + userData.staff.image}`
+                          : userData.staff?.gender == "male"
+                          ? "/img/default-man.png"
+                          : "/img/default-woman.png"
                       }
                       alt={userData.staff?.name || "User"}
                       size="xl"
